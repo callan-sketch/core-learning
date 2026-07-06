@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Learning — Climbing Coaches Fundamentals Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+    --shadow-lift: 0 4px 8px rgba(27,42,58,0.08), 0 16px 40px rgba(27,42,58,0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: inherit; }
+
+  /* ================= HEADER ================= */
+  /* This is a distinct, simpler header from the Core Coaching Hub's 5-link nav —
+     Core Learning is its own enrolled-student product, not a Hub page. */
+
+  .site-nav {
+    background: var(--navy);
+    padding: 0 24px;
+  }
+
+  .site-nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .site-logo {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .site-logo .name {
+    color: var(--white);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+
+  .site-logo .name span { color: var(--terracotta); }
+
+  .site-logo .parent {
+    color: rgba(255,255,255,0.45);
+    font-size: 11px;
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-link {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 14px;
+  }
+
+  .nav-link:hover { color: var(--white); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-primary {
+    background: var(--terracotta);
+    color: var(--white);
+    box-shadow: 0 4px 14px rgba(217,118,74,0.35);
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.18); }
+
+  .btn-lg {
+    padding: 14px 26px;
+    font-size: 15px;
+  }
+
+  /* ================= HERO ================= */
+  .hero {
+    background-image:
+      linear-gradient(180deg, rgba(27,42,58,0.88) 0%, rgba(27,42,58,0.95) 100%),
+      url('images/hero-banner.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    background-color: var(--navy);
+    padding: 56px 24px 64px;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
+  .hero h1 {
+    color: var(--white);
+    font-size: clamp(30px, 4.4vw, 44px);
+    line-height: 1.1;
+    margin: 0 0 14px;
+    max-width: 680px;
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.72);
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 560px;
+    margin: 0 0 30px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item .num {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .hero-meta-item .label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+
+  /* ================= SECTION SHELL ================= */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .section-head {
+    max-width: 620px;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .section-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
+
+  .section-head h2 {
+    font-size: clamp(22px, 3vw, 28px);
+    margin: 0;
+  }
+
+  .section-sub {
+    color: var(--ink-mute);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 10px 0 32px;
+  }
+
+  /* ---------- Demo preview toggle ---------- */
+  /* Lets you see the locked vs unlocked state before Firebase auth is wired up.
+     Remove this whole block once real login/payment state drives module.unlocked. */
+  .preview-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--white);
+    border: 1px dashed var(--line);
+    border-radius: 999px;
+    padding: 8px 16px 8px 8px;
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-bottom: 32px;
+  }
+
+  .preview-toggle .switch {
+    position: relative;
+    width: 38px;
+    height: 22px;
+    background: var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .preview-toggle .switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: transform 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  }
+
+  .preview-toggle.on .switch { background: var(--teal); }
+  .preview-toggle.on .switch::after { transform: translateX(16px); }
+
+  /* ---------- Module tab grid ---------- */
+  .module-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .module-tab {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    display: block;
+    color: var(--white);
+  }
+
+  .module-tab-art {
+    position: absolute;
+    inset: 0;
+    background-size: cover, cover;
+    background-position: center, center;
+    transition: filter 0.2s ease, transform 0.2s ease;
+  }
+
+  /* Each tile layers a real photo (images/module-0X.jpg) over a gradient fallback —
+     if the photo file isn't there yet, the gradient shows through on its own, so
+     these are safe to drop in one at a time as photography becomes available. */
+  .module-tab[data-mod="1"] .module-tab-art { background-image: url('images/module-01.jpg'), linear-gradient(135deg, #1b2a3a, #3a8a8c); }
+  .module-tab[data-mod="2"] .module-tab-art { background-image: url('images/module-02.jpg'), linear-gradient(135deg, #25394d, #d9764a); }
+  .module-tab[data-mod="3"] .module-tab-art { background-image: url('images/module-03.jpg'), linear-gradient(135deg, #3a8a8c, #1b2a3a); }
+  .module-tab[data-mod="4"] .module-tab-art { background-image: url('images/module-04.jpg'), linear-gradient(135deg, #d9764a, #25394d); }
+  .module-tab[data-mod="5"] .module-tab-art { background-image: url('images/module-05.jpg'), linear-gradient(135deg, #1b2a3a, #d9764a); }
+  .module-tab[data-mod="6"] .module-tab-art { background-image: url('images/module-06.jpg'), linear-gradient(135deg, #3a8a8c, #d9764a); }
+  .module-tab[data-mod="7"] .module-tab-art { background-image: url('images/module-07.jpg'), linear-gradient(135deg, #25394d, #3a8a8c); }
+
+  .module-tab.locked .module-tab-art {
+    filter: blur(6px) saturate(70%) brightness(0.7);
+  }
+
+  .module-tab-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(20,31,43,0.15) 0%, rgba(20,31,43,0.75) 100%);
+  }
+
+  .module-tab-body {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 18px;
+  }
+
+  .module-tab-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin: 0 0 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .module-tab-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16.5px;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .module-tab-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    margin-top: 8px;
+  }
+
+  .lock-icon {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    background: rgba(20,31,43,0.55);
+    backdrop-filter: blur(2px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .module-tab.locked:hover .module-tab-art { filter: blur(6px) saturate(70%) brightness(0.6); }
+  .module-tab:not(.locked):hover .module-tab-art { transform: scale(1.03); }
+
+  .module-tab:not(.locked) .lock-icon { display: none; }
+
+  @media (max-width: 900px) {
+    .module-tabs { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .module-tabs { grid-template-columns: 1fr; }
+    .hero-meta { gap: 20px; }
+  }
+
+  /* ---------- CTA banner ---------- */
+  .cta-banner {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 40px;
+    text-align: center;
+  }
+
+  .cta-banner h2 { font-size: clamp(20px, 2.6vw, 26px); margin: 0 0 10px; }
+
+  .cta-banner p {
+    color: var(--ink-mute);
+    font-size: 14.5px;
+    max-width: 440px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.55);
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .site-footer a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+  }
+
+  .site-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="index.html">
+      <span class="name">Core <span>Learning</span></span>
+      <span class="parent">by Core Coaching Hub</span>
+    </a>
+    <div class="nav-actions">
+      <a class="nav-link" href="login.html">Log in</a>
+      <a class="btn btn-primary" href="login.html">Sign up</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Certification course</p>
+    <h1>The Climbing Coaches Fundamentals Course</h1>
+    <p>Seven modules covering exercise science, technique instruction, and climbing-specific programming. Work through them one at a time — pass each quiz at 80% to unlock the next.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary btn-lg" href="login.html">Start the course</a>
+      <a class="btn btn-secondary btn-lg" href="index.html#pricing">See pricing</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="num">7</div>
+        <div class="label">Modules</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="num">80%</div>
+        <div class="label">Pass mark</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="num">1</div>
+        <div class="label">Certificate on completion</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="section-head">
+    <div>
+      <p class="section-eyebrow">Course modules</p>
+      <h2>Work through them in order</h2>
+    </div>
+  </div>
+  <p class="section-sub">Each module unlocks once you've paid and passed the previous module's quiz at 80% or higher. Log in to see your progress.</p>
+
+  <!-- Demo-only toggle — delete once Firebase auth/payment state is wired up -->
+  <div class="preview-toggle" id="preview-toggle">
+    <div class="switch"></div>
+    <span id="preview-toggle-label">Preview: logged out — everything locked</span>
+  </div>
+
+  <div class="module-tabs" id="module-tabs">
+    <a class="module-tab locked" data-mod="1" href="login.html">
+      <div class="module-tab-art"></div>
+      <div class="module-tab-scrim"></div>
+      <div class="lock-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9a1 1 0 011-1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="module-tab-body">
+        <p class="module-tab-num">Module 01</p>
+        <h3 class="module-tab-title">Anatomy &amp; physiology</h3>
+        <span class="module-tab-status">🔒 Locked</span>
+      </div>
+    </a>
+
+    <a class="module-tab locked" data-mod="2" href="login.html">
+      <div class="module-tab-art"></div>
+      <div class="module-tab-scrim"></div>
+      <div class="lock-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9a1 1 0 011-1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="module-tab-body">
+        <p class="module-tab-num">Module 02</p>
+        <h3 class="module-tab-title">Biomechanics</h3>
+        <span class="module-tab-status">🔒 Locked</span>
+      </div>
+    </a>
+
+    <a class="module-tab locked" data-mod="3" href="login.html">
+      <div class="module-tab-art"></div>
+      <div class="module-tab-scrim"></div>
+      <div class="lock-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9a1 1 0 011-1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="module-tab-body">
+        <p class="module-tab-num">Module 03</p>
+        <h3 class="module-tab-title">Assessments &amp; screening</h3>
+        <span class="module-tab-status">🔒 Locked</span>
+      </div>
+    </a>
+
+    <a class="module-tab locked" data-mod="4" href="login.html">
+      <div class="module-tab-art"></div>
+      <div class="module-tab-scrim"></div>
+      <div class="lock-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9a1 1 0 011-1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="module-tab-body">
+        <p class="module-tab-num">Module 04</p>
+        <h3 class="module-tab-title">Session programming</h3>
+        <span class="module-tab-status">🔒 Locked</span>
+      </div>
+    </a>
+
+    <a class="module-tab locked" data-mod="5" href="login.html">
+      <div class="module-tab-art"></div>
+      <div class="module-tab-scrim"></div>
+      <div class="lock-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9a1 1 0 011-1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="module-tab-body">
+        <p class="module-tab-num">Module 05</p>
+        <h3 class="module-tab-title">Technique instruction</h3>
+        <span class="module-tab-status">🔒 Locked</span>
+      </div>
+    </a>
+
+    <a class="module-tab locked" data-mod="6" href="login.html">
+      <div class="module-tab-art"></div>
+      <div class="module-tab-scrim"></div>
+      <div class="lock-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9a1 1 0 011-1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="module-tab-body">
+        <p class="module-tab-num">Module 06</p>
+        <h3 class="module-tab-title">Advanced movement skills</h3>
+        <span class="module-tab-status">🔒 Locked</span>
+      </div>
+    </a>
+
+    <a class="module-tab locked" data-mod="7" href="login.html">
+      <div class="module-tab-art"></div>
+      <div class="module-tab-scrim"></div>
+      <div class="lock-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a2 2 0 01-2 2H6a2 2 0 01-2-2v-9a1 1 0 011-1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="module-tab-body">
+        <p class="module-tab-num">Module 07</p>
+        <h3 class="module-tab-title">Climbing-specific strength &amp; conditioning</h3>
+        <span class="module-tab-status">🔒 Locked</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="cta-banner">
+    <h2>Ready to get certified?</h2>
+    <p>Create your account, complete the onboarding form, and unlock Module 01 straight away.</p>
+    <a class="btn btn-primary btn-lg" href="login.html">Create your account</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>Core Learning — part of the Core brand family. <a href="mailto:hello@corecoachinghub.co.za">hello@corecoachinghub.co.za</a></p>
+</footer>
+
+<script>
+  // Demo-only preview toggle so you can see the locked vs. unlocked tile states
+  // before Firebase auth/payment logic is wired in. Real version will read
+  // module-unlock state from Firestore and set the "locked" class / status
+  // text / lock icon per module accordingly — remove this block then.
+  const toggle = document.getElementById('preview-toggle');
+  const toggleLabel = document.getElementById('preview-toggle-label');
+  const moduleOne = document.querySelector('.module-tab[data-mod="1"]');
+
+  toggle.addEventListener('click', function() {
+    const isOn = toggle.classList.toggle('on');
+    if (isOn) {
+      moduleOne.classList.remove('locked');
+      moduleOne.href = 'module-01.html';
+      moduleOne.querySelector('.module-tab-status').innerHTML = '▶ Continue';
+      toggleLabel.textContent = 'Preview: enrolled — Module 01 unlocked';
+    } else {
+      moduleOne.classList.add('locked');
+      moduleOne.href = 'login.html';
+      moduleOne.querySelector('.module-tab-status').innerHTML = '🔒 Locked';
+      toggleLabel.textContent = 'Preview: logged out — everything locked';
+    }
+  });
+</script>
+
+</body>
+</html>
