@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Core Learning — Climbing Coaches Fundamentals Course</title>
+<title>Core Learning — Your Course Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -443,24 +443,18 @@
   <div class="site-nav-inner">
     <a class="site-logo" href="index.html">
       <span class="name">Core <span>Learning</span></span>
-      <span class="parent">by Core Coaching Hub</span>
     </a>
     <div class="nav-actions">
-      <a class="nav-link" href="login.html">Log in</a>
-      <a class="btn btn-primary" href="login.html">Sign up</a>
+      <a class="nav-link" href="index.html">Log out</a>
     </div>
   </div>
 </nav>
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="hero-eyebrow">Certification course</p>
+    <p class="hero-eyebrow">Your dashboard</p>
     <h1>The Climbing Coaches Fundamentals Course</h1>
     <p>Seven modules covering exercise science, technique instruction, and climbing-specific programming. Work through them one at a time — pass each quiz at 80% to unlock the next.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary btn-lg" href="login.html">Start the course</a>
-      <a class="btn btn-secondary btn-lg" href="index.html#pricing">See pricing</a>
-    </div>
     <div class="hero-meta">
       <div class="hero-meta-item">
         <div class="num">7</div>
@@ -485,7 +479,7 @@
       <h2>Work through them in order</h2>
     </div>
   </div>
-  <p class="section-sub">Each module unlocks once you've paid and passed the previous module's quiz at 80% or higher. Log in to see your progress.</p>
+  <p class="section-sub">Complete each module's quiz at 80% or higher to unlock the next one.</p>
 
   <!-- Demo-only toggle — delete once Firebase auth/payment state is wired up -->
   <div class="preview-toggle" id="preview-toggle">
@@ -494,7 +488,7 @@
   </div>
 
   <div class="module-tabs" id="module-tabs">
-    <a class="module-tab locked" data-mod="1" href="login.html">
+    <a class="module-tab locked" href="#" data-mod="1">
       <div class="module-tab-art"></div>
       <div class="module-tab-scrim"></div>
       <div class="lock-icon">
@@ -507,7 +501,7 @@
       </div>
     </a>
 
-    <a class="module-tab locked" data-mod="2" href="login.html">
+    <a class="module-tab locked" href="#" data-mod="2">
       <div class="module-tab-art"></div>
       <div class="module-tab-scrim"></div>
       <div class="lock-icon">
@@ -520,7 +514,7 @@
       </div>
     </a>
 
-    <a class="module-tab locked" data-mod="3" href="login.html">
+    <a class="module-tab locked" href="#" data-mod="3">
       <div class="module-tab-art"></div>
       <div class="module-tab-scrim"></div>
       <div class="lock-icon">
@@ -533,7 +527,7 @@
       </div>
     </a>
 
-    <a class="module-tab locked" data-mod="4" href="login.html">
+    <a class="module-tab locked" href="#" data-mod="4">
       <div class="module-tab-art"></div>
       <div class="module-tab-scrim"></div>
       <div class="lock-icon">
@@ -546,7 +540,7 @@
       </div>
     </a>
 
-    <a class="module-tab locked" data-mod="5" href="login.html">
+    <a class="module-tab locked" href="#" data-mod="5">
       <div class="module-tab-art"></div>
       <div class="module-tab-scrim"></div>
       <div class="lock-icon">
@@ -559,7 +553,7 @@
       </div>
     </a>
 
-    <a class="module-tab locked" data-mod="6" href="login.html">
+    <a class="module-tab locked" href="#" data-mod="6">
       <div class="module-tab-art"></div>
       <div class="module-tab-scrim"></div>
       <div class="lock-icon">
@@ -572,7 +566,7 @@
       </div>
     </a>
 
-    <a class="module-tab locked" data-mod="7" href="login.html">
+    <a class="module-tab locked" href="#" data-mod="7">
       <div class="module-tab-art"></div>
       <div class="module-tab-scrim"></div>
       <div class="lock-icon">
@@ -587,16 +581,8 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="cta-banner">
-    <h2>Ready to get certified?</h2>
-    <p>Create your account, complete the onboarding form, and unlock Module 01 straight away.</p>
-    <a class="btn btn-primary btn-lg" href="login.html">Create your account</a>
-  </div>
-</section>
-
 <footer class="site-footer">
-  <p>Core Learning — part of the Core brand family. <a href="mailto:hello@corecoachinghub.co.za">hello@corecoachinghub.co.za</a></p>
+  <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
 </footer>
 
 <script>
@@ -617,7 +603,7 @@
       toggleLabel.textContent = 'Preview: enrolled — Module 01 unlocked';
     } else {
       moduleOne.classList.add('locked');
-      moduleOne.href = 'login.html';
+      moduleOne.href = '#';
       moduleOne.querySelector('.module-tab-status').innerHTML = '🔒 Locked';
       toggleLabel.textContent = 'Preview: logged out — everything locked';
     }
