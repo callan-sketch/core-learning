@@ -546,35 +546,45 @@
 
 <script type="module">
   /* =====================================================================
-     FIREBASE SETUP REQUIRED
+     FIREBASE CONFIG — DONE ✓ (core-coaching-login project)
      ---------------------------------------------------------------------
-     1. Create a Firebase project at https://console.firebase.google.com
-     2. Enable Authentication → Sign-in method → Google, and Email/Password
-     3. Create a Firestore database (production mode)
-     4. Project settings → General → scroll to "Your apps" → add a Web app
-     5. Paste the config object it gives you over firebaseConfig below
-     Nothing in this file will actually authenticate or save data until
-     that config is filled in — everything below is wired to work the
-     moment it is.
+     One more required step: Firestore's default rules block all reads
+     and writes until you explicitly allow them. In the Firebase console:
+     Build → Firestore Database → Rules tab, replace the contents with:
+
+       rules_version = '2';
+       service cloud.firestore {
+         match /databases/{database}/documents {
+           match /users/{userId} {
+             allow read, write: if request.auth != null && request.auth.uid == userId;
+           }
+         }
+       }
+
+     Click Publish. This lets a logged-in user read/write only their own
+     "users/{their-uid}" document — nobody else's. Until this is
+     published, sign-up will succeed but saving the user's profile data
+     will silently fail.
      ===================================================================== */
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
   import {
     getAuth, GoogleAuthProvider, signInWithPopup,
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
     updateProfile, sendPasswordResetEmail
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
   import {
     getFirestore, doc, setDoc, updateDoc, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "PASTE_YOUR_API_KEY",
-    authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-    projectId: "PASTE_YOUR_PROJECT_ID",
-    storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
-    messagingSenderId: "PASTE_YOUR_SENDER_ID",
-    appId: "PASTE_YOUR_APP_ID"
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
   };
 
   const app = initializeApp(firebaseConfig);
