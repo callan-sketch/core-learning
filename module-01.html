@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Learning — Module 01: Anatomy &amp; Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: inherit; }
+
+  /* ---------- Header ---------- */
+  .site-nav {
+    background: var(--navy);
+    padding: 0 24px;
+  }
+
+  .site-nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .site-logo {
+    color: var(--white);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 19px;
+    text-decoration: none;
+  }
+
+  .site-logo span { color: var(--terracotta); }
+
+  .nav-link {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .nav-link:hover { color: var(--white); }
+
+  /* ---------- Shell ---------- */
+  .shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    text-decoration: none;
+    margin-bottom: 20px;
+  }
+
+  .back-link:hover { color: var(--navy); }
+
+  /* ---------- Module header ---------- */
+  .module-head {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px;
+    margin-bottom: 8px;
+  }
+
+  .module-head img {
+    width: 84px;
+    height: 84px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .module-head .eyebrow {
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .module-head h1 {
+    font-size: 21px;
+    margin: 0;
+  }
+
+  /* ---------- Progress bar ---------- */
+  .progress-wrap {
+    margin: 22px 0 32px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+
+  .progress-track {
+    height: 8px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+
+  /* ---------- Lesson cards ---------- */
+  .lesson-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 26px;
+    margin-bottom: 16px;
+  }
+
+  .lesson-card.locked {
+    opacity: 0.55;
+  }
+
+  .lesson-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .lesson-badge {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  .lesson-card.locked .lesson-badge { color: var(--ink-mute); }
+
+  .lesson-status {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .lesson-status.done { color: var(--teal); }
+
+  .lesson-card h2 {
+    font-size: 17px;
+    margin: 0 0 8px;
+  }
+
+  .lesson-card p.desc {
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+
+  .lesson-note {
+    font-size: 12.5px;
+    color: var(--ink-mute);
+    margin: 0 0 16px;
+    font-style: italic;
+  }
+
+  .resource-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .resource-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 15px;
+    border-radius: 999px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+    transition: background 0.12s ease;
+  }
+
+  .resource-pill:hover { background: var(--teal-soft); }
+
+  .quiz-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+
+  .locked-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-mute);
+    font-weight: 600;
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.55);
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .site-footer a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="index.html">Core <span>Learning</span></a>
+    <a class="nav-link" href="index.html">Log out</a>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <a class="back-link" href="dashboard.html">← Back to dashboard</a>
+
+  <div class="module-head">
+    <img src="images/module-01.jpg" alt="Anatomy and physiology module">
+    <div>
+      <p class="eyebrow">Module 01</p>
+      <h1>Anatomy &amp; Physiology</h1>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progress-text">1 of 5 lessons complete</span>
+      <span>20%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" style="width: 20%;"></div>
+    </div>
+  </div>
+
+  <!-- ================= LESSON 01 ================= -->
+  <div class="lesson-card" data-lesson="1">
+    <div class="lesson-top">
+      <span class="lesson-badge">Lesson 01</span>
+      <span class="lesson-status done">✓ Complete</span>
+    </div>
+    <h2>Introduction to Anatomy &amp; the Climber's Skeleton</h2>
+    <p class="desc">An overview of anatomical terminology and the skeletal structures most relevant to climbing movement.</p>
+    <div class="resource-row">
+      <a class="resource-pill" href="https://docs.google.com/document/d/1YuxpZaWAvMKl_b3uaUPBxC7GUHB5cohMX3xCY5ga1-g/preview" target="_blank" rel="noopener">📄 Lesson content</a>
+      <a class="resource-pill" href="https://docs.google.com/presentation/d/1M4ikq7cVI2cHxxuNavCSzsMg2ZFYHEV0FxcWXNa7asU/present" target="_blank" rel="noopener">🖥️ Slides</a>
+    </div>
+    <a class="quiz-btn" href="https://forms.gle/9frCS4FzBjfmW8da6" target="_blank" rel="noopener">Take the quiz →</a>
+  </div>
+
+  <!-- ================= LESSON 02 ================= -->
+  <div class="lesson-card" data-lesson="2">
+    <div class="lesson-top">
+      <span class="lesson-badge">Lesson 02</span>
+      <span class="lesson-status">In progress</span>
+    </div>
+    <h2>Muscular System</h2>
+    <p class="desc">The major muscle groups used in climbing, and how they work together to produce movement.</p>
+    <div class="resource-row">
+      <a class="resource-pill" href="https://docs.google.com/document/d/1BgGm51khq-CD0XqX7yYh8o9jWR6yAw3Ffp2TIlofmY0/preview" target="_blank" rel="noopener">📄 Lesson content</a>
+      <a class="resource-pill" href="https://sites.google.com/view/core-learning-course-work/course-resources/muscles-of-the-body" target="_blank" rel="noopener">🔎 Muscle look-up</a>
+    </div>
+    <a class="quiz-btn" href="https://forms.gle/s9LQnzCoYNvBHLDQ6" target="_blank" rel="noopener">Take the quiz →</a>
+  </div>
+
+  <!-- ================= LESSON 03 ================= -->
+  <div class="lesson-card locked" data-lesson="3">
+    <div class="lesson-top">
+      <span class="lesson-badge">Lesson 03</span>
+      <span class="lesson-status">🔒 Locked</span>
+    </div>
+    <h2>Nervous System &amp; Physiology</h2>
+    <p class="desc">How the nervous system controls movement, and the physiological systems that fuel climbing performance.</p>
+    <p class="locked-msg">🔒 Complete Lesson 02's quiz at 80% or higher to unlock this lesson.</p>
+  </div>
+
+  <!-- ================= LESSON 04 ================= -->
+  <div class="lesson-card locked" data-lesson="4">
+    <div class="lesson-top">
+      <span class="lesson-badge">Lesson 04</span>
+      <span class="lesson-status">🔒 Locked</span>
+    </div>
+    <h2>Revision</h2>
+    <p class="lesson-note">Revise all notes from Lessons 01–03 before completing this quiz — no new content in this lesson.</p>
+    <p class="locked-msg">🔒 Unlocks after Lesson 03.</p>
+  </div>
+
+  <!-- ================= BONUS: MUSCLE APP ================= -->
+  <div class="lesson-card locked" data-lesson="bonus">
+    <div class="lesson-top">
+      <span class="lesson-badge">Bonus</span>
+      <span class="lesson-status">🔒 Locked</span>
+    </div>
+    <h2>Muscle App Assessment</h2>
+    <p class="desc">Uses the "Muscle Finder" and "Rotator Cuff" resource apps to test your recognition of muscles relevant to climbing.</p>
+    <p class="locked-msg">🔒 Unlocks after Lesson 04.</p>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
+</footer>
+
+<!--
+  LESSON-UNLOCK LOGIC — NOT YET WIRED UP
+  -----------------------------------------------------------------------
+  Right now Lesson 01/02 are hardcoded "done"/"in progress" and 03/04/bonus
+  are hardcoded locked, purely so the layout can be reviewed. The real
+  version needs to:
+    1. Read this user's progress from Firestore (e.g. a
+       `moduleProgress.module01.completedLessons` field on their user doc)
+    2. Toggle each .lesson-card's "locked" class and status label based on
+       how many lessons they've completed
+    3. Update the progress bar width / "X of 5 lessons complete" text
+    4. After the final quiz (Muscle App) is passed, mark Module 01 fully
+       complete in Firestore and unlock Module 02 on the dashboard
+  This also needs a way to actually *know* a Google Form quiz was passed —
+  Google Forms can email quiz scores to sheets, but getting that result
+  back into Firestore automatically needs either a Google Apps Script
+  (on form submit) calling a Firebase Cloud Function, or switching quizzes
+  to a custom-built form later. Worth discussing before building Module 02.
+-->
+
+</body>
+</html>
