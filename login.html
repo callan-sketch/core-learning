@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Learning — Sign up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --error: #c0392b;
+    --error-soft: #fbe9e7;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: inherit; }
+
+  /* ---------- Header ---------- */
+  .site-nav {
+    background: var(--navy);
+    padding: 0 24px;
+  }
+
+  .site-nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: 64px;
+  }
+
+  .site-logo {
+    color: var(--white);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 19px;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .site-logo span { color: var(--terracotta); }
+
+  /* ---------- Shell ---------- */
+  .auth-shell {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ---------- Step indicator ---------- */
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    margin-bottom: 36px;
+  }
+
+  .step-indicator .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .step-indicator .dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--line);
+    color: var(--ink-mute);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+
+  .step-indicator .label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    white-space: nowrap;
+  }
+
+  .step-indicator .connector {
+    height: 2px;
+    background: var(--line);
+    flex: 1;
+    margin: 0 4px;
+  }
+
+  .step-indicator .step.active .dot,
+  .step-indicator .step.done .dot {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--white);
+  }
+
+  .step-indicator .step.active .label,
+  .step-indicator .step.done .label {
+    color: var(--navy);
+  }
+
+  /* ---------- Card ---------- */
+  .auth-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 30px;
+  }
+
+  .auth-card h2 {
+    font-size: 21px;
+    margin: 0 0 6px;
+  }
+
+  .auth-card .sub {
+    color: var(--ink-mute);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 26px;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ---------- Tabs ---------- */
+  .auth-tabs {
+    display: flex;
+    background: var(--cream);
+    border-radius: 999px;
+    padding: 4px;
+    margin-bottom: 26px;
+  }
+
+  .auth-tab {
+    flex: 1;
+    text-align: center;
+    padding: 9px 0;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    cursor: pointer;
+    border: none;
+    background: none;
+  }
+
+  .auth-tab.active {
+    background: var(--white);
+    color: var(--navy);
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- Form elements ---------- */
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .field input,
+  .field select {
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    font-size: 14.5px;
+    font-family: inherit;
+    color: var(--ink);
+    background: var(--white);
+  }
+
+  .field input:focus,
+  .field select:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+    border-color: var(--teal);
+  }
+
+  .field .hint {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-top: 5px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    font-family: inherit;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .btn-primary {
+    background: var(--terracotta);
+    color: var(--white);
+    box-shadow: 0 4px 14px rgba(217,118,74,0.35);
+  }
+
+  .btn-google {
+    background: var(--white);
+    color: var(--navy);
+    border: 1px solid var(--line);
+  }
+
+  .btn-google:hover { background: #fafafa; }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--ink-mute);
+    font-size: 12.5px;
+    margin: 18px 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .field-error {
+    background: var(--error-soft);
+    color: var(--error);
+    border-radius: 9px;
+    padding: 10px 13px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .field-error.visible { display: block; }
+
+  .switch-line {
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    margin-top: 20px;
+  }
+
+  .switch-line button {
+    background: none;
+    border: none;
+    color: var(--teal);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-family: inherit;
+    padding: 0;
+  }
+
+  .forgot-link {
+    display: block;
+    text-align: right;
+    font-size: 12.5px;
+    color: var(--teal);
+    text-decoration: none;
+    margin: -8px 0 16px;
+  }
+
+  /* ---------- Payment plan cards ---------- */
+  .plan-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .plan-card {
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.12s ease, background 0.12s ease;
+  }
+
+  .plan-card.selected {
+    border-color: var(--teal);
+    background: var(--teal-soft);
+  }
+
+  .plan-card .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .plan-card .tier-label {
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--navy);
+  }
+
+  .plan-card .price {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--navy);
+  }
+
+  .plan-card .price span {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink-mute);
+  }
+
+  .plan-card p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.5;
+  }
+
+  .payment-status {
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    margin-top: 16px;
+    display: none;
+  }
+
+  .payment-status.visible { display: block; }
+
+  /* Demo-only bypass — remove once the Yoco Cloud Function is live */
+  .demo-bypass {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+    font-size: 12.5px;
+    color: var(--ink-mute);
+  }
+
+  .demo-bypass a {
+    color: var(--teal);
+    font-weight: 600;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="index.html">Core <span>Learning</span></a>
+  </div>
+</nav>
+
+<div class="auth-shell">
+
+  <div class="step-indicator" id="step-indicator">
+    <div class="step active" data-step="1">
+      <div class="dot">1</div>
+      <div class="label">Account</div>
+    </div>
+    <div class="connector"></div>
+    <div class="step" data-step="2">
+      <div class="dot">2</div>
+      <div class="label">Onboarding</div>
+    </div>
+    <div class="connector"></div>
+    <div class="step" data-step="3">
+      <div class="dot">3</div>
+      <div class="label">Payment</div>
+    </div>
+  </div>
+
+  <div class="auth-card">
+
+    <!-- ================= STEP 1: ACCOUNT ================= -->
+    <div class="panel active" id="panel-1">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signup" onclick="showAuthTab('signup')">Sign up</button>
+        <button class="auth-tab" id="tab-login" onclick="showAuthTab('login')">Log in</button>
+      </div>
+
+      <div id="auth-error" class="field-error"></div>
+
+      <!-- Sign up form -->
+      <div id="form-signup">
+        <h2>Create your account</h2>
+        <p class="sub">Start with Google, or use your email address.</p>
+
+        <button class="btn btn-google" onclick="signUpWithGoogle()">
+          <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.83.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.98v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 013.68 9c0-.6.1-1.18.29-1.72V4.95H.98A9 9 0 000 9c0 1.45.35 2.83.98 4.05l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.59-2.59C13.46.89 11.43 0 9 0A9 9 0 00.98 4.95l2.99 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+          Continue with Google
+        </button>
+
+        <div class="divider">or</div>
+
+        <div class="field">
+          <label for="su-name">Full name</label>
+          <input type="text" id="su-name" placeholder="Your full name">
+        </div>
+        <div class="field">
+          <label for="su-email">Email address</label>
+          <input type="email" id="su-email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="su-password">Password</label>
+          <input type="password" id="su-password" placeholder="At least 8 characters">
+        </div>
+        <button class="btn btn-primary" onclick="signUpWithEmail()">Create account</button>
+      </div>
+
+      <!-- Log in form -->
+      <div id="form-login" style="display:none;">
+        <h2>Welcome back</h2>
+        <p class="sub">Log in to continue your course.</p>
+
+        <button class="btn btn-google" onclick="signUpWithGoogle()">
+          <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.83.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.98v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 013.68 9c0-.6.1-1.18.29-1.72V4.95H.98A9 9 0 000 9c0 1.45.35 2.83.98 4.05l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.59-2.59C13.46.89 11.43 0 9 0A9 9 0 00.98 4.95l2.99 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+          Continue with Google
+        </button>
+
+        <div class="divider">or</div>
+
+        <div class="field">
+          <label for="li-email">Email address</label>
+          <input type="email" id="li-email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="li-password">Password</label>
+          <input type="password" id="li-password" placeholder="Your password">
+        </div>
+        <a href="#" class="forgot-link" onclick="resetPassword(); return false;">Forgot password?</a>
+        <button class="btn btn-primary" onclick="logIn()">Log in</button>
+      </div>
+    </div>
+
+    <!-- ================= STEP 2: ONBOARDING ================= -->
+    <div class="panel" id="panel-2">
+      <h2>Tell us about yourself</h2>
+      <p class="sub">A few details for your course record. More fields can be added here later without affecting your account.</p>
+
+      <div class="field">
+        <label for="ob-phone">Phone number</label>
+        <input type="tel" id="ob-phone" placeholder="e.g. 082 123 4567">
+      </div>
+      <div class="field">
+        <label for="ob-experience">Coaching experience</label>
+        <select id="ob-experience">
+          <option value="">Select one</option>
+          <option value="new">New to coaching</option>
+          <option value="1-3">1–3 years</option>
+          <option value="3+">3+ years</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="ob-gym">Climbing gym / employer</label>
+        <input type="text" id="ob-gym" placeholder="Where do you currently coach or climb?">
+        <p class="hint">Leave blank if not applicable.</p>
+      </div>
+
+      <button class="btn btn-primary" onclick="submitOnboarding()">Continue to payment</button>
+    </div>
+
+    <!-- ================= STEP 3: PAYMENT ================= -->
+    <div class="panel" id="panel-3">
+      <h2>Choose how to pay</h2>
+      <p class="sub">Module 01 unlocks as soon as payment is confirmed.</p>
+
+      <div class="plan-options">
+        <div class="plan-card selected" data-plan="upfront" onclick="selectPlan('upfront')">
+          <div class="top-row">
+            <span class="tier-label">Pay upfront</span>
+            <span class="price">R2,500</span>
+          </div>
+          <p>One payment for full access to all 7 modules.</p>
+        </div>
+        <div class="plan-card" data-plan="permodule" onclick="selectPlan('permodule')">
+          <div class="top-row">
+            <span class="tier-label">Pay per module</span>
+            <span class="price">R400<span> /module</span></span>
+          </div>
+          <p>Pay as you go — this covers Module 01 to start.</p>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="pay-btn" onclick="initiateYocoCheckout()">Continue to Yoco</button>
+      <p class="payment-status" id="payment-status">Connecting to Yoco…</p>
+
+      <!-- Demo-only bypass — remove once the Yoco Cloud Function is live -->
+      <div class="demo-bypass">
+        Payment isn't wired up yet. <a href="dashboard.html">Skip to dashboard (demo preview) →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  /* =====================================================================
+     FIREBASE SETUP REQUIRED
+     ---------------------------------------------------------------------
+     1. Create a Firebase project at https://console.firebase.google.com
+     2. Enable Authentication → Sign-in method → Google, and Email/Password
+     3. Create a Firestore database (production mode)
+     4. Project settings → General → scroll to "Your apps" → add a Web app
+     5. Paste the config object it gives you over firebaseConfig below
+     Nothing in this file will actually authenticate or save data until
+     that config is filled in — everything below is wired to work the
+     moment it is.
+     ===================================================================== */
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    updateProfile, sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getFirestore, doc, setDoc, updateDoc, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "PASTE_YOUR_API_KEY",
+    authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+    projectId: "PASTE_YOUR_PROJECT_ID",
+    storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
+    messagingSenderId: "PASTE_YOUR_SENDER_ID",
+    appId: "PASTE_YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+  let selectedPlan = "upfront";
+
+  function showError(msg) {
+    const el = document.getElementById('auth-error');
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
+  function clearError() {
+    document.getElementById('auth-error').classList.remove('visible');
+  }
+
+  window.showAuthTab = function(which) {
+    document.getElementById('tab-signup').classList.toggle('active', which === 'signup');
+    document.getElementById('tab-login').classList.toggle('active', which === 'login');
+    document.getElementById('form-signup').style.display = which === 'signup' ? 'block' : 'none';
+    document.getElementById('form-login').style.display = which === 'login' ? 'block' : 'none';
+    clearError();
+  };
+
+  function goToStep(n) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + n).classList.add('active');
+
+    document.querySelectorAll('.step-indicator .step').forEach(s => {
+      const stepNum = parseInt(s.dataset.step, 10);
+      s.classList.toggle('active', stepNum === n);
+      s.classList.toggle('done', stepNum < n);
+    });
+  }
+
+  async function createUserDoc(user) {
+    await setDoc(doc(db, "users", user.uid), {
+      name: user.displayName || document.getElementById('su-name').value || "",
+      email: user.email,
+      createdAt: serverTimestamp(),
+      paid: false,
+      unlockedModules: []
+    }, { merge: true });
+  }
+
+  window.signUpWithGoogle = async function() {
+    clearError();
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      currentUser = result.user;
+      await createUserDoc(currentUser);
+      goToStep(2);
+    } catch (err) {
+      showError(err.message);
+    }
+  };
+
+  window.signUpWithEmail = async function() {
+    clearError();
+    const name = document.getElementById('su-name').value.trim();
+    const email = document.getElementById('su-email').value.trim();
+    const password = document.getElementById('su-password').value;
+
+    if (!name || !email || !password) {
+      showError("Please fill in your name, email, and password.");
+      return;
+    }
+    if (password.length < 8) {
+      showError("Password must be at least 8 characters.");
+      return;
+    }
+
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      currentUser = result.user;
+      await updateProfile(currentUser, { displayName: name });
+      await createUserDoc(currentUser);
+      goToStep(2);
+    } catch (err) {
+      showError(err.message);
+    }
+  };
+
+  window.logIn = async function() {
+    clearError();
+    const email = document.getElementById('li-email').value.trim();
+    const password = document.getElementById('li-password').value;
+
+    if (!email || !password) {
+      showError("Please enter your email and password.");
+      return;
+    }
+
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      currentUser = result.user;
+      // TODO: once Firestore doc is readable here, check `paid` status —
+      // if true, skip straight to dashboard.html instead of onboarding.
+      goToStep(2);
+    } catch (err) {
+      showError(err.message);
+    }
+  };
+
+  window.resetPassword = async function() {
+    const email = document.getElementById('li-email').value.trim();
+    if (!email) {
+      showError("Enter your email address above first, then click Forgot password.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showError("Password reset email sent — check your inbox.");
+    } catch (err) {
+      showError(err.message);
+    }
+  };
+
+  window.submitOnboarding = async function() {
+    const phone = document.getElementById('ob-phone').value.trim();
+    const experience = document.getElementById('ob-experience').value;
+    const gym = document.getElementById('ob-gym').value.trim();
+
+    if (currentUser) {
+      try {
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          phone, experience, gym
+        });
+      } catch (err) {
+        console.error("Onboarding save failed:", err);
+      }
+    }
+    goToStep(3);
+  };
+
+  window.selectPlan = function(plan) {
+    selectedPlan = plan;
+    document.querySelectorAll('.plan-card').forEach(card => {
+      card.classList.toggle('selected', card.dataset.plan === plan);
+    });
+  };
+
+  window.initiateYocoCheckout = function() {
+    /* =====================================================================
+       YOCO SETUP REQUIRED
+       -------------------------------------------------------------------
+       This needs a Firebase Cloud Function (e.g. "createYocoCheckout")
+       that:
+         1. Receives { uid: currentUser.uid, plan: selectedPlan }
+         2. Calls Yoco's Checkout API server-side with your Yoco secret key
+         3. Returns a redirect URL to Yoco's hosted checkout page
+       Then a second function ("yocoWebhook") receives Yoco's payment
+       confirmation and marks this user "paid": true + unlocks Module 01
+       in Firestore. Neither function exists yet — this button currently
+       just shows a status message as a placeholder.
+       ===================================================================== */
+    const btn = document.getElementById('pay-btn');
+    const status = document.getElementById('payment-status');
+    btn.disabled = true;
+    status.textContent = "Payment integration pending — see the demo link below for now.";
+    status.classList.add('visible');
+  };
+
+  // Land on the signup tab by default when arriving from a "Sign up" button
+  window.showAuthTab('signup');
+</script>
+
+</body>
+</html>
