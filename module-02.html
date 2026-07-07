@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Learning — Module 02: Biomechanics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: inherit; }
+
+  /* ---------- Header ---------- */
+  .site-nav {
+    background: var(--navy);
+    padding: 0 24px;
+  }
+
+  .site-nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .site-logo {
+    color: var(--white);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 19px;
+    text-decoration: none;
+  }
+
+  .site-logo span { color: var(--terracotta); }
+
+  .nav-link {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .nav-link:hover { color: var(--white); }
+
+  /* ---------- Shell ---------- */
+  .shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    text-decoration: none;
+    margin-bottom: 20px;
+  }
+
+  .back-link:hover { color: var(--navy); }
+
+  /* ---------- Module header ---------- */
+  .module-head {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px;
+    margin-bottom: 28px;
+  }
+
+  .module-head img {
+    width: 84px;
+    height: 84px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #25394d, #d9764a);
+  }
+
+  .module-head .eyebrow {
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .module-head h1 {
+    font-size: 21px;
+    margin: 0;
+  }
+
+  /* ---------- Progress bar ---------- */
+  .progress-wrap {
+    margin-bottom: 32px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+
+  .progress-track {
+    height: 8px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+
+  /* ---------- Lesson cards ---------- */
+  .lesson-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 18px;
+  }
+
+  .lesson-thumb {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--navy), var(--teal));
+  }
+
+  .lesson-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lesson-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .lesson-badge {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  .lesson-status {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .lesson-status.done { color: var(--teal); }
+
+  .lesson-card h2 {
+    font-size: 17px;
+    margin: 0 0 8px;
+  }
+
+  .lesson-card p.desc {
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+
+  .resource-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .resource-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 15px;
+    border-radius: 999px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+    transition: background 0.12s ease;
+  }
+
+  .resource-pill:hover { background: var(--teal-soft); }
+
+  .quiz-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.55);
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .site-footer a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+  }
+
+  @media (max-width: 560px) {
+    .lesson-card { flex-direction: column; }
+    .lesson-thumb { width: 100%; height: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="index.html">Core <span>Learning</span></a>
+    <a class="nav-link" href="index.html">Log out</a>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <a class="back-link" href="dashboard.html">← Back to dashboard</a>
+
+  <div class="module-head">
+    <img src="images/module-02.jpg" alt="Biomechanics module">
+    <div>
+      <p class="eyebrow">Module 02</p>
+      <h1>Biomechanics</h1>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progress-text">0 of 1 lesson complete</span>
+      <span>0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" style="width: 0%;"></div>
+    </div>
+  </div>
+
+  <!-- ================= LESSON 01 ================= -->
+  <div class="lesson-card" data-lesson="1">
+    <img class="lesson-thumb" src="images/module-02.jpg" alt="Biomechanics lesson">
+    <div class="lesson-body">
+      <div class="lesson-top">
+        <span class="lesson-badge">Lesson 01</span>
+        <span class="lesson-status">In progress</span>
+      </div>
+      <h2>Biomechanics</h2>
+      <p class="desc">Levers, joint angles, and force transfer through the body — the mechanics behind efficient climbing movement.</p>
+      <div class="resource-row">
+        <a class="resource-pill" href="https://docs.google.com/document/d/1k2K117pC5_6vm5ixNqpEyAe03rhmwJsFJYzma8aX8Bc/preview" target="_blank" rel="noopener">📄 Lesson content</a>
+        <a class="resource-pill" href="https://drive.google.com/file/d/148aCPpa6RGVTUxht0GVgJP8VDjJQoTz6/view?usp=drive_link" target="_blank" rel="noopener">🎧 Podcast</a>
+      </div>
+      <a class="quiz-btn" href="https://forms.gle/4yFMa1U8qiAFJPnW7" target="_blank" rel="noopener">Take the quiz →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
+</footer>
+
+</body>
+</html>
