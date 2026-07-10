@@ -73,6 +73,10 @@
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
   }
 
   .nav-link:hover { color: var(--white); }
@@ -96,6 +100,29 @@
   }
 
   .back-link:hover { color: var(--navy); }
+
+  /* ---------- Loading state ---------- */
+  .loading-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink-mute);
+    padding: 20px 0;
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--line);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #module-content { display: none; }
 
   /* ---------- Module header ---------- */
   .module-head {
@@ -339,8 +366,8 @@
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a class="site-logo" href="index.html">Core <span>Learning</span></a>
-    <a class="nav-link" href="index.html">Log out</a>
+    <a class="site-logo" href="dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
   </div>
 </nav>
 
@@ -348,124 +375,130 @@
 
   <a class="back-link" href="dashboard.html">← Back to dashboard</a>
 
-  <div class="module-head">
-    <img src="images/module-01.jpg" alt="Anatomy and physiology module">
-    <div>
-      <p class="eyebrow">Module 01</p>
-      <h1>Anatomy &amp; Physiology</h1>
-    </div>
+  <div class="loading-state" id="loading-state">
+    <div class="spinner"></div>
+    <span>Loading your progress…</span>
   </div>
 
-  <div class="module-note">
-    <h3>Why this module is broken into lessons</h3>
-    <p>Anatomy &amp; physiology is dense, vocabulary-heavy theory with no real "practice" component — that's exactly the kind of content where chunking helps. It gives natural stopping points, lets you quiz-and-confirm understanding before piling on more terminology, and prevents the "wall of text" feeling that causes people to skim rather than absorb.</p>
-    <h3>Suggested way to work through each lesson</h3>
-    <ol>
-      <li>Read through the lesson content</li>
-      <li>Explore any resources associated with that lesson</li>
-      <li>Complete the quiz</li>
-      <li>Listen to the podcast associated with that lesson to help summarise the content</li>
-      <li>Proceed to the next lesson</li>
-    </ol>
-  </div>
+  <div id="module-content">
 
-  <div class="progress-wrap">
-    <div class="progress-label">
-      <span id="progress-text">1 of 5 lessons complete</span>
-      <span>20%</span>
+    <div class="module-head">
+      <img src="images/module-01.jpg" alt="Anatomy and physiology module">
+      <div>
+        <p class="eyebrow">Module 01</p>
+        <h1>Anatomy &amp; Physiology</h1>
+      </div>
     </div>
-    <div class="progress-track">
-      <div class="progress-fill" style="width: 20%;"></div>
-    </div>
-  </div>
 
-  <!-- ================= LESSON 01 ================= -->
-  <div class="lesson-card" data-lesson="1">
-    <img class="lesson-thumb" src="images/lesson-01.jpg" alt="Introduction to anatomy and the climber's skeleton">
-    <div class="lesson-body">
-      <div class="lesson-top">
-        <span class="lesson-badge">Lesson 01</span>
-        <span class="lesson-status done">✓ Complete</span>
-      </div>
-      <h2>Introduction to Anatomy &amp; the Climber's Skeleton</h2>
-      <p class="desc">An overview of anatomical terminology and the skeletal structures most relevant to climbing movement.</p>
-      <div class="resource-row">
-        <a class="resource-pill" href="https://docs.google.com/document/d/1YuxpZaWAvMKl_b3uaUPBxC7GUHB5cohMX3xCY5ga1-g/preview" target="_blank" rel="noopener">📄 Lesson content</a>
-      </div>
-      <a class="quiz-btn" href="https://forms.gle/2eh7jKJHA3YyPm2U7" target="_blank" rel="noopener">Take the quiz →</a>
+    <div class="module-note">
+      <h3>Why this module is broken into lessons</h3>
+      <p>Anatomy &amp; physiology is dense, vocabulary-heavy theory with no real "practice" component — that's exactly the kind of content where chunking helps. It gives natural stopping points, lets you quiz-and-confirm understanding before piling on more terminology, and prevents the "wall of text" feeling that causes people to skim rather than absorb.</p>
+      <h3>Suggested way to work through each lesson</h3>
+      <ol>
+        <li>Read through the lesson content</li>
+        <li>Explore any resources associated with that lesson</li>
+        <li>Complete the quiz</li>
+        <li>Listen to the podcast associated with that lesson to help summarise the content</li>
+        <li>Proceed to the next lesson</li>
+      </ol>
     </div>
-  </div>
 
-  <!-- ================= LESSON 02 ================= -->
-  <div class="lesson-card" data-lesson="2">
-    <img class="lesson-thumb" src="images/lesson-02.jpg" alt="Muscular system">
-    <div class="lesson-body">
-      <div class="lesson-top">
-        <span class="lesson-badge">Lesson 02</span>
-        <span class="lesson-status">In progress</span>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="progress-text">0 of 5 lessons complete</span>
+        <span id="progress-pct">0%</span>
       </div>
-      <h2>Muscular System</h2>
-      <p class="desc">The major muscle groups used in climbing, and how they work together to produce movement.</p>
-      <div class="resource-row">
-        <a class="resource-pill" href="https://docs.google.com/document/d/1BgGm51khq-CD0XqX7yYh8o9jWR6yAw3Ffp2TIlofmY0/preview" target="_blank" rel="noopener">📄 Lesson content</a>
-        <a class="resource-pill" href="https://sites.google.com/view/core-learning-course-work/course-resources/muscles-of-the-body" target="_blank" rel="noopener">🔎 Muscle look-up</a>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
       </div>
-      <a class="quiz-btn" href="https://forms.gle/s9LQnzCoYNvBHLDQ6" target="_blank" rel="noopener">Take the quiz →</a>
     </div>
-  </div>
 
-  <!-- ================= LESSON 03 ================= -->
-  <div class="lesson-card" data-lesson="3">
-    <img class="lesson-thumb" src="images/lesson-03.jpg" alt="Nervous system and physiology">
-    <div class="lesson-body">
-      <div class="lesson-top">
-        <span class="lesson-badge">Lesson 03</span>
-        <span class="lesson-status">Unlocked (testing)</span>
+    <!-- ================= LESSON 01 ================= -->
+    <div class="lesson-card" data-lesson="1">
+      <img class="lesson-thumb" src="images/lesson-01.jpg" alt="Introduction to anatomy and the climber's skeleton">
+      <div class="lesson-body">
+        <div class="lesson-top">
+          <span class="lesson-badge">Lesson 01</span>
+          <span class="lesson-status">Locked</span>
+        </div>
+        <h2>Introduction to Anatomy &amp; the Climber's Skeleton</h2>
+        <p class="desc">An overview of anatomical terminology and the skeletal structures most relevant to climbing movement.</p>
+        <div class="resource-row">
+          <a class="resource-pill" href="https://docs.google.com/document/d/1YuxpZaWAvMKl_b3uaUPBxC7GUHB5cohMX3xCY5ga1-g/preview" target="_blank" rel="noopener">📄 Lesson content</a>
+        </div>
+        <a class="quiz-btn" href="https://forms.gle/2eh7jKJHA3YyPm2U7" target="_blank" rel="noopener">Take the quiz →</a>
       </div>
-      <h2>Nervous System &amp; Physiology</h2>
-      <p class="desc">How the nervous system controls movement, and the physiological systems that fuel climbing performance.</p>
-      <div class="resource-row">
-        <a class="resource-pill" href="https://docs.google.com/document/d/1ThvcT7L6ubSHliJLBvFRh_nM4mhwpksOXyaeIHS4-G0/preview" target="_blank" rel="noopener">📄 Lesson content</a>
-      </div>
-      <a class="quiz-btn" href="https://forms.gle/vpcQ8gXdyhwGLk8c9" target="_blank" rel="noopener">Take the quiz →</a>
-      
     </div>
-  </div>
 
-  <!-- ================= LESSON 04 ================= -->
-  <div class="lesson-card" data-lesson="4">
-    <img class="lesson-thumb" src="images/lesson-04.jpg" alt="Revision">
-    <div class="lesson-body">
-      <div class="lesson-top">
-        <span class="lesson-badge">Lesson 04</span>
-        <span class="lesson-status">Unlocked (testing)</span>
+    <!-- ================= LESSON 02 ================= -->
+    <div class="lesson-card" data-lesson="2">
+      <img class="lesson-thumb" src="images/lesson-02.jpg" alt="Muscular system">
+      <div class="lesson-body">
+        <div class="lesson-top">
+          <span class="lesson-badge">Lesson 02</span>
+          <span class="lesson-status">Locked</span>
+        </div>
+        <h2>Muscular System</h2>
+        <p class="desc">The major muscle groups used in climbing, and how they work together to produce movement.</p>
+        <div class="resource-row">
+          <a class="resource-pill" href="https://docs.google.com/document/d/1BgGm51khq-CD0XqX7yYh8o9jWR6yAw3Ffp2TIlofmY0/preview" target="_blank" rel="noopener">📄 Lesson content</a>
+          <a class="resource-pill" href="https://sites.google.com/view/core-learning-course-work/course-resources/muscles-of-the-body" target="_blank" rel="noopener">🔎 Muscle look-up</a>
+        </div>
+        <a class="quiz-btn" href="https://forms.gle/s9LQnzCoYNvBHLDQ6" target="_blank" rel="noopener">Take the quiz →</a>
       </div>
-      <h2>Revision</h2>
-      <p class="lesson-note">Revise all notes from Lessons 01–03 before completing this quiz — no new content in this lesson.</p>
-      <div class="resource-row">
-        <a class="resource-pill" href="https://youtu.be/tX9CqeLi3_g?si=0y5ZBcxQn4gc5AIm" target="_blank" rel="noopener">🎧 Podcast</a>
-      </div>
-      <a class="quiz-btn" href="https://forms.gle/gmZ76yMprs46QQ348" target="_blank" rel="noopener">Take the quiz →</a>
-      
     </div>
-  </div>
 
-  <!-- ================= BONUS: MUSCLE APP ================= -->
-  <div class="lesson-card" data-lesson="bonus">
-    <img class="lesson-thumb" src="images/lesson-bonus.jpg" alt="Muscle app assessment">
-    <div class="lesson-body">
-      <div class="lesson-top">
-        <span class="lesson-badge">Bonus</span>
-        <span class="lesson-status">Unlocked (testing)</span>
+    <!-- ================= LESSON 03 ================= -->
+    <div class="lesson-card" data-lesson="3">
+      <img class="lesson-thumb" src="images/lesson-03.jpg" alt="Nervous system and physiology">
+      <div class="lesson-body">
+        <div class="lesson-top">
+          <span class="lesson-badge">Lesson 03</span>
+          <span class="lesson-status">Locked</span>
+        </div>
+        <h2>Nervous System &amp; Physiology</h2>
+        <p class="desc">How the nervous system controls movement, and the physiological systems that fuel climbing performance.</p>
+        <div class="resource-row">
+          <a class="resource-pill" href="https://docs.google.com/document/d/1ThvcT7L6ubSHliJLBvFRh_nM4mhwpksOXyaeIHS4-G0/preview" target="_blank" rel="noopener">📄 Lesson content</a>
+        </div>
+        <a class="quiz-btn" href="https://forms.gle/vpcQ8gXdyhwGLk8c9" target="_blank" rel="noopener">Take the quiz →</a>
       </div>
-      <h2>Muscle App Assessment</h2>
-      <p class="desc">Uses the "Muscle Finder" and "Rotator Cuff" resource apps to test your recognition of muscles relevant to climbing.</p>
-      <div class="resource-row">
-        <a class="resource-pill" href="https://sites.google.com/view/core-learning-course-work/course-resources/muscles-of-the-body" target="_blank" rel="noopener">🔎 Muscle look-up</a>
-      </div>
-      <a class="quiz-btn" href="https://forms.gle/rg32urBUZb3Cd7AM9" target="_blank" rel="noopener">Take the quiz →</a>
-      
     </div>
+
+    <!-- ================= LESSON 04 ================= -->
+    <div class="lesson-card" data-lesson="4">
+      <img class="lesson-thumb" src="images/lesson-04.jpg" alt="Revision">
+      <div class="lesson-body">
+        <div class="lesson-top">
+          <span class="lesson-badge">Lesson 04</span>
+          <span class="lesson-status">Locked</span>
+        </div>
+        <h2>Revision</h2>
+        <p class="lesson-note">Revise all notes from Lessons 01–03 before completing this quiz — no new content in this lesson.</p>
+        <div class="resource-row">
+          <a class="resource-pill" href="https://youtu.be/tX9CqeLi3_g?si=0y5ZBcxQn4gc5AIm" target="_blank" rel="noopener">🎧 Podcast</a>
+        </div>
+        <a class="quiz-btn" href="https://forms.gle/gmZ76yMprs46QQ348" target="_blank" rel="noopener">Take the quiz →</a>
+      </div>
+    </div>
+
+    <!-- ================= BONUS: MUSCLE APP ================= -->
+    <div class="lesson-card" data-lesson="bonus">
+      <img class="lesson-thumb" src="images/lesson-bonus.jpg" alt="Muscle app assessment">
+      <div class="lesson-body">
+        <div class="lesson-top">
+          <span class="lesson-badge">Bonus</span>
+          <span class="lesson-status">Locked</span>
+        </div>
+        <h2>Muscle App Assessment</h2>
+        <p class="desc">Uses the "Muscle Finder" and "Rotator Cuff" resource apps to test your recognition of muscles relevant to climbing.</p>
+        <div class="resource-row">
+          <a class="resource-pill" href="https://sites.google.com/view/core-learning-course-work/course-resources/muscles-of-the-body" target="_blank" rel="noopener">🔎 Muscle look-up</a>
+        </div>
+        <a class="quiz-btn" href="https://forms.gle/rg32urBUZb3Cd7AM9" target="_blank" rel="noopener">Take the quiz →</a>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -474,25 +507,107 @@
   <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
 </footer>
 
-<!--
-  LESSON-UNLOCK LOGIC — NOT YET WIRED UP
-  -----------------------------------------------------------------------
-  Right now Lesson 01/02 are hardcoded "done"/"in progress" and 03/04/bonus
-  are hardcoded locked, purely so the layout can be reviewed. The real
-  version needs to:
-    1. Read this user's progress from Firestore (e.g. a
-       `moduleProgress.module01.completedLessons` field on their user doc)
-    2. Toggle each .lesson-card's "locked" class and status label based on
-       how many lessons they've completed
-    3. Update the progress bar width / "X of 5 lessons complete" text
-    4. After the final quiz (Muscle App) is passed, mark Module 01 fully
-       complete in Firestore and unlock Module 02 on the dashboard
-  This also needs a way to actually *know* a Google Form quiz was passed —
-  Google Forms can email quiz scores to sheets, but getting that result
-  back into Firestore automatically needs either a Google Apps Script
-  (on form submit) calling a Firebase Cloud Function, or switching quizzes
-  to a custom-built form later. Worth discussing before building Module 02.
--->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Lesson order, in unlock sequence. "bonus" counts as position 5.
+  const lessonOrder = ["1", "2", "3", "4", "bonus"];
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    let data = {};
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) data = snap.data();
+    } catch (err) {
+      console.error("Failed to load user progress:", err);
+    }
+
+    const unlockedModules = Array.isArray(data.unlockedModules) ? data.unlockedModules : [];
+
+    // Auth guard: if this student hasn't unlocked Module 1, send them back.
+    if (!unlockedModules.includes(1)) {
+      window.location.href = "dashboard.html";
+      return;
+    }
+
+    const moduleProgress = (data.moduleProgress && data.moduleProgress.module01) || {};
+    const unlockedLessons = Array.isArray(moduleProgress.unlockedLessons) ? moduleProgress.unlockedLessons : [1];
+    const moduleCompleted = !!moduleProgress.completed;
+
+    // Current furthest-unlocked position (1-indexed against lessonOrder).
+    const maxUnlocked = Math.max(1, ...unlockedLessons);
+
+    let completedCount = 0;
+
+    lessonOrder.forEach((lessonKey, idx) => {
+      const position = idx + 1; // 1-5
+      const card = document.querySelector('.lesson-card[data-lesson="' + lessonKey + '"]');
+      if (!card) return;
+
+      const statusEl = card.querySelector(".lesson-status");
+      const isCompleted = moduleCompleted || position < maxUnlocked;
+      const isCurrent = !moduleCompleted && position === maxUnlocked;
+      const isLocked = !moduleCompleted && position > maxUnlocked;
+
+      if (isCompleted) {
+        card.classList.remove("locked");
+        statusEl.textContent = "✓ Complete";
+        statusEl.classList.add("done");
+        completedCount++;
+      } else if (isCurrent) {
+        card.classList.remove("locked");
+        statusEl.textContent = "In progress";
+        statusEl.classList.remove("done");
+      } else if (isLocked) {
+        card.classList.add("locked");
+        statusEl.textContent = "🔒 Locked";
+        statusEl.classList.remove("done");
+      }
+    });
+
+    const pct = Math.round((completedCount / lessonOrder.length) * 100);
+    document.getElementById("progress-text").textContent = completedCount + " of " + lessonOrder.length + " lessons complete";
+    document.getElementById("progress-pct").textContent = pct + "%";
+    document.getElementById("progress-fill").style.width = pct + "%";
+
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("module-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
 
 </body>
 </html>
