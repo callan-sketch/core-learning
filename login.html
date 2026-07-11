@@ -391,6 +391,30 @@
     font-weight: 600;
     text-decoration: none;
   }
+
+  /* ---------- Routing overlay (brief check while we look up account state) ---------- */
+  .routing-overlay {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    padding: 14px 0 6px;
+  }
+
+  .routing-overlay.visible { display: flex; }
+
+  .spinner {
+    width: 15px;
+    height: 15px;
+    border: 2px solid var(--line);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -430,13 +454,17 @@
       </div>
 
       <div id="auth-error" class="field-error"></div>
+      <div class="routing-overlay" id="routing-overlay">
+        <div class="spinner"></div>
+        <span>Checking your account…</span>
+      </div>
 
       <!-- Sign up form -->
       <div id="form-signup">
         <h2>Create your account</h2>
         <p class="sub">Start with Google, or use your email address.</p>
 
-        <button class="btn btn-google" onclick="signUpWithGoogle()">
+        <button class="btn btn-google" onclick="handleGoogleAuth()">
           <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.83.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.98v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 013.68 9c0-.6.1-1.18.29-1.72V4.95H.98A9 9 0 000 9c0 1.45.35 2.83.98 4.05l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.59-2.59C13.46.89 11.43 0 9 0A9 9 0 00.98 4.95l2.99 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
           Continue with Google
         </button>
@@ -463,7 +491,7 @@
         <h2>Welcome back</h2>
         <p class="sub">Log in to continue your course.</p>
 
-        <button class="btn btn-google" onclick="signUpWithGoogle()">
+        <button class="btn btn-google" onclick="handleGoogleAuth()">
           <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.83.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.98v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 013.68 9c0-.6.1-1.18.29-1.72V4.95H.98A9 9 0 000 9c0 1.45.35 2.83.98 4.05l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.59-2.59C13.46.89 11.43 0 9 0A9 9 0 00.98 4.95l2.99 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
           Continue with Google
         </button>
@@ -547,24 +575,6 @@
 <script type="module">
   /* =====================================================================
      FIREBASE CONFIG — DONE ✓ (core-coaching-login project)
-     ---------------------------------------------------------------------
-     One more required step: Firestore's default rules block all reads
-     and writes until you explicitly allow them. In the Firebase console:
-     Build → Firestore Database → Rules tab, replace the contents with:
-
-       rules_version = '2';
-       service cloud.firestore {
-         match /databases/{database}/documents {
-           match /users/{userId} {
-             allow read, write: if request.auth != null && request.auth.uid == userId;
-           }
-         }
-       }
-
-     Click Publish. This lets a logged-in user read/write only their own
-     "users/{their-uid}" document — nobody else's. Until this is
-     published, sign-up will succeed but saving the user's profile data
-     will silently fail.
      ===================================================================== */
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
@@ -574,7 +584,7 @@
     updateProfile, sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
   import {
-    getFirestore, doc, setDoc, updateDoc, serverTimestamp
+    getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -602,6 +612,9 @@
   function clearError() {
     document.getElementById('auth-error').classList.remove('visible');
   }
+  function showRouting(on) {
+    document.getElementById('routing-overlay').classList.toggle('visible', on);
+  }
 
   window.showAuthTab = function(which) {
     document.getElementById('tab-signup').classList.toggle('active', which === 'signup');
@@ -622,25 +635,69 @@
     });
   }
 
-  async function createUserDoc(user) {
-    await setDoc(doc(db, "users", user.uid), {
-      name: user.displayName || document.getElementById('su-name').value || "",
-      email: user.email,
-      createdAt: serverTimestamp(),
-      paid: false,
-      unlockedModules: []
-    }, { merge: true });
+  /**
+   * Only creates the Firestore user doc — with fresh defaults
+   * (paid: false, unlockedModules: []) — if it doesn't already exist.
+   * NEVER overwrites those fields on an account that already exists,
+   * so logging back in never resets real progress.
+   */
+  async function ensureUserDoc(user, fallbackName) {
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      const data = {
+        name: user.displayName || fallbackName || "",
+        email: user.email,
+        createdAt: serverTimestamp(),
+        paid: false,
+        unlockedModules: []
+      };
+      await setDoc(ref, data);
+      return { isNew: true, data };
+    }
+
+    return { isNew: false, data: snap.data() };
   }
 
-  window.signUpWithGoogle = async function() {
+  /**
+   * Decides where to send someone after successful authentication,
+   * based on whether their account is brand new and whether they've
+   * already paid.
+   */
+  function routeAfterAuth(isNew, data) {
+    if (isNew) {
+      // Never seen before — take them through onboarding + payment.
+      goToStep(2);
+      return;
+    }
+    if (data.paid) {
+      // Existing, already-paid account — straight to the course.
+      window.location.href = "dashboard.html";
+      return;
+    }
+    // Existing account, but never completed payment — skip onboarding
+    // (already on file) and go straight back to the payment step.
+    goToStep(3);
+  }
+
+  // Shared handler for the "Continue with Google" button on BOTH the
+  // Sign up and Log in tabs — Google doesn't distinguish the two, so we
+  // look at Firestore to decide whether this is a new or returning user.
+  window.handleGoogleAuth = async function() {
     clearError();
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       currentUser = result.user;
-      await createUserDoc(currentUser);
-      goToStep(2);
+
+      showRouting(true);
+      const { isNew, data } = await ensureUserDoc(currentUser);
+      showRouting(false);
+
+      routeAfterAuth(isNew, data);
     } catch (err) {
+      showRouting(false);
       showError(err.message);
     }
   };
@@ -664,7 +721,8 @@
       const result = await createUserWithEmailAndPassword(auth, email, password);
       currentUser = result.user;
       await updateProfile(currentUser, { displayName: name });
-      await createUserDoc(currentUser);
+      // A brand-new email/password signup always needs a fresh doc.
+      await ensureUserDoc(currentUser, name);
       goToStep(2);
     } catch (err) {
       showError(err.message);
@@ -684,10 +742,14 @@
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       currentUser = result.user;
-      // TODO: once Firestore doc is readable here, check `paid` status —
-      // if true, skip straight to dashboard.html instead of onboarding.
-      goToStep(2);
+
+      showRouting(true);
+      const { isNew, data } = await ensureUserDoc(currentUser);
+      showRouting(false);
+
+      routeAfterAuth(isNew, data);
     } catch (err) {
+      showRouting(false);
       showError(err.message);
     }
   };
@@ -732,17 +794,7 @@
 
   window.initiateYocoCheckout = function() {
     /* =====================================================================
-       YOCO SETUP REQUIRED
-       -------------------------------------------------------------------
-       This needs a Firebase Cloud Function (e.g. "createYocoCheckout")
-       that:
-         1. Receives { uid: currentUser.uid, plan: selectedPlan }
-         2. Calls Yoco's Checkout API server-side with your Yoco secret key
-         3. Returns a redirect URL to Yoco's hosted checkout page
-       Then a second function ("yocoWebhook") receives Yoco's payment
-       confirmation and marks this user "paid": true + unlocks Module 01
-       in Firestore. Neither function exists yet — this button currently
-       just shows a status message as a placeholder.
+       YOCO SETUP REQUIRED — see project notes. Placeholder for now.
        ===================================================================== */
     const btn = document.getElementById('pay-btn');
     const status = document.getElementById('payment-status');
