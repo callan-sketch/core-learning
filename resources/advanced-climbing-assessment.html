@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Climbing Assessment</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#f5f4f0; --surface:#ffffff; --border:#dddbd4; --text:#1c1c1c; --muted:#6b6b6b;
+  --accent:#1a3a5c; --accent-lt:#e8eef5;
+  --radius:4px;
+}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; }
+.shell { max-width:760px; margin:0 auto; padding:0 20px 80px; }
+
+.masthead { padding:32px 0 24px; border-bottom:2px solid var(--text); margin-bottom:32px; }
+.masthead-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.masthead h1 { font-size:22px; font-weight:700; letter-spacing:-.02em; line-height:1.2; }
+.masthead p { margin-top:8px; font-size:13px; color:var(--muted); font-weight:300; }
+
+.info-box { background:var(--accent-lt); border:1px solid #b8cfe0; border-radius:var(--radius); padding:13px 16px; font-size:13px; color:var(--accent); margin-bottom:24px; line-height:1.6; }
+.info-box strong { font-weight:600; }
+
+.form-frame-wrap {
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.form-frame-hd {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 18px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg);
+}
+.form-frame-hd span {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+}
+.form-frame-hd a {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--accent); text-decoration:none; border:1.5px solid var(--border); border-radius:var(--radius);
+  padding:5px 10px; transition:border-color .15s,color .15s;
+}
+.form-frame-hd a:hover { border-color:var(--accent); }
+
+iframe#gform {
+  display:block;
+  width:100%;
+  height:1250px;
+  border:none;
+  background:var(--surface);
+}
+.frame-loading {
+  display:flex; align-items:center; justify-content:center;
+  height:1250px; font-family:'DM Mono',monospace; font-size:12px; color:var(--muted);
+  position:absolute; width:100%; pointer-events:none;
+}
+
+.disclaimer { margin-top:24px; padding:14px 16px; border:1px solid var(--border); border-radius:var(--radius); font-size:12px; color:var(--muted); line-height:1.6; background:var(--surface); }
+.disclaimer strong { color:var(--text); }
+
+.footer-note { margin-top:28px; font-size:11px; color:var(--muted); text-align:center; font-family:'DM Mono',monospace; }
+
+@media (max-width:480px){
+  iframe#gform, .frame-loading { height:1500px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="masthead">
+    <div class="masthead-label">Core Learning · Athlete Testing</div>
+    <h1>Advanced Climbing Assessment</h1>
+    <p>Full biometric and performance testing battery, tracked over time.</p>
+  </div>
+
+  <div class="info-box"><strong>Before you begin:</strong> All information is kept confidential unless otherwise instructed by the respondent. If you're unsure of your health status, have multiple health problems, or are pregnant, speak with your doctor before doing this assessment or starting a new exercise programme. Please ensure correct spelling of names so results can be tracked over time.</div>
+
+  <div class="form-frame-wrap">
+    <div class="form-frame-hd">
+      <span>Assessment Form · 10 Pages</span>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8JHFir7m0LrsN3qnphrAuxjCSORVUeHteQoY_DnqV-CA0oA/viewform" target="_blank" rel="noopener">Open in New Tab ↗</a>
+    </div>
+    <div style="position:relative;">
+      <div class="frame-loading" id="frameLoading">Loading form…</div>
+      <iframe id="gform"
+        src="https://docs.google.com/forms/d/e/1FAIpQLSe8JHFir7m0LrsN3qnphrAuxjCSORVUeHteQoY_DnqV-CA0oA/viewform?embedded=true"
+        onload="document.getElementById('frameLoading').style.display='none'">
+        Loading…
+      </iframe>
+    </div>
+  </div>
+
+  <div class="disclaimer"><strong>Note:</strong> This assessment is submitted directly through Google Forms — responses are saved to Core Learning's existing results spreadsheet the same way they always have been.</div>
+
+  <div class="footer-note">If the form doesn't load above, use "Open in New Tab" to complete it directly.</div>
+
+</div>
+</body>
+</html>

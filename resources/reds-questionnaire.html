@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RED-S Screening Questionnaire</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#f5f4f0; --surface:#ffffff; --border:#dddbd4; --text:#1c1c1c; --muted:#6b6b6b;
+  --accent:#1a3a5c; --accent-lt:#e8eef5;
+  --green:#1e6b3c; --green-lt:#e8f5ee;
+  --amber:#8a4f00; --amber-lt:#fff3e0;
+  --red:#8b1a1a;   --red-lt:#fdecea;
+  --radius:4px;
+}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; }
+.shell { max-width:680px; margin:0 auto; padding:0 20px 80px; }
+.masthead { padding:32px 0 24px; border-bottom:2px solid var(--text); margin-bottom:32px; }
+.masthead-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.masthead h1 { font-size:22px; font-weight:700; letter-spacing:-.02em; line-height:1.2; }
+.masthead p { margin-top:8px; font-size:13px; color:var(--muted); font-weight:300; }
+
+.step-track { display:flex; margin-bottom:32px; }
+.step-pip { display:flex; align-items:center; gap:6px; padding:7px 10px; border:1.5px solid var(--border); border-right:none; background:var(--surface); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); flex:1; white-space:nowrap; transition:background .2s,color .2s; }
+.step-pip:first-child { border-radius:var(--radius) 0 0 var(--radius); }
+.step-pip:last-child  { border-right:1.5px solid var(--border); border-radius:0 var(--radius) var(--radius) 0; }
+.step-pip .dot { width:7px; height:7px; border-radius:50%; background:var(--border); flex-shrink:0; }
+.step-pip.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.step-pip.active .dot { background:rgba(255,255,255,.6); }
+.step-pip.done   { background:var(--accent-lt); color:var(--accent); border-color:#b8cfe0; }
+.step-pip.done .dot { background:var(--accent); }
+
+.panel { display:none; animation:fadeUp .25s ease; }
+.panel.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.section-hd { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:20px; }
+.section-hd span { color:var(--text); font-weight:500; }
+
+.q-block { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 18px 14px; margin-bottom:12px; transition:border-color .15s; }
+.q-block.answered { border-color:#9dbfb0; }
+.q-num { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:5px; }
+.q-text { font-size:14px; font-weight:500; line-height:1.5; margin-bottom:14px; }
+.q-sub  { font-size:12px; color:var(--muted); margin-top:-10px; margin-bottom:12px; font-weight:300; }
+
+.opts { display:flex; flex-direction:column; gap:6px; }
+.opt { display:flex; align-items:center; gap:10px; padding:8px 12px; border:1.5px solid var(--border); border-radius:var(--radius); background:var(--bg); cursor:pointer; font-size:13px; transition:all .12s; width:100%; text-align:left; font-family:'DM Sans',sans-serif; color:var(--text); }
+.opt:hover { border-color:#aaa; background:#eceae4; }
+.opt.sel   { border-color:var(--accent); background:var(--accent); color:#fff; }
+.opt-circle { width:12px; height:12px; border-radius:50%; border:1.5px solid currentColor; flex-shrink:0; }
+.opt.sel .opt-circle { background:rgba(255,255,255,.7); }
+.opts-yn { display:flex; gap:8px; }
+.opts-yn .opt { flex:1; justify-content:center; font-weight:500; }
+
+.subsec-hd { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:#999; margin:20px 0 10px; padding-bottom:6px; border-bottom:1px solid #eee; }
+
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+input[type=text],input[type=number],input[type=email] { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:var(--radius); background:var(--bg); font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); outline:none; transition:border-color .15s; }
+input:focus { border-color:var(--accent); background:#fff; }
+.bp-pair { display:flex; gap:8px; align-items:center; }
+.bp-pair input { flex:1; }
+.bp-sep { color:var(--muted); font-weight:700; flex-shrink:0; }
+.bmi-chip { display:inline-flex; align-items:center; gap:10px; margin-top:10px; padding:8px 14px; background:var(--bg); border-radius:var(--radius); font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); }
+.bmi-val { font-size:18px; font-weight:600; }
+.bmi-cat { padding:2px 8px; border-radius:20px; font-size:10px; letter-spacing:.06em; text-transform:uppercase; }
+.bmi-ok   { background:var(--green-lt); color:var(--green); }
+.bmi-warn { background:var(--amber-lt); color:var(--amber); }
+.bmi-flag { background:var(--red-lt);   color:var(--red);   }
+.disc-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+
+.info-box { background:var(--accent-lt); border:1px solid #b8cfe0; border-radius:var(--radius); padding:13px 16px; font-size:13px; color:var(--accent); margin-bottom:20px; line-height:1.6; }
+.info-box strong { font-weight:600; }
+
+.nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:28px; gap:12px; }
+.btn { padding:11px 26px; border:none; border-radius:var(--radius); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:opacity .15s; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { opacity:.85; }
+.btn-primary:disabled { opacity:.35; cursor:not-allowed; }
+.btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); }
+.btn-ghost:hover { border-color:#999; color:var(--text); }
+.btn-pdf { background:#2d5f3f; color:#fff; }
+.btn-pdf:hover { opacity:.85; }
+
+.decl-box { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:20px; font-size:13px; color:var(--muted); line-height:1.7; }
+
+.outcome-card { border-radius:var(--radius); padding:24px; margin-bottom:24px; border:2px solid; }
+.outcome-card.green { background:var(--green-lt); border-color:#7dbf9a; }
+.outcome-card.amber { background:var(--amber-lt); border-color:#e6a033; }
+.outcome-card.red   { background:var(--red-lt);   border-color:#d45c5c; }
+.outcome-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:6px; }
+.outcome-card.green .outcome-label { color:var(--green); }
+.outcome-card.amber .outcome-label { color:var(--amber); }
+.outcome-card.red   .outcome-label { color:var(--red);   }
+.outcome-title { font-size:20px; font-weight:700; letter-spacing:-.02em; margin-bottom:10px; }
+.outcome-card.green .outcome-title { color:var(--green); }
+.outcome-card.amber .outcome-title { color:var(--amber); }
+.outcome-card.red   .outcome-title { color:var(--red);   }
+.outcome-body { font-size:13.5px; line-height:1.65; color:var(--text); }
+
+.scores-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
+.score-tile { padding:12px 14px; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); }
+.score-tile.flagged { background:var(--red-lt); border-color:#e0a0a0; }
+.score-tile.caution { background:var(--amber-lt); border-color:#e6a033; }
+.score-tile-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+.score-tile-val { font-size:17px; font-weight:700; }
+.score-tile-val.flagged { color:var(--red); }
+.score-tile-cat { font-size:11px; color:var(--muted); margin-top:2px; }
+
+.submit-status { display:none; margin-top:16px; padding:12px 16px; border-radius:var(--radius); font-size:13px; font-family:'DM Mono',monospace; line-height:1.5; }
+.submit-status.sending { background:var(--amber-lt); color:var(--amber); border:1px solid #e6a033; display:block; }
+.submit-status.ok      { background:var(--green-lt); color:var(--green); border:1px solid #7dbf9a; display:block; }
+.submit-status.err     { background:var(--red-lt);   color:var(--red);   border:1px solid #d45c5c; display:block; }
+
+.disclaimer { margin-top:24px; padding:14px 16px; border:1px solid var(--border); border-radius:var(--radius); font-size:12px; color:var(--muted); line-height:1.6; background:var(--surface); }
+.disclaimer strong { color:var(--text); }
+.action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="masthead">
+    <div class="masthead-label">World Climbing · REDs Health Screening</div>
+    <h1>Relative Energy Deficiency in Sport<br>Screening Questionnaire</h1>
+    <p>Based on IOC REDs Consensus Statement (2023) · EDE-Q · LEAF-Q · LEAM-Q · Biometric Assessment</p>
+  </div>
+
+  <div class="step-track">
+    <div class="step-pip active" id="pip-0"><span class="dot"></span>Profile</div>
+    <div class="step-pip" id="pip-1"><span class="dot"></span>Biometrics</div>
+    <div class="step-pip" id="pip-2"><span class="dot"></span>EDE-Q</div>
+    <div class="step-pip" id="pip-3"><span class="dot"></span>LEA</div>
+    <div class="step-pip" id="pip-4"><span class="dot"></span>Declaration</div>
+    <div class="step-pip" id="pip-5"><span class="dot"></span>Results</div>
+  </div>
+
+  <!-- ═══ STEP 0: PROFILE ═══ -->
+  <div class="panel active" id="panel-0">
+    <div class="section-hd">Step 1 of 5 — <span>Athlete Profile</span></div>
+    <div class="info-box"><strong>Before you begin:</strong> This questionnaire takes approximately 10–15 minutes. All answers relate to the past 28 days unless stated otherwise. All information is confidential.</div>
+
+    <div class="q-block"><div class="q-text">Full Name <span style="color:#c94040">*</span></div>
+      <input type="text" id="f-name" placeholder="Athlete's full name" oninput="chkP()"></div>
+
+    <div class="field-row">
+      <div class="q-block"><div class="q-text">Age <span style="color:#c94040">*</span></div>
+        <div class="q-sub">Years</div>
+        <input type="number" id="f-age" min="10" max="80" placeholder="e.g. 22" oninput="chkP()"></div>
+      <div class="q-block"><div class="q-text">Biological Sex <span style="color:#c94040">*</span></div>
+        <div class="q-sub">Determines which LEA questionnaire is shown</div>
+        <div class="opts-yn">
+          <button class="opt" id="sex-F" onclick="setSex('Female')"><span class="opt-circle"></span>Female</button>
+          <button class="opt" id="sex-M" onclick="setSex('Male')"><span class="opt-circle"></span>Male</button>
+        </div></div>
+    </div>
+
+    <div class="q-block"><div class="q-text">Climbing Discipline <span style="color:#c94040">*</span></div>
+      <div class="disc-grid">
+        <button class="opt" id="disc-Lead"         onclick="setDisc('Lead')"><span class="opt-circle"></span>Lead</button>
+        <button class="opt" id="disc-Boulder"       onclick="setDisc('Boulder')"><span class="opt-circle"></span>Boulder</button>
+        <button class="opt" id="disc-LeadBoulder"   onclick="setDisc('Lead & Boulder')"><span class="opt-circle"></span>Lead &amp; Boulder</button>
+        <button class="opt" id="disc-Speed"         onclick="setDisc('Speed')"><span class="opt-circle"></span>Speed</button>
+      </div></div>
+
+    <div class="field-row">
+      <div class="q-block"><div class="q-text">Athlete Email</div>
+        <div class="q-sub">Results sent here</div>
+        <input type="email" id="f-ath-email" placeholder="athlete@email.com" oninput="chkP()"></div>
+      <div class="q-block"><div class="q-text">Coach / Tester Email</div>
+        <div class="q-sub">Copy sent here</div>
+        <input type="email" id="f-coach-email" placeholder="coach@email.com" oninput="chkP()"></div>
+    </div>
+
+    <div class="nav-row"><div></div>
+      <button class="btn btn-primary" id="btn-0-next" disabled onclick="go(1)">Next: Biometrics →</button></div>
+  </div>
+
+  <!-- ═══ STEP 1: BIOMETRICS ═══ -->
+  <div class="panel" id="panel-1">
+    <div class="section-hd">Step 2 of 5 — <span>Physical Measurements</span></div>
+    <div class="info-box">Measurements should be taken at the time of screening, in standard clothing, without shoes.</div>
+
+    <div class="field-row">
+      <div class="q-block"><div class="q-text">Height <span style="color:#c94040">*</span></div>
+        <div class="q-sub">Centimetres (cm)</div>
+        <input type="number" id="f-ht" min="100" max="230" placeholder="e.g. 170" oninput="calcBMI();chkB()"></div>
+      <div class="q-block"><div class="q-text">Weight <span style="color:#c94040">*</span></div>
+        <div class="q-sub">Kilograms (kg)</div>
+        <input type="number" id="f-wt" min="30" max="200" placeholder="e.g. 62" oninput="calcBMI();chkB()"></div>
+    </div>
+    <div id="bmi-display" style="display:none;margin-bottom:12px;">
+      <div class="bmi-chip">
+        <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">BMI</span>
+        <span class="bmi-val" id="bmi-val">—</span>
+        <span class="bmi-cat" id="bmi-cat">—</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="q-block"><div class="q-text">Resting Heart Rate <span style="color:#c94040">*</span></div>
+        <div class="q-sub">Beats per minute (bpm)</div>
+        <input type="number" id="f-hr" min="20" max="220" placeholder="e.g. 58" oninput="chkB()"></div>
+      <div class="q-block"><div class="q-text">Blood Pressure <span style="color:#c94040">*</span></div>
+        <div class="q-sub">mmHg — Systolic / Diastolic</div>
+        <div class="bp-pair">
+          <input type="number" id="f-sys" min="60" max="220" placeholder="Sys e.g. 118" oninput="chkB()">
+          <span class="bp-sep">/</span>
+          <input type="number" id="f-dia" min="40" max="140" placeholder="Dia e.g. 76" oninput="chkB()">
+        </div></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(0)">← Back</button>
+      <button class="btn btn-primary" id="btn-1-next" disabled onclick="go(2)">Next: EDE-Q →</button></div>
+  </div>
+
+  <!-- ═══ STEP 2: EDE-Q ═══ -->
+  <div class="panel" id="panel-2">
+    <div class="section-hd">Step 3 of 5 — <span>Eating Disorder Examination Questionnaire (EDE-Q 6.0)</span></div>
+    <div class="info-box"><strong>Instructions:</strong> These questions relate to the past <strong>28 days</strong>.</div>
+    <div id="edeq-container"></div>
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(1)">← Back</button>
+      <button class="btn btn-primary" id="btn-2-next" disabled onclick="go(3)">Next: LEA Assessment →</button></div>
+  </div>
+
+  <!-- ═══ STEP 3: LEA ═══ -->
+  <div class="panel" id="panel-3">
+    <div class="section-hd" id="lea-hd">Step 4 of 5 — <span>Low Energy Availability Assessment</span></div>
+    <div id="lea-container"></div>
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(2)">← Back to EDE-Q</button>
+      <button class="btn btn-primary" id="btn-3-next" disabled onclick="go(4)">Next: Declaration →</button></div>
+  </div>
+
+  <!-- ═══ STEP 4: DECLARATION ═══ -->
+  <div class="panel" id="panel-4">
+    <div class="section-hd">Step 5 of 5 — <span>Declaration &amp; Submission</span></div>
+    <div class="decl-box">I declare that the information provided in this questionnaire is accurate and complete to the best of my knowledge. I understand that this screening tool does not constitute a medical diagnosis, and that flagged results indicate a recommendation for further clinical evaluation. I consent to this information being shared with my coach or team support staff for the purpose of athlete health management.</div>
+    <div class="q-block"><div class="q-text">Participant Name (type to sign) <span style="color:#c94040">*</span></div>
+      <input type="text" id="f-sig" placeholder="Type your full name as signature" oninput="chkD()"></div>
+    <div class="q-block"><div class="q-text">Today's Date</div>
+      <input type="text" id="f-date" readonly style="background:var(--bg);cursor:default;"></div>
+    <div class="q-block"><div class="q-text">Tester / Coach Name</div>
+      <input type="text" id="f-tester" placeholder="Name of person administering this screening"></div>
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(3)">← Back</button>
+      <button class="btn btn-primary" id="btn-4-next" disabled onclick="finalise()">Submit &amp; View Results →</button></div>
+  </div>
+
+  <!-- ═══ STEP 5: RESULTS ═══ -->
+  <div class="panel" id="panel-5">
+    <div class="section-hd">Results — <span>REDs Screening Outcome</span></div>
+    <div id="outcome-area"></div>
+    <div id="scores-area"></div>
+    <div id="detail-area"></div>
+    <div class="disclaimer"><strong>Important:</strong> This questionnaire is a screening tool only and does not constitute a clinical diagnosis. Flagged results indicate that further evaluation by a qualified sports medicine professional experienced in REDs is recommended.</div>
+    <div class="action-row">
+      <button class="btn btn-primary" onclick="dlPDF()">⬇ Download PDF Report</button>
+      <button class="btn btn-ghost"   onclick="resetAll()">Start New Assessment</button>
+    </div>
+    <div class="submit-status" id="submit-status"></div>
+  </div>
+
+</div><!-- /shell -->
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
+// Paste your Google Apps Script deployment URL here after deploying reds_gas.gs
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwBNtQzYDmyijvoemY17CImBXWCXJA5Hbc6vwop0bMtSbJAaIQYhzOD7DKNI_7o9dvl/exec";
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const S = {
+  name:'',age:'',sex:'',disc:'',athEmail:'',coachEmail:'',
+  ht:'',wt:'',hr:'',sys:'',dia:'',
+  edeq:{}, leaf:{}, leam:{},
+  sig:'',tester:'',date:'',
+  outcome:null
+};
+
+// ─── EDE-Q DATA ───────────────────────────────────────────────────────────────
+const DAY_OPTS  = ['0 days','1–5 days','6–12 days','13–15 days','16–22 days','23–27 days','Every day (28)'];
+const SEV_OPTS  = ['Not at all','Slightly','Moderately','Quite a bit','Considerably','Markedly','Extremely'];
+const FREQ_OPTS = ['0 times','1–5 times','6–12 times','13–15 times','16–22 times','23–27 times','28+ times'];
+const FREQ_IDS  = new Set([13,14,15,16,17,18]);
+const SEV_IDS   = new Set([21,22,23,24,25,26,27,28]);
+
+const EDEQ = [
+  {id:1, sub:'restraint',      q:'On how many days have you been deliberately trying to limit the amount of food you eat to influence your shape or weight?'},
+  {id:2, sub:'restraint',      q:'On how many days have you gone for long periods (8+ waking hours) without eating in order to influence your shape or weight?'},
+  {id:3, sub:'restraint',      q:'On how many days have you tried to exclude from your diet any foods that you like in order to influence your shape or weight?'},
+  {id:4, sub:'restraint',      q:'On how many days have you tried to follow definite rules regarding your eating (e.g. a calorie limit) in order to influence your shape or weight?'},
+  {id:5, sub:'restraint',      q:'On how many days have you wanted your stomach to be empty?'},
+  {id:6, sub:'shape',          q:'On how many days has thinking about food, eating or calories made it difficult to concentrate on things you are interested in?'},
+  {id:7, sub:'eating_concern', q:'On how many days have you been afraid of losing control over your eating?'},
+  {id:8, sub:'shape',          q:'On how many days have you been concerned about other people seeing you eat?'},
+  {id:9, sub:'eating_concern', q:'On how many days has food, eating or calories taken up a lot of your time and headspace?'},
+  {id:10,sub:'shape',          q:'On how many days have you been afraid of gaining weight?'},
+  {id:11,sub:'shape',          q:'On how many days have you felt fat?'},
+  {id:12,sub:'weight_concern', q:'On how many days have you had a strong desire to lose weight?'},
+  {id:13,sub:null,             q:'Over the last 28 days, how many times have you eaten what others would regard as an unusually large amount of food?'},
+  {id:14,sub:null,             q:'On how many of those times did you have a sense of having lost control over your eating?'},
+  {id:15,sub:null,             q:'Over the last 28 days, on how many DAYS have overeating episodes occurred?'},
+  {id:16,sub:null,             q:'Over the last 28 days, how many times have you made yourself sick (vomited) to control your shape or weight?'},
+  {id:17,sub:null,             q:'Over the last 28 days, how many times have you taken laxatives to control your shape or weight?'},
+  {id:18,sub:null,             q:'Over the last 28 days, how many times have you exercised in a driven or compulsive way to burn calories or control your weight?'},
+  {id:19,sub:'eating_concern', q:'On how many days have you eaten in secret (not counting eating during a binge)?'},
+  {id:20,sub:'eating_concern', q:'On how many days have you felt guilty about eating (not counting eating during a binge)?'},
+  {id:21,sub:'eating_concern', q:'Has eating, food or calories been an important part of how you view yourself as a person?'},
+  {id:22,sub:'weight_concern', q:'Has your weight been an important part of how you view yourself as a person?'},
+  {id:23,sub:'shape',          q:'Has your shape been an important part of how you view yourself as a person?'},
+  {id:24,sub:'weight_concern', q:'How much would it upset you if you had to weigh yourself once a week for the next 4 weeks?'},
+  {id:25,sub:'weight_concern', q:'How dissatisfied have you been with your weight?'},
+  {id:26,sub:'shape',          q:'How dissatisfied have you been with your shape?'},
+  {id:27,sub:'shape',          q:'How uncomfortable have you felt seeing your body (e.g. mirror, shop windows, while undressing)?'},
+  {id:28,sub:'shape',          q:'How uncomfortable have you felt about others seeing your shape or figure?'},
+];
+
+// ─── LEAF-Q DATA ─────────────────────────────────────────────────────────────
+const LEAFQ = [
+  {id:'la1',sec:'injury',   secLabel:'Section A — Injuries',
+   q:'Have you had any injuries in the last 12 months that caused you to miss training or competition?',
+   opts:[{l:'No',v:0},{l:'Yes, 1 time',v:1},{l:'Yes, 2 or more times',v:2}]},
+  {id:'la2',sec:'injury',   secLabel:'Section A — Injuries',
+   q:'Have you ever had a stress fracture (bone injury from overuse), diagnosed by a doctor?',
+   opts:[{l:'No',v:0},{l:'Yes',v:2}]},
+  {id:'la3',sec:'injury',   secLabel:'Section A — Injuries',
+   q:'Have you had muscle or tendon injuries (e.g. Achilles, shin splints, knee pain) more than once?',
+   opts:[{l:'No',v:0},{l:'Yes',v:1}]},
+  {id:'lb1',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
+   q:'Do you often have stomach ache or cramps unrelated to menstruation?',
+   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes (monthly)',v:1},{l:'Often (weekly or more)',v:2}]},
+  {id:'lb2',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
+   q:'Do you often experience bloating or flatulence?',
+   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2}]},
+  {id:'lb3',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
+   q:'Do you often experience diarrhoea during or after training?',
+   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2}]},
+  {id:'lb4',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
+   q:'Do you often experience nausea or vomiting unrelated to illness?',
+   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2}]},
+  {id:'lc1',sec:'menstrual',secLabel:'Section C — Menstrual Function',
+   q:'How old were you when you had your first menstrual period?',
+   opts:[{l:'15 years or younger',v:0},{l:'16 years or older',v:1}]},
+  {id:'lc2',sec:'menstrual',secLabel:'Section C — Menstrual Function',
+   q:'How many menstrual periods have you had in the last 12 months?',
+   opts:[{l:'Regular (10–13 periods)',v:0},{l:'Slightly irregular (6–9 periods)',v:2},{l:'Very irregular or absent (0–5 periods)',v:4}]},
+  {id:'lc3',sec:'menstrual',secLabel:'Section C — Menstrual Function',
+   q:'Have you ever been without a period for 3 or more consecutive months (excluding pregnancy)?',
+   opts:[{l:'No',v:0},{l:'Yes, once',v:1},{l:'Yes, more than once',v:2}]},
+  {id:'lc4',sec:'menstrual',secLabel:'Section C — Menstrual Function',
+   q:'Has your period stopped or become irregular when you increased your training load?',
+   opts:[{l:'No / Not applicable',v:0},{l:'Yes',v:1}]},
+  {id:'lc5',sec:'menstrual',secLabel:'Section C — Menstrual Function',
+   q:'Are you currently using hormonal contraception?',
+   opts:[{l:'No',v:0},{l:'Yes (note: may mask menstrual irregularity)',v:0}]},
+];
+
+// ─── LEAM-Q DATA ─────────────────────────────────────────────────────────────
+const LEAMQ = [
+  {id:'ma1',dom:'dizziness', domLabel:'Dizziness',
+   q:'How often do you experience dizziness during or immediately after exercise?',
+   opts:[{l:'Never',v:0},{l:'Rarely',v:1},{l:'Sometimes',v:2},{l:'Often',v:3}]},
+  {id:'ma2',dom:'dizziness', domLabel:'Dizziness',
+   q:'How often do you experience dizziness at rest?',
+   opts:[{l:'Never',v:0},{l:'Rarely',v:1},{l:'Sometimes',v:2},{l:'Often',v:3}]},
+  {id:'mb1',dom:'illness',   domLabel:'Illness Frequency',
+   q:'How often do you get sick (colds, infections) compared with other athletes you know?',
+   opts:[{l:'Less often',v:0},{l:'About the same',v:1},{l:'More often',v:2},{l:'Much more often',v:3}]},
+  {id:'mb2',dom:'illness',   domLabel:'Illness Frequency',
+   q:'When you get sick, how long do illnesses typically last?',
+   opts:[{l:'Normal duration',v:0},{l:'Slightly longer than expected',v:1},{l:'Much longer than expected',v:2}]},
+  {id:'mc1',dom:'fatigue',   domLabel:'Fatigue',
+   q:'How often do you feel lethargic or lacking energy during the day (outside of training)?',
+   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2},{l:'Almost always',v:3}]},
+  {id:'mc2',dom:'fatigue',   domLabel:'Fatigue',
+   q:'How often do you feel difficulty concentrating or mentally foggy?',
+   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2},{l:'Almost always',v:3}]},
+  {id:'md1',dom:'recovery',  domLabel:'Recovery',
+   q:'How well do you recover between training sessions?',
+   opts:[{l:'Very well',v:0},{l:'Adequately',v:1},{l:'Poorly',v:2},{l:'Very poorly',v:3}]},
+  {id:'md2',dom:'recovery',  domLabel:'Recovery',
+   q:'How often do your muscles feel excessively sore or stiff between sessions?',
+   opts:[{l:'Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2},{l:'Almost always',v:3}]},
+  {id:'me1',dom:'sex_drive', domLabel:'Sex Drive (Primary Clinical Indicator)',
+   q:'Compared to a year ago, how would you describe your sex drive / libido? (A1)',
+   opts:[{l:'Same or higher',v:0},{l:'Slightly lower',v:1},{l:'Noticeably lower',v:2},{l:'Much lower or absent',v:3}]},
+  {id:'me2',dom:'sex_drive', domLabel:'Sex Drive (Primary Clinical Indicator)',
+   q:'Over the last 3 months, have you noticed a decrease in sexual interest or arousal? (B1)',
+   opts:[{l:'No',v:0},{l:'Slight decrease',v:1},{l:'Moderate decrease',v:2},{l:'Marked decrease',v:3}]},
+  {id:'me3',dom:'sex_drive', domLabel:'Sex Drive (Primary Clinical Indicator)',
+   q:'Over the last 3 months, have you experienced any difficulty with erections? (B2)',
+   opts:[{l:'No difficulty',v:0},{l:'Occasional difficulty',v:1},{l:'Frequent difficulty',v:2},{l:'Almost always / unable',v:3}]},
+];
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+function bmiCalc(w,h){ return (!w||!h)?null:w/((h/100)**2); }
+function bmiCatFn(b){
+  if(!b) return null;
+  if(b<17.5) return {l:'Severely Underweight',cls:'bmi-flag',flag:true};
+  if(b<18.5) return {l:'Underweight',      cls:'bmi-warn',flag:true};
+  if(b<25)   return {l:'Normal',               cls:'bmi-ok',  flag:false};
+  if(b<30)   return {l:'Overweight',         cls:'bmi-warn',flag:false};
+  return           {l:'Obese',                 cls:'bmi-flag',flag:true};
+}
+function bpCatFn(s,d){
+  if(!s||!d) return null;
+  if(s<90||d<60)    return {l:'Hypotension',         flag:true};
+  if(s<=120&&d<=80) return {l:'Normal',               flag:false};
+  if(s<=129&&d<80)  return {l:'Elevated',             flag:false};
+  if(s<=139||d<=89) return {l:'Stage 1 Hypertension', flag:true};
+  return                   {l:'Stage 2 Hypertension', flag:true};
+}
+function hrCatFn(hr){
+  if(!hr) return null;
+  if(hr<40)  return {l:'Bradycardia',    flag:true};
+  if(hr<60)  return {l:'Low (athletic)', flag:false};
+  if(hr<=100) return {l:'Normal',         flag:false};
+  if(hr<=120) return {l:'Elevated',       flag:true};
+  return             {l:'Tachycardia',   flag:true};
+}
+function getEdeqLabel(id, vi){
+  const opts = FREQ_IDS.has(id)?FREQ_OPTS: SEV_IDS.has(id)?SEV_OPTS: DAY_OPTS;
+  return opts[vi] ?? '';
+}
+
+// ─── PROFILE ─────────────────────────────────────────────────────────────────
+function setSex(v){
+  S.sex=v;
+  $('sex-F').classList.toggle('sel',v==='Female');
+  $('sex-M').classList.toggle('sel',v==='Male');
+  $('pip-3').innerHTML='<span class="dot"></span>'+(v==='Male'?'LEAM-Q':'LEAF-Q');
+  chkP();
+}
+function setDisc(v){
+  S.disc=v;
+  ['Lead','Boulder','LeadBoulder','Speed'].forEach(d=>{const e=$('disc-'+d);if(e)e.classList.remove('sel');});
+  $('disc-'+v.replace(' & ','')).classList.add('sel');
+  chkP();
+}
+function chkP(){
+  S.name=$('f-name').value.trim(); S.age=$('f-age').value;
+  S.athEmail=$('f-ath-email').value.trim(); S.coachEmail=$('f-coach-email').value.trim();
+  $('btn-0-next').disabled=!(S.name&&S.age&&S.sex&&S.disc);
+}
+
+// ─── BIOMETRICS ──────────────────────────────────────────────────────────────
+function calcBMI(){
+  S.ht=parseFloat($('f-ht').value)||''; S.wt=parseFloat($('f-wt').value)||'';
+  const bmi=bmiCalc(S.wt,S.ht), disp=$('bmi-display');
+  if(bmi){ const cat=bmiCatFn(bmi); $('bmi-val').textContent=bmi.toFixed(1); $('bmi-cat').textContent=cat.l; $('bmi-cat').className='bmi-cat '+cat.cls; disp.style.display='block'; }
+  else disp.style.display='none';
+}
+function chkB(){
+  S.ht=parseFloat($('f-ht').value)||''; S.wt=parseFloat($('f-wt').value)||'';
+  S.hr=parseFloat($('f-hr').value)||''; S.sys=parseFloat($('f-sys').value)||''; S.dia=parseFloat($('f-dia').value)||'';
+  $('btn-1-next').disabled=!(S.ht&&S.wt&&S.hr&&S.sys&&S.dia);
+}
+
+// ─── EDE-Q BUILD ─────────────────────────────────────────────────────────────
+function buildEdeq(){
+  const c=$('edeq-container'); c.innerHTML='';
+  EDEQ.forEach((item,i)=>{
+    const opts=FREQ_IDS.has(item.id)?FREQ_OPTS:SEV_IDS.has(item.id)?SEV_OPTS:DAY_OPTS;
+    const ans=S.edeq[item.id]!==undefined;
+    const div=document.createElement('div');
+    div.className='q-block'+(ans?' answered':''); div.id='eq-'+item.id;
+    div.innerHTML=`<div class="q-num">Q${i+1} of ${EDEQ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${opts.map((o,vi)=>`<button class="opt${ans&&S.edeq[item.id]===vi?' sel':''}" onclick="pickEq(${item.id},${vi},this)"><span class="opt-circle"></span>${o}</button>`).join('')}</div>`;
+    c.appendChild(div);
+  });
+  updEqBtn();
+}
+function pickEq(id,val,btn){ S.edeq[id]=val; const b=$('eq-'+id); b.classList.add('answered'); b.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); btn.classList.add('sel'); updEqBtn(); }
+function updEqBtn(){ $('btn-2-next').disabled=!EDEQ.every(i=>S.edeq[i.id]!==undefined); }
+
+// ─── LEA BUILD ───────────────────────────────────────────────────────────────
+function buildLea(){
+  const c=$('lea-container'); c.innerHTML='';
+  const isF=S.sex==='Female', items=isF?LEAFQ:LEAMQ;
+  $('lea-hd').innerHTML=`Step 4 of 5 — <span>${isF?'LEAF-Q: Low Energy Availability in Females':'LEAM-Q: Low Energy Availability in Males'}</span>`;
+  const note=document.createElement('div'); note.className='info-box';
+  note.innerHTML=isF?'Questions cover the past <strong>12 months</strong> unless otherwise stated.':'<strong>Note:</strong> The LEAM-Q is still being validated. The <strong>sex drive subscale</strong> is the most clinically confirmed indicator.';
+  c.appendChild(note);
+  let lastGrp=null;
+  items.forEach(item=>{
+    const grp=isF?item.sec:item.dom, grpLbl=isF?item.secLabel:item.domLabel;
+    if(grp!==lastGrp){ const st=document.createElement('div'); st.className='subsec-hd'; st.textContent=grpLbl; c.appendChild(st); lastGrp=grp; }
+    const store=isF?S.leaf:S.leam, ans=store[item.id]!==undefined;
+    const div=document.createElement('div'); div.className='q-block'+(ans?' answered':''); div.id='lea-'+item.id;
+    div.innerHTML=`<div class="q-text">${item.q}</div>
+      <div class="opts">${item.opts.map(o=>`<button class="opt${ans&&store[item.id+'_l']===o.l?' sel':''}" onclick="pickLea('${item.id}',${o.v},'${o.l.replace(/'/g,"\\'")}',this)"><span class="opt-circle"></span>${o.l}</button>`).join('')}</div>`;
+    c.appendChild(div);
+  });
+  updLeaBtn();
+}
+function pickLea(id,val,label,btn){
+  const store=S.sex==='Female'?S.leaf:S.leam; store[id]=val; store[id+'_l']=label;
+  const b=$('lea-'+id); b.classList.add('answered'); b.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); btn.classList.add('sel'); updLeaBtn();
+}
+function updLeaBtn(){
+  const items=S.sex==='Female'?LEAFQ:LEAMQ, store=S.sex==='Female'?S.leaf:S.leam;
+  $('btn-3-next').disabled=!items.every(i=>store[i.id]!==undefined);
+}
+
+// ─── DECLARATION ─────────────────────────────────────────────────────────────
+function chkD(){ S.sig=$('f-sig').value.trim(); $('btn-4-next').disabled=!S.sig; }
+
+// ─── SCORING ─────────────────────────────────────────────────────────────────
+function scoreEdeq(){
+  const subs={restraint:[],eating_concern:[],shape:[],weight_concern:[]};
+  EDEQ.forEach(i=>{ if(i.sub&&S.edeq[i.id]!==undefined) subs[i.sub].push(S.edeq[i.id]); });
+  const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+  const r=avg(subs.restraint),ec=avg(subs.eating_concern),sc=avg(subs.shape),wc=avg(subs.weight_concern);
+  return {r,ec,sc,wc,global:(r!=null&&ec!=null&&sc!=null&&wc!=null)?(r+ec+sc+wc)/4:null};
+}
+function scoreLeaf(){
+  let inj=0,gi=0,men=0;
+  LEAFQ.forEach(i=>{ const v=S.leaf[i.id]; if(v===undefined)return; if(i.sec==='injury')inj+=v; if(i.sec==='gastro')gi+=v; if(i.sec==='menstrual')men+=v; });
+  return {inj,gi,men,total:inj+gi+men};
+}
+function scoreLeam(){
+  let total=0; LEAMQ.forEach(i=>{ if(S.leam[i.id]!==undefined)total+=S.leam[i.id]; });
+  const a1=S.leam['me1']??0,b1=S.leam['me2']??0,b2=S.leam['me3']??0;
+  return {total,lowSD:a1>=2||(b1>=2&&b2>=1),a1,b1,b2};
+}
+function getOutcome(eq,leaf,leam){
+  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr);
+  let flags=0,cautions=0;
+  if(eq.global!=null){ if(eq.global>=2.3)flags++; else if(eq.global>=1.5)cautions++; }
+  if(bc?.flag)flags++; if(bpc?.flag)cautions++; if(hrc?.flag)cautions++;
+  if(S.sex==='Female'&&leaf){ if(leaf.total>=8)flags++; else if(leaf.total>=5)cautions++; }
+  if(S.sex==='Male'&&leam){ if(leam.lowSD)flags++; else if(leam.total>=10)cautions++; }
+  return flags>=1?'red':cautions>=1?'amber':'green';
+}
+
+// ─── BUILD SUBMISSION PAYLOAD ─────────────────────────────────────────────────
+function buildPayload(eq,leaf,leam,outcome){
+  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr);
+  const OTITLES={green:'Low Risk — No Immediate Concerns',amber:'Moderate Risk — Practitioner Referral Recommended',red:'High Risk — Medical Clearance Required'};
+
+  // Build EDE-Q answer rows: label (e.g. "6-12 days") and raw score
+  const edeqAnswers={};
+  EDEQ.forEach(item=>{ edeqAnswers['EDE-Q Q'+item.id]=getEdeqLabel(item.id,S.edeq[item.id]); edeqAnswers['EDE-Q Q'+item.id+' (score)']=S.edeq[item.id]; });
+
+  // LEA answers
+  const leaAnswers={};
+  if(S.sex==='Female'){
+    LEAFQ.forEach(item=>{ leaAnswers['LEAF-Q '+item.id]=S.leaf[item.id+'_l']||''; leaAnswers['LEAF-Q '+item.id+' (score)']=S.leaf[item.id]; });
+  } else {
+    LEAMQ.forEach(item=>{ leaAnswers['LEAM-Q '+item.id]=S.leam[item.id+'_l']||''; leaAnswers['LEAM-Q '+item.id+' (score)']=S.leam[item.id]; });
+  }
+
+  return {
+    // Identifiers
+    timestamp      : new Date().toISOString(),
+    date           : S.date,
+    athleteName    : S.name,
+    age            : S.age,
+    sex            : S.sex,
+    discipline     : S.disc,
+    athleteEmail   : S.athEmail,
+    coachEmail     : S.coachEmail,
+    tester         : S.tester,
+    signature      : S.sig,
+    // Biometrics
+    heightCm       : S.ht,
+    weightKg       : S.wt,
+    bmi            : bmi ? +bmi.toFixed(1) : '',
+    bmiCategory    : bc?.l || '',
+    bmiFlagged     : bc?.flag ? 'YES' : 'NO',
+    heartRate      : S.hr,
+    hrCategory     : hrc?.l || '',
+    hrFlagged      : hrc?.flag ? 'YES' : 'NO',
+    systolic       : S.sys,
+    diastolic      : S.dia,
+    bpCategory     : bpc?.l || '',
+    bpFlagged      : bpc?.flag ? 'YES' : 'NO',
+    // EDE-Q scores
+    edeqGlobal     : eq.global!=null ? +eq.global.toFixed(3) : '',
+    edeqRestraint  : eq.r!=null ? +eq.r.toFixed(3) : '',
+    edeqEatingConcern: eq.ec!=null ? +eq.ec.toFixed(3) : '',
+    edeqShapeConcern : eq.sc!=null ? +eq.sc.toFixed(3) : '',
+    edeqWeightConcern: eq.wc!=null ? +eq.wc.toFixed(3) : '',
+    edeqFlagged    : eq.global>=2.3 ? 'YES' : 'NO',
+    // LEA scores
+    leafTotal      : S.sex==='Female' ? leaf?.total : '',
+    leafInjury     : S.sex==='Female' ? leaf?.inj   : '',
+    leafGastro     : S.sex==='Female' ? leaf?.gi    : '',
+    leafMenstrual  : S.sex==='Female' ? leaf?.men   : '',
+    leafFlagged    : S.sex==='Female' ? (leaf?.total>=8?'YES':'NO') : '',
+    leamTotal      : S.sex==='Male'   ? leam?.total : '',
+    leamSexDrive   : S.sex==='Male'   ? (leam?.lowSD?'FLAGGED':'OK') : '',
+    leamFlagged    : S.sex==='Male'   ? (leam?.lowSD?'YES':'NO') : '',
+    // Outcome
+    outcome        : OTITLES[outcome],
+    outcomeColour  : outcome,
+    // All individual answers
+    ...edeqAnswers,
+    ...leaAnswers,
+  };
+}
+
+// ─── FINALISE ─────────────────────────────────────────────────────────────────
+function finalise(){
+  S.sig=$('f-sig').value.trim(); S.tester=$('f-tester').value.trim(); S.date=$('f-date').value;
+  go(5);
+  const eq=scoreEdeq(), leaf=S.sex==='Female'?scoreLeaf():null, leam=S.sex==='Male'?scoreLeam():null;
+  const outcome=getOutcome(eq,leaf,leam); S.outcome=outcome;
+  buildResults(eq,leaf,leam,outcome);
+  submitToSheet(buildPayload(eq,leaf,leam,outcome));
+}
+
+// ─── SUBMIT TO GOOGLE SHEETS ──────────────────────────────────────────────────
+function submitToSheet(payload){
+  const statusEl=$('submit-status');
+  if(SCRIPT_URL==='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
+    statusEl.className='submit-status err';
+    statusEl.textContent='Sheet not connected: set SCRIPT_URL in the HTML file. PDF download still works.';
+    return;
+  }
+  statusEl.className='submit-status sending';
+  statusEl.textContent='Saving to Google Sheets and sending emails…';
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)})
+    .then(()=>{ statusEl.className='submit-status ok'; statusEl.textContent='Saved to Google Sheets. Confirmation emails sent to '+[payload.athleteEmail,payload.coachEmail].filter(Boolean).join(' and ')+'.'; })
+    .catch(e=>{ statusEl.className='submit-status err'; statusEl.textContent='Could not reach the script: '+e.message+'. Use PDF download to save results.'; });
+}
+
+// ─── BUILD RESULTS SCREEN ─────────────────────────────────────────────────────
+function buildResults(eq,leaf,leam,outcome){
+  const OTITLES={green:'Low Risk — No Immediate Concerns',amber:'Moderate Risk — Practitioner Referral Recommended',red:'High Risk — Medical Clearance Required'};
+  const OBODIES={
+    green:'Screening results do not indicate significant risk factors for RED-S at this time. Continue to monitor athlete wellbeing and repeat screening regularly.',
+    amber:'One or more screening markers are outside normal ranges. A referral to a sports medicine professional is recommended for further assessment.',
+    red:'Multiple screening markers indicate a significant risk of RED-S. The athlete should be referred to a sports medicine professional before continuing competition.'
+  };
+  $('outcome-area').innerHTML=`<div class="outcome-card ${outcome}">
+    <div class="outcome-label">Screening Outcome</div>
+    <div class="outcome-title">${OTITLES[outcome]}</div>
+    <div class="outcome-body">${OBODIES[outcome]}</div></div>`;
+
+  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr);
+  const eqFl=eq.global>=2.3, eqCa=eq.global>=1.5&&!eqFl;
+  let tiles=`<div class="scores-grid">
+    <div class="score-tile${eqFl?' flagged':eqCa?' caution':''}">
+      <div class="score-tile-label">EDE-Q Global</div>
+      <div class="score-tile-val${eqFl?' flagged':''}">${eq.global!=null?eq.global.toFixed(2):'—'}</div>
+      <div class="score-tile-cat">${eqFl?'⚠ Flagged (≥2.3)':eqCa?'△ Caution':'Within range'}</div></div>
+    <div class="score-tile${bc?.flag?' flagged':''}">
+      <div class="score-tile-label">BMI</div>
+      <div class="score-tile-val">${bmi?bmi.toFixed(1):'—'}</div>
+      <div class="score-tile-cat">${bc?.l||'—'}${bc?.flag?' ⚠':''}</div></div>
+    <div class="score-tile${hrc?.flag?' flagged':''}">
+      <div class="score-tile-label">Heart Rate</div>
+      <div class="score-tile-val">${S.hr||'—'} <span style="font-size:11px;font-weight:400">bpm</span></div>
+      <div class="score-tile-cat">${hrc?.l||'—'}${hrc?.flag?' ⚠':''}</div></div>
+    <div class="score-tile${bpc?.flag?' flagged':''}">
+      <div class="score-tile-label">Blood Pressure</div>
+      <div class="score-tile-val" style="font-size:14px">${S.sys||'—'}/${S.dia||'—'}</div>
+      <div class="score-tile-cat">${bpc?.l||'—'}${bpc?.flag?' ⚠':''}</div></div>`;
+  if(S.sex==='Female'&&leaf){const fl=leaf.total>=8,ca=leaf.total>=5&&!fl; tiles+=`<div class="score-tile${fl?' flagged':ca?' caution':''}"><div class="score-tile-label">LEAF-Q Total</div><div class="score-tile-val${fl?' flagged':''}">${leaf.total}</div><div class="score-tile-cat">${fl?'⚠ At risk (≥8)':ca?'△ Monitor':'Not at risk'}</div></div>`;}
+  if(S.sex==='Male'&&leam){ tiles+=`<div class="score-tile${leam.lowSD?' flagged':''}"><div class="score-tile-label">LEAM-Q Sex Drive</div><div class="score-tile-val${leam.lowSD?' flagged':''}">${leam.lowSD?'Flagged':'OK'}</div><div class="score-tile-cat">${leam.lowSD?'⚠ Low sex drive':'Not flagged'}</div></div>`;}
+  tiles+='</div>';
+  $('scores-area').innerHTML=tiles;
+
+  let detail=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;">
+    <div class="section-hd" style="margin-bottom:14px;"><span>EDE-Q Subscale Scores</span></div>`;
+  [{l:'Restraint',v:eq.r},{l:'Eating Concern',v:eq.ec},{l:'Shape Concern',v:eq.sc},{l:'Weight Concern',v:eq.wc}].forEach(s=>{
+    detail+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13.5px;"><span style="color:var(--muted)">${s.l}</span><span style="font-family:'DM Mono',monospace;font-weight:600">${s.v!=null?s.v.toFixed(2):'—'}</span></div>`;
+  });
+  detail+='</div>';
+  if(S.sex==='Female'&&leaf){
+    detail+=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;"><div class="section-hd" style="margin-bottom:14px;"><span>LEAF-Q Subscores</span></div>
+      ${[{l:'Injury',v:leaf.inj,c:'≥2',f:leaf.inj>=2},{l:'Gastrointestinal',v:leaf.gi,c:'≥2',f:leaf.gi>=2},{l:'Menstrual Function',v:leaf.men,c:'≥4',f:leaf.men>=4}].map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13.5px;"><span style="color:var(--muted)">${s.l} <span style="font-size:11px">(cutoff ${s.c})</span></span><span style="font-family:'DM Mono',monospace;font-weight:600;color:${s.f?'var(--red)':'inherit'}">${s.v}${s.f?' ⚠':''}</span></div>`).join('')}</div>`;
+  }
+  if(S.sex==='Male'&&leam){
+    detail+=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;"><div class="section-hd" style="margin-bottom:14px;"><span>LEAM-Q Summary</span></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13.5px;"><span style="color:var(--muted)">Total Score (no validated cutoff)</span><span style="font-family:'DM Mono',monospace;font-weight:600">${leam.total}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;"><span style="color:var(--muted)">Sex Drive Flag</span><span style="font-family:'DM Mono',monospace;font-weight:600;color:${leam.lowSD?'var(--red)':'var(--green)'}">${leam.lowSD?'FLAGGED ⚠':'Not flagged'}</span></div></div>`;
+  }
+  $('detail-area').innerHTML=detail;
+}
+
+// ─── PDF ──────────────────────────────────────────────────────────────────────
+function dlPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4'});
+  const W=210,ml=18,mr=18,cw=W-ml-mr;
+  let y=20;
+  const addLine=(txt,opts={})=>{
+    const{size=10,bold=false,color=[30,30,30],indent=0,gap=4}=opts;
+    doc.setFontSize(size); doc.setFont('helvetica',bold?'bold':'normal'); doc.setTextColor(...color);
+    doc.splitTextToSize(txt,cw-indent).forEach(l=>{ if(y>272){doc.addPage();y=20;} doc.text(l,ml+indent,y); y+=size*0.4+gap; });
+  };
+  const rule=()=>{ doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.line(ml,y,W-mr,y); y+=5; };
+
+  doc.setFillColor(26,58,92); doc.rect(0,0,210,28,'F');
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(180,200,220); doc.text('WORLD CLIMBING · REDs HEALTH SCREENING',ml,11);
+  doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255); doc.text('Relative Energy Deficiency in Sport',ml,19);
+  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(180,200,220); doc.text('Screening Report · '+S.date,ml,25);
+  y=36;
+
+  addLine('ATHLETE DETAILS',{size:8,bold:true,color:[100,100,100]}); rule();
+  addLine(S.name,{size:13,bold:true}); y-=1;
+  addLine(`Age: ${S.age}   |   Sex: ${S.sex}   |   Discipline: ${S.disc}`,{size:9,color:[100,100,100]});
+  if(S.tester) addLine('Assessed by: '+S.tester,{size:9,color:[100,100,100]});
+  y+=2;
+
+  const bmi=bmiCalc(S.wt,S.ht),bc=bmiCatFn(bmi),bpc=bpCatFn(S.sys,S.dia),hrc=hrCatFn(S.hr);
+  addLine('BIOMETRICS',{size:8,bold:true,color:[100,100,100]}); rule();
+  [['Height',S.ht+' cm'],['Weight',S.wt+' kg'],
+   ['BMI',bmi?bmi.toFixed(1)+' — '+bc.l+(bc.flag?' [FLAG]':''):'—'],
+   ['Heart Rate',S.hr+' bpm — '+(hrc?.l||'—')+(hrc?.flag?' [FLAG]':'')],
+   ['Blood Pressure',S.sys+'/'+S.dia+' mmHg — '+(bpc?.l||'—')+(bpc?.flag?' [FLAG]':'')],
+  ].forEach(([k,v])=>{ doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(80,80,80); doc.text(k+':',ml,y); doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30); doc.text(v,ml+40,y); y+=5; });
+  y+=2;
+
+  const oc=S.outcome;
+  const ocBg={green:[232,245,238],amber:[255,243,224],red:[253,236,234]};
+  const ocCl={green:[30,107,60],amber:[138,79,0],red:[139,26,26]};
+  const ocTitles={green:'Low Risk — No Immediate Concerns',amber:'Moderate Risk — Practitioner Referral Recommended',red:'High Risk — Medical Clearance Required'};
+  const ocBodies={green:'Screening results do not indicate significant RED-S risk factors at this time.',amber:'One or more markers are outside normal ranges. Referral to a sports medicine professional is recommended.',red:'Multiple markers indicate significant RED-S risk. Medical clearance is required before competition.'};
+  addLine('SCREENING OUTCOME',{size:8,bold:true,color:[100,100,100]}); rule();
+  doc.setFillColor(...ocBg[oc]); doc.setDrawColor(...ocCl[oc]); doc.setLineWidth(0.6); doc.roundedRect(ml,y,cw,22,2,2,'FD');
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(...ocCl[oc]); doc.text('OUTCOME',ml+4,y+6);
+  doc.setFontSize(10); doc.text(ocTitles[oc],ml+4,y+12);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60);
+  doc.splitTextToSize(ocBodies[oc],cw-8).forEach((l,i)=>doc.text(l,ml+4,y+18+i*4));
+  y+=28;
+
+  const eq=scoreEdeq();
+  addLine('EDE-Q RESULTS (cutoff: global score ≥ 2.3)',{size:8,bold:true,color:[100,100,100]}); rule();
+  [['Global Score',eq.global!=null?eq.global.toFixed(2)+' / 6.0':'—',eq.global>=2.3],
+   ['Restraint',eq.r!=null?eq.r.toFixed(2):'—',false],
+   ['Eating Concern',eq.ec!=null?eq.ec.toFixed(2):'—',false],
+   ['Shape Concern',eq.sc!=null?eq.sc.toFixed(2):'—',false],
+   ['Weight Concern',eq.wc!=null?eq.wc.toFixed(2):'—',false],
+  ].forEach(([k,v,fl])=>{ doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80); doc.text(k+':',ml,y); doc.setFont('helvetica','bold'); doc.setTextColor(fl?139:30,fl?26:30,fl?26:30); doc.text(v+(fl?' [FLAGGED]':''),ml+50,y); y+=5; });
+  y+=2;
+
+  if(S.sex==='Female'){
+    const lf=scoreLeaf();
+    addLine('LEAF-Q RESULTS (cutoff: total ≥ 8)',{size:8,bold:true,color:[100,100,100]}); rule();
+    [['Total',lf.total+' / 49',lf.total>=8],['Injury subscale',lf.inj+' (cutoff ≥2)',lf.inj>=2],
+     ['Gastrointestinal',lf.gi+' (cutoff ≥2)',lf.gi>=2],['Menstrual function',lf.men+' (cutoff ≥4)',lf.men>=4],
+    ].forEach(([k,v,fl])=>{ doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80); doc.text(k+':',ml,y); doc.setFont('helvetica','bold'); doc.setTextColor(fl?139:30,fl?26:30,fl?26:30); doc.text(v+(fl?' [FLAGGED]':''),ml+55,y); y+=5; });
+    y+=2;
+  }
+  if(S.sex==='Male'){
+    const lm=scoreLeam();
+    addLine('LEAM-Q RESULTS',{size:8,bold:true,color:[100,100,100]}); rule();
+    [['Total score',lm.total+' (no validated cutoff)',false],['Sex drive flag',lm.lowSD?'FLAGGED':'Not flagged',lm.lowSD]].forEach(([k,v,fl])=>{ doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80); doc.text(k+':',ml,y); doc.setFont('helvetica','bold'); doc.setTextColor(fl?139:30,fl?26:30,fl?26:30); doc.text(v,ml+50,y); y+=5; });
+    y+=2;
+  }
+
+  addLine('DECLARATION',{size:8,bold:true,color:[100,100,100]}); rule();
+  addLine('Signed: '+S.sig,{size:9}); addLine('Date: '+S.date,{size:9});
+  if(S.tester) addLine('Tester: '+S.tester,{size:9});
+  y+=4;
+  doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(120,120,120);
+  doc.splitTextToSize('DISCLAIMER: This questionnaire is a screening tool only and does not constitute a clinical diagnosis. Flagged results indicate that further evaluation by a qualified sports medicine professional is recommended.',cw).forEach(l=>{ doc.text(l,ml,y); y+=3.5; });
+  doc.save('REDs-Screening-'+S.name.replace(/\s+/g,'-')+'-'+S.date+'.pdf');
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+function go(n){
+  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.step-pip').forEach((p,i)=>{ p.classList.toggle('active',i===n); p.classList.toggle('done',i<n); });
+  if(n===2) buildEdeq();
+  if(n===3) buildLea();
+  window.scrollTo(0,0);
+}
+
+// ─── RESET ────────────────────────────────────────────────────────────────────
+function resetAll(){
+  Object.assign(S,{name:'',age:'',sex:'',disc:'',athEmail:'',coachEmail:'',ht:'',wt:'',hr:'',sys:'',dia:'',edeq:{},leaf:{},leam:{},sig:'',tester:'',date:'',outcome:null});
+  ['f-name','f-age','f-ath-email','f-coach-email','f-ht','f-wt','f-hr','f-sys','f-dia','f-sig','f-tester'].forEach(id=>{const e=$(id);if(e)e.value='';});
+  $('bmi-display').style.display='none';
+  ['sex-F','sex-M'].forEach(id=>$(id).classList.remove('sel'));
+  ['Lead','Boulder','LeadBoulder','Speed'].forEach(id=>{const e=$('disc-'+id);if(e)e.classList.remove('sel');});
+  ['btn-0-next','btn-1-next','btn-2-next','btn-3-next','btn-4-next'].forEach(id=>{const e=$(id);if(e)e.disabled=true;});
+  $('submit-status').className='submit-status';
+  go(0);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+(function(){
+  const today=new Date().toLocaleDateString('en-ZA',{day:'2-digit',month:'long',year:'numeric'});
+  $('f-date').value=today; S.date=today;
+  $('pip-3').innerHTML='<span class="dot"></span>LEA';
+})();
+</script>
+</body>
+</html>
