@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athlete Medical Questionnaire 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #1a2a3a;
+    --teal:      #2a7a7a;
+    --teal-lt:   #e6f4f4;
+    --terra:     #c86040;
+    --terra-lt:  #fdf0ec;
+    --mid:       #4a6070;
+    --light:     #f5f7f9;
+    --white:     #ffffff;
+    --border:    #d0dce6;
+    --success:   #2a7a5a;
+    --success-bg:#e6f4ef;
+    --error:     #c0392b;
+    --error-bg:  #fdf0ee;
+    --warn-bg:   #fff8e6;
+    --warn-border:#e8c97a;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--light);
+    color: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px 64px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 20px rgba(26,42,58,0.10);
+    max-width: 680px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: var(--navy);
+    padding: 32px 40px 28px;
+    border-left: 6px solid var(--terra);
+  }
+  .card-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+  .card-header .subtitle {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .notice {
+    background: var(--warn-bg);
+    border-bottom: 1.5px solid var(--warn-border);
+    padding: 18px 40px;
+    font-size: 0.82rem;
+    color: #5a4010;
+    line-height: 1.65;
+  }
+  .notice strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7a5500;
+  }
+  .notice ol { padding-left: 18px; }
+  .notice ol li { margin-bottom: 5px; }
+
+  .part { border-top: 3px solid var(--teal); }
+
+  .part-header {
+    background: var(--teal);
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .part-header h2 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  .part-header .part-num {
+    background: rgba(255,255,255,0.2);
+    color: var(--white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+
+  .part-body { padding: 28px 40px 8px; }
+
+  .field { margin-bottom: 22px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+
+  label.fl {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  label.fl .req { color: var(--terra); margin-left: 2px; }
+  label.fl .qnum {
+    display: inline-block;
+    background: var(--teal-lt);
+    color: var(--teal);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  textarea {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    color: var(--navy);
+    background: var(--white);
+    transition: border-color 0.18s, box-shadow 0.18s;
+    outline: none;
+  }
+  input:focus, textarea:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(42,122,122,0.12);
+  }
+  input.err { border-color: var(--error); }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 9px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 0.9rem;
+    color: var(--navy);
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .radio-option:hover { border-color: var(--teal); background: var(--teal-lt); }
+  .radio-option input[type="radio"] { width: 16px; height: 16px; accent-color: var(--teal); cursor: pointer; }
+  .radio-option.selected { border-color: var(--teal); background: var(--teal-lt); }
+
+  .conditional {
+    background: var(--light);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 7px 7px 0;
+    padding: 16px 18px;
+    margin-top: 14px;
+    display: none;
+  }
+  .conditional.visible { display: block; }
+  .conditional .field:last-child { margin-bottom: 0; }
+
+  #part4 { display: none; }
+  #part4.visible { display: block; }
+  #part4 .part-header { background: var(--terra); }
+
+  .field-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 22px; }
+
+  .submit-area { padding: 24px 40px 36px; }
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.18s;
+  }
+  .submit-btn:hover { background: #236666; }
+  .submit-btn:disabled { background: var(--mid); cursor: not-allowed; }
+
+  .msg { display: none; border-radius: 8px; padding: 18px 20px; font-size: 0.9rem; line-height: 1.6; margin: 0 40px 28px; }
+  .msg.visible { display: block; }
+  .msg-success { background: var(--success-bg); border: 1.5px solid #aad8c4; color: var(--success); }
+  .msg-error   { background: var(--error-bg);   border: 1.5px solid #f0b8b2; color: var(--error); }
+
+  .card-footer {
+    background: var(--light);
+    border-top: 1px solid var(--border);
+    padding: 14px 40px;
+    font-size: 0.75rem;
+    color: var(--mid);
+    text-align: center;
+  }
+
+  .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 520px) {
+    .card-header, .part-body, .submit-area, .notice, .msg { padding-left: 20px; padding-right: 20px; }
+    .part-header, .card-footer { padding-left: 20px; padding-right: 20px; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
+<div class="card">
+
+  <div class="card-header">
+    <div class="subtitle">Climbing — 2026</div>
+    <h1>Athlete Medical Questionnaire</h1>
+  </div>
+
+  <div class="notice">
+    <strong>Please take note</strong>
+    <ol>
+      <li>This questionnaire will be kept confidential. Only the Medical Officer will see these results and will only share with treating medical personnel if necessary. Any further sharing will only be done with prior consent from the athlete and/or parent.</li>
+      <li>Please be specific and thorough. It will help speed up response to injury or illness.</li>
+      <li>Being specific will also help minimise risk of taking potentially banned substances.</li>
+      <li>Please reply as soon as possible. If any medications or supplements need a Therapeutic Use Exemption (T.U.E), the medical officer will contact you. This takes time so needs to be done soon.</li>
+    </ol>
+  </div>
+
+  <!-- PART 1 — Athlete Details -->
+  <div class="part">
+    <div class="part-header">
+      <span class="part-num">Part 1</span>
+      <h2>Athlete Details &amp; Emergency Contacts</h2>
+    </div>
+    <div class="part-body">
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">1</span>Surname <span class="req">*</span></label>
+          <input type="text" id="q1" placeholder="Athlete surname">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">2</span>First Name <span class="req">*</span></label>
+          <input type="text" id="q2" placeholder="Athlete first name">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">3</span>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="q3">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">4</span>Age During Competition</label>
+          <input type="number" id="q4" placeholder="e.g. 17" min="5" max="99">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">5</span>Athlete Email <span class="req">*</span></label>
+          <input type="email" id="q5email" placeholder="athlete@email.com">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">6</span>Athlete Contact Number <span class="req">*</span></label>
+          <input type="tel" id="q5" placeholder="e.g. 082 000 0000">
+        </div>
+      </div>
+
+      <hr class="field-divider">
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">7</span>Parent / Guardian 1 Name</label>
+          <input type="text" id="q6" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">8</span>Parent / Guardian 1 Contact</label>
+          <input type="tel" id="q7" placeholder="Contact number">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">9</span>Parent / Guardian 2 Name</label>
+          <input type="text" id="q8" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">10</span>Parent / Guardian 2 Contact</label>
+          <input type="tel" id="q9" placeholder="Contact number">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">11</span>Alternative Emergency Contact Name</label>
+          <input type="text" id="q10" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">12</span>Alternative Contact Number</label>
+          <input type="tel" id="q11" placeholder="Contact number">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">13</span>Family Doctor Name</label>
+          <input type="text" id="q12" placeholder="Doctor's name">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">14</span>Family Doctor Contact</label>
+          <input type="tel" id="q13" placeholder="Contact number">
+        </div>
+      </div>
+
+      <hr class="field-divider">
+
+      <div class="field">
+        <label class="fl"><span class="qnum">15</span>Examiner / Coach Email <span class="req">*</span></label>
+        <input type="email" id="qexaminer" placeholder="examiner@email.com">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Medical History -->
+  <div class="part">
+    <div class="part-header">
+      <span class="part-num">Part 1 cont.</span>
+      <h2>Medical History</h2>
+    </div>
+    <div class="part-body">
+
+      <div class="field">
+        <label class="fl"><span class="qnum">16</span>Medical Conditions</label>
+        <textarea id="q14" placeholder="List any medical conditions. Leave blank if none."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">17</span>Psychological Conditions</label>
+        <textarea id="q15" placeholder="List any psychological conditions. Leave blank if none."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">18</span>Any Other Relevant Conditions</label>
+        <textarea id="q16" placeholder="Any other conditions relevant to Climbing medical personnel."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PART 2 — Injury Profile -->
+  <div class="part">
+    <div class="part-header">
+      <span class="part-num">Part 2</span>
+      <h2>Athlete Injury Profile</h2>
+    </div>
+    <div class="part-body">
+
+      <div class="field">
+        <label class="fl"><span class="qnum">19</span>Is the athlete CURRENTLY climbing with an injury? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="q17" value="Yes" onchange="tog('q17','Yes','cond17')"> Yes</label>
+          <label class="radio-option"><input type="radio" name="q17" value="No"  onchange="tog('q17','No','cond17')"> No</label>
+        </div>
+        <div class="conditional" id="cond17">
+          <div class="field">
+            <label class="fl"><span class="qnum">20</span>Please specify the injury/ies</label>
+            <textarea id="q18" placeholder="Describe current injury or injuries"></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label class="fl"><span class="qnum">21</span>Is the athlete currently receiving treatment?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="q19" value="Yes" onchange="tog('q19','Yes','cond19')"> Yes</label>
+              <label class="radio-option"><input type="radio" name="q19" value="No"  onchange="tog('q19','No','cond19')"> No</label>
+            </div>
+            <div class="conditional" id="cond19">
+              <div class="field">
+                <label class="fl"><span class="qnum">22</span>Treating specialist contact name</label>
+                <input type="text" id="q20" placeholder="Specialist's name">
+              </div>
+              <div class="field">
+                <label class="fl"><span class="qnum">23</span>Permission to contact treating specialist?</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="q21" value="Yes"> Yes</label>
+                  <label class="radio-option"><input type="radio" name="q21" value="No"> No</label>
+                </div>
+              </div>
+              <div class="field" style="margin-bottom:0">
+                <label class="fl"><span class="qnum">24</span>Specialist name and contact number</label>
+                <textarea id="q22" placeholder="Name and contact number"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">25</span>Past 6 months — climbing-related injuries? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="q23" value="Yes" onchange="tog('q23','Yes','cond23')"> Yes</label>
+          <label class="radio-option"><input type="radio" name="q23" value="No"  onchange="tog('q23','No','cond23')"> No</label>
+        </div>
+        <div class="conditional" id="cond23">
+          <div class="field">
+            <label class="fl"><span class="qnum">26</span>Please specify</label>
+            <textarea id="q24" placeholder="Describe the injuries"></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label class="fl"><span class="qnum">27</span>Are these injuries fully resolved?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="q25" value="Yes"> Yes</label>
+              <label class="radio-option"><input type="radio" name="q25" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">28</span>Past 6 months — injuries UNRELATED to climbing? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="q26" value="Yes" onchange="tog('q26','Yes','cond26')"> Yes</label>
+          <label class="radio-option"><input type="radio" name="q26" value="No"  onchange="tog('q26','No','cond26')"> No</label>
+        </div>
+        <div class="conditional" id="cond26">
+          <div class="field">
+            <label class="fl"><span class="qnum">29</span>Please specify</label>
+            <textarea id="q27" placeholder="Describe the injuries"></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label class="fl"><span class="qnum">30</span>Are these injuries fully resolved?</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="q27r" value="Yes"> Yes</label>
+              <label class="radio-option"><input type="radio" name="q27r" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PART 3 — Medication -->
+  <div class="part">
+    <div class="part-header">
+      <span class="part-num">Part 3</span>
+      <h2>Medication &amp; Supplements — Please List Everything</h2>
+    </div>
+    <div class="part-body">
+
+      <div class="field">
+        <label class="fl"><span class="qnum">31</span>Chronic (Daily) Medication</label>
+        <textarea id="q28" placeholder="List all daily medications. Leave blank if none."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">32</span>Occasional Medication</label>
+        <textarea id="q29" placeholder='Be specific — e.g. "Nurofen" or "Nurofen Colds and Flu". Leave blank if none.'></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">33</span>Medication Allergies</label>
+        <textarea id="q30" placeholder="List any medications the athlete is allergic to. Leave blank if none."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">34</span>Adverse Side Effects to Any Medication</label>
+        <textarea id="q31" placeholder="Specify medication and side effect. Leave blank if none."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">35</span>Supplementation</label>
+        <textarea id="q32" placeholder="Include vitamins, protein, creatine, pre-workout, etc. Be specific. Leave blank if none."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">36</span>Is the athlete over 18 years old? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="q33" value="Yes" onchange="handleAge('Yes')"> Yes — questionnaire complete</label>
+          <label class="radio-option"><input type="radio" name="q33" value="No"  onchange="handleAge('No')"> No — continue to parental consent</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PART 4 — Parental Consent -->
+  <div class="part" id="part4">
+    <div class="part-header">
+      <span class="part-num">Part 4</span>
+      <h2>Parental Consent</h2>
+    </div>
+    <div class="part-body">
+      <p style="font-size:0.85rem;color:var(--mid);margin-bottom:20px;">This section is to be completed by the parent or guardian of the athlete.</p>
+
+      <div class="field">
+        <label class="fl"><span class="qnum">37</span>Do you confirm all information in this questionnaire is accurate? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="q34" value="Yes"> Yes</label>
+          <label class="radio-option"><input type="radio" name="q34" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="fl"><span class="qnum">38</span>Parent / Guardian Full Name <span class="req">*</span></label>
+          <input type="text" id="q35" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label class="fl"><span class="qnum">39</span>ID or Passport Number <span class="req">*</span></label>
+          <input type="text" id="q36" placeholder="ID / Passport number">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="msg msg-success" id="successMsg">✓ <strong>Questionnaire submitted successfully.</strong> A copy has been emailed to the athlete and examiner. The Climbing Medical Officer will review your responses and be in contact if required.</div>
+  <div class="msg msg-error"   id="errorMsg">Please complete all required fields marked with *.</div>
+
+  <div class="submit-area">
+    <button class="submit-btn" id="submitBtn" type="button" onclick="submitForm()">Submit Medical Questionnaire</button>
+  </div>
+
+  <div class="card-footer">
+   Climbing — Athlete Medical Questionnaire 2026 &nbsp;|&nbsp; All information is strictly confidential.
+  </div>
+
+</div>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuhSGXftAUZ5AkCczadMAazKj8laB3iVGQHsjWse0P0xyV2cCYAuWKQI6V4Oq5mc4/exec';
+
+  function tog(name, showVal, condId) {
+    var sel = document.querySelector('input[name="' + name + '"]:checked');
+    document.getElementById(condId).classList.toggle('visible', !!(sel && sel.value === showVal));
+    styleR(name);
+  }
+
+  function handleAge(val) {
+    document.getElementById('part4').classList.toggle('visible', val === 'No');
+    styleR('q33');
+  }
+
+  function styleR(name) {
+    document.querySelectorAll('input[name="' + name + '"]').forEach(function(r) {
+      r.closest('.radio-option').classList.toggle('selected', r.checked);
+    });
+  }
+
+  document.querySelectorAll('input[type="radio"]').forEach(function(r) {
+    r.addEventListener('change', function() { styleR(r.name); });
+  });
+
+  function v(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  function r(name) { var el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; }
+
+  function isEmail(val) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val); }
+
+  function validate() {
+    var ok = true;
+
+    // Required text fields
+    ['q1','q2','q3','q5'].forEach(function(id) {
+      var el = document.getElementById(id);
+      var empty = !el.value.trim();
+      el.classList.toggle('err', empty);
+      if (empty) ok = false;
+    });
+
+    // Required email fields
+    ['q5email','qexaminer'].forEach(function(id) {
+      var el = document.getElementById(id);
+      var invalid = !isEmail(el.value.trim());
+      el.classList.toggle('err', invalid);
+      if (invalid) ok = false;
+    });
+
+    // Required radios
+    ['q17','q23','q26','q33'].forEach(function(name) {
+      if (!r(name)) ok = false;
+    });
+
+    // Parental consent if under 18
+    if (r('q33') === 'No') {
+      if (!r('q34')) ok = false;
+      ['q35','q36'].forEach(function(id) {
+        var el = document.getElementById(id);
+        var empty = !el.value.trim();
+        el.classList.toggle('err', empty);
+        if (empty) ok = false;
+      });
+    }
+
+    return ok;
+  }
+
+  async function submitForm() {
+    if (!validate()) {
+      document.getElementById('errorMsg').classList.add('visible');
+      setTimeout(function() { document.getElementById('errorMsg').classList.remove('visible'); }, 4000);
+      return;
+    }
+
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Submitting…';
+
+    var fields = [
+      ['surname',              v('q1')],
+      ['firstName',            v('q2')],
+      ['dob',                  v('q3')],
+      ['ageCompetition',       v('q4')],
+      ['athleteEmail',         v('q5email')],
+      ['athleteContact',       v('q5')],
+      ['guardian1Name',        v('q6')],
+      ['guardian1Contact',     v('q7')],
+      ['guardian2Name',        v('q8')],
+      ['guardian2Contact',     v('q9')],
+      ['altContactName',       v('q10')],
+      ['altContactNumber',     v('q11')],
+      ['doctorName',           v('q12')],
+      ['doctorContact',        v('q13')],
+      ['examinerEmail',        v('qexaminer')],
+      ['medicalConditions',    v('q14')],
+      ['psychConditions',      v('q15')],
+      ['otherConditions',      v('q16')],
+      ['currentInjury',        r('q17')],
+      ['currentInjuryDetail',  v('q18')],
+      ['receivingTreatment',   r('q19')],
+      ['specialistName',       v('q20')],
+      ['contactPermission',    r('q21')],
+      ['specialistContact',    v('q22')],
+      ['past6mClimbing',       r('q23')],
+      ['past6mClimbingDetail', v('q24')],
+      ['past6mClimbingResolved', r('q25')],
+      ['past6mOther',          r('q26')],
+      ['past6mOtherDetail',    v('q27')],
+      ['past6mOtherResolved',  r('q27r')],
+      ['chronicMeds',          v('q28')],
+      ['occasionalMeds',       v('q29')],
+      ['allergies',            v('q30')],
+      ['sideEffects',          v('q31')],
+      ['supplements',          v('q32')],
+      ['over18',               r('q33')],
+      ['parentConfirm',        r('q34')],
+      ['parentName',           v('q35')],
+      ['parentID',             v('q36')]
+    ];
+
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = SCRIPT_URL;
+    form.target = 'hidden_iframe';
+
+    fields.forEach(function(pair) {
+      var inp = document.createElement('input');
+      inp.type  = 'hidden';
+      inp.name  = pair[0];
+      inp.value = pair[1];
+      form.appendChild(inp);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    await new Promise(function(r) { setTimeout(r, 2000); });
+    document.querySelectorAll('.part, .submit-area').forEach(function(el) { el.style.display = 'none'; });
+    document.getElementById('successMsg').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
