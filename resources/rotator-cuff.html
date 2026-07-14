@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rotator Cuff — Interactive Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #1A2A4A;
+    --navy2:  #243558;
+    --teal:   #2A8F8F;
+    --teallt: #3BBFBF;
+    --bone:   #F5F0E8;
+    --bonedk: #EAE4D8;
+    --acc:    #C85A1A;
+    --acclt:  #E07040;
+    --white:  #FFFFFF;
+    --gray:   #64748B;
+    --graylt: #94A3B8;
+    --text:   #1A2A4A;
+    --textlt: #4A5568;
+    --green:  #1A6B3A;
+    --greenlt:#2A8F52;
+    --shadow: 0 4px 24px rgba(26,42,74,0.10);
+    --shadow-sm: 0 2px 8px rgba(26,42,74,0.08);
+    --r: 12px;
+    --r-sm: 8px;
+    --r-lg: 16px;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans:  'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bone);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .page-header {
+    background: var(--navy);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(42,143,143,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(200,90,26,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(42,143,143,0.25);
+    border: 1px solid rgba(59,191,191,0.4);
+    color: var(--teallt);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+  .page-header h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: .6rem;
+    position: relative;
+  }
+  .page-header h1 em {
+    font-style: italic;
+    color: var(--teallt);
+  }
+  .page-header p {
+    color: rgba(255,255,255,0.62);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .header-line {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--acc));
+    border-radius: 2px;
+    margin: 1.5rem auto 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  .tabs-wrapper {
+    background: var(--white);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .tab-nav {
+    display: flex;
+    border-bottom: 1px solid #E2E8F0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    padding: .85rem 1.4rem;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--graylt);
+    background: none;
+    border: none;
+    border-bottom: 2.5px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+  }
+  .tab-btn:hover { color: var(--navy); }
+  .tab-btn.active { color: var(--navy); font-weight: 500; border-bottom-color: var(--teal); }
+
+  .tab-content { padding: 1.75rem; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; margin-bottom: .5rem; color: var(--navy); }
+  h3 { font-size: 15px; font-weight: 600; margin-bottom: .4rem; color: var(--navy); }
+  p  { color: var(--textlt); font-size: 14.5px; line-height: 1.7; margin-bottom: .65rem; }
+  p strong { color: var(--text); font-weight: 500; }
+  ul { padding-left: 1.2rem; margin-bottom: .65rem; }
+  ul li { font-size: 14.5px; line-height: 1.7; color: var(--textlt); margin-bottom: .2rem; }
+  ul li strong { color: var(--text); font-weight: 500; }
+
+  .callout {
+    border-left: 3px solid var(--teal);
+    background: #F0FAFA;
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    padding: .75rem 1rem;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--textlt);
+    margin: .75rem 0;
+  }
+  .callout.orange { border-left-color: var(--acc); background: #FEF6F1; }
+  .callout strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 3px; }
+
+  .muscle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 10px; margin: 1rem 0; }
+  .muscle-card {
+    border-radius: var(--r);
+    padding: .9rem 1rem;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .muscle-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .muscle-card-thumb {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: var(--r-sm);
+    display: block;
+    margin-bottom: .6rem;
+  }
+  .muscle-name { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+  .muscle-sub  { font-size: 12px; line-height: 1.45; opacity: .75; }
+  .pill {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 9px; border-radius: 999px; margin-top: 6px;
+    letter-spacing: .03em;
+  }
+  .detail-box {
+    background: #F8F9FC;
+    border: 1px solid #E2E8F0;
+    border-radius: var(--r);
+    padding: .9rem 1.1rem;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--textlt);
+    margin-top: .75rem;
+    min-height: 90px;
+    transition: all .2s;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .detail-box-img {
+    flex: 0 0 auto;
+    width: 90px;
+    border-radius: var(--r-sm);
+    object-fit: cover;
+    display: block;
+  }
+  .detail-box-text strong { display: block; font-weight: 600; color: var(--navy); margin-bottom: 5px; font-size: 14px; }
+
+  .split { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; margin: 1rem 0; }
+  .split > svg { flex: 0 0 auto; }
+  .split > div { flex: 1; min-width: 200px; }
+
+  .mini-tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .mini-tab {
+    padding: 5px 14px; font-size: 13px; border-radius: 999px;
+    border: 1px solid #CBD5E0; background: #F7F9FC;
+    color: var(--gray); cursor: pointer; transition: all .15s;
+    font-family: var(--sans);
+  }
+  .mini-tab:hover { border-color: var(--teal); color: var(--teal); }
+  .mini-tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .mini-panel { display: none; }
+  .mini-panel.active { display: block; }
+
+  .stab-row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; margin: 1rem 0; }
+  .stab-card {
+    flex: 1; min-width: 140px;
+    background: #F8F9FC;
+    border: 1px solid #E2E8F0;
+    border-radius: var(--r);
+    padding: .9rem 1rem;
+  }
+  .stab-card.accent { border-color: var(--teal); }
+  .stab-card .sc-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--graylt); margin-bottom: .35rem; }
+  .stab-card .sc-label.teal { color: var(--teal); }
+  .stab-card p { font-size: 13px; margin: 0; }
+  .plus-sign { font-size: 22px; color: var(--graylt); align-self: center; flex: 0 0 auto; }
+  .equals-sign { font-size: 22px; color: var(--graylt); align-self: center; flex: 0 0 auto; }
+
+  .injury-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; margin: 1rem 0; }
+  .injury-card {
+    background: #F8F9FC;
+    border: 1px solid #E2E8F0;
+    border-radius: var(--r);
+    padding: 1rem 1.1rem;
+  }
+  .injury-card .ic-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--graylt); margin-bottom: .4rem; }
+  .injury-card p { font-size: 13px; margin: 0; }
+
+  .page-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--graylt);
+    font-size: 12px;
+    border-top: 1px solid var(--bonedk);
+  }
+
+  svg { display: block; max-width: 100%; }
+
+  @media (max-width: 560px) {
+    .tab-content { padding: 1.25rem; }
+    .split > svg { width: 100% !important; }
+    .detail-box { flex-direction: column; }
+    .detail-box-img { width: 100%; max-height: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-badge">Module 01 · Shoulder Anatomy</div>
+  <h1>The <em>Rotator Cuff</em></h1>
+  <p>What it is, what it does, and why it matters for every shoulder movement you coach.</p>
+  <div class="header-line"></div>
+</header>
+
+<div class="container">
+  <div class="tabs-wrapper">
+    <div class="tab-nav" role="tablist">
+      <button class="tab-btn active" onclick="showTab('anatomy')" role="tab">Anatomy</button>
+      <button class="tab-btn" onclick="showTab('mechanics')" role="tab">Glide, roll &amp; spin</button>
+      <button class="tab-btn" onclick="showTab('stability')" role="tab">Stability vs power</button>
+      <button class="tab-btn" onclick="showTab('injury')" role="tab">Why it matters</button>
+    </div>
+
+    <div class="tab-content">
+
+      <div id="tab-anatomy" class="tab-panel active">
+        <h2>The four muscles</h2>
+        <p>The rotator cuff is not a single muscle — it is a group of four muscles and their tendons that wrap the head of the humerus like a fitted cuff. Their tendons merge into a continuous sheet of tissue, distributing force across the whole joint rather than concentrating it at any single point.</p>
+
+        <p style="font-size:13px;color:var(--graylt);margin-bottom:.5rem">Click each muscle to see its anatomy</p>
+        <div class="muscle-grid">
+          <div class="muscle-card active" id="mc-supra" onclick="showMuscle('supra')" style="background:#E1F5EE;border-color:#0F6E56">
+            <img src="https://raw.githubusercontent.com/callan-sketch/course-images/main/Supraspinatus.png" alt="Supraspinatus" class="muscle-card-thumb">
+            <div class="muscle-name" style="color:#085041">Supraspinatus</div>
+            <div class="muscle-sub" style="color:#0F6E56">Runs over the top of the shoulder</div>
+            <span class="pill" style="background:#9FE1CB;color:#085041">Superior</span>
+          </div>
+          <div class="muscle-card" id="mc-infra" onclick="showMuscle('infra')" style="background:#E6F1FB;border-color:#185FA5">
+            <img src="https://raw.githubusercontent.com/callan-sketch/course-images/main/Infraspinatus.png" alt="Infraspinatus" class="muscle-card-thumb">
+            <div class="muscle-name" style="color:#0C447C">Infraspinatus</div>
+            <div class="muscle-sub" style="color:#185FA5">Covers the back of the scapula</div>
+            <span class="pill" style="background:#B5D4F4;color:#0C447C">Posterior</span>
+          </div>
+          <div class="muscle-card" id="mc-tmin" onclick="showMuscle('tmin')" style="background:#FAEEDA;border-color:#854F0B">
+            <img src="https://raw.githubusercontent.com/callan-sketch/course-images/main/Teres_Minor.png" alt="Teres minor" class="muscle-card-thumb">
+            <div class="muscle-name" style="color:#633806">Teres minor</div>
+            <div class="muscle-sub" style="color:#854F0B">Lower back of shoulder</div>
+            <span class="pill" style="background:#FAC775;color:#633806">Posterior</span>
+          </div>
+          <div class="muscle-card" id="mc-sub" onclick="showMuscle('sub')" style="background:#FAECE7;border-color:#993C1D">
+            <img src="https://raw.githubusercontent.com/callan-sketch/course-images/main/Subscapularis.png" alt="Subscapularis" class="muscle-card-thumb">
+            <div class="muscle-name" style="color:#712B13">Subscapularis</div>
+            <div class="muscle-sub" style="color:#993C1D">Between scapula and ribcage</div>
+            <span class="pill" style="background:#F5C4B3;color:#712B13">Anterior</span>
+          </div>
+        </div>
+
+        <div class="detail-box" id="muscle-detail">
+          <img src="https://raw.githubusercontent.com/callan-sketch/course-images/main/Supraspinatus.png" alt="Supraspinatus" class="detail-box-img" id="detail-img">
+          <div class="detail-box-text" id="detail-text">
+            <strong>Supraspinatus</strong>
+            <b>Origin:</b> Supraspinous fossa of the scapula (the shelf above the spine of the scapula)<br>
+            <b>Insertion:</b> Superior facet of the greater tubercle of the humerus<br>
+            <b>Action:</b> Initiates the first 30° of arm abduction and depresses the humeral head to counter the upward shear of the deltoid. Without it, the deltoid would shrug rather than lift the arm.
+          </div>
+        </div>
+
+        <div class="split" style="margin-top:1.5rem">
+          <img src="https://raw.githubusercontent.com/callan-sketch/course-images/main/Rotator_Cuff.png" alt="Rotator cuff" style="width:240px;border-radius:12px;object-fit:cover;display:block">
+          <div>
+            <h3>A single integrated cuff</h3>
+            <p>The four tendons don't attach separately — they merge into a continuous sheet of tissue that wraps the humeral head. This blending distributes forces evenly across the joint capsule, not concentrated at a single point.</p>
+            <div class="callout">Think of it as a fitted rubber cap stretched over a ball. Press anywhere on the cap and the whole thing resists — that's how the cuff distributes compressive force to hold the joint together.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-mechanics" class="tab-panel">
+        <h2>Glide, roll &amp; spin</h2>
+        <p>Every shoulder movement involves three simultaneous motions at the joint surface. The rotator cuff's job is to <strong>control the ratio</strong> between them so the ball stays centred in the socket throughout the full range of motion.</p>
+
+        <div class="mini-tabs" role="tablist">
+          <button class="mini-tab active" onclick="showMechanic('roll')" id="mt-roll" role="tab">Roll</button>
+          <button class="mini-tab" onclick="showMechanic('glide')" id="mt-glide" role="tab">Glide (translation)</button>
+          <button class="mini-tab" onclick="showMechanic('spin')" id="mt-spin" role="tab">Spin (rotation)</button>
+        </div>
+
+        <div id="mp-roll" class="mini-panel active">
+          <div class="split">
+            <svg width="230" height="195" viewBox="0 0 230 195" role="img" aria-label="Roll motion showing humeral head rolling upward">
+              <defs>
+                <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </marker>
+              </defs>
+              <ellipse cx="115" cy="118" rx="52" ry="55" fill="#D3D1C7" stroke="#888780" stroke-width="1" opacity=".45"/>
+              <text x="115" y="140" text-anchor="middle" font-size="10" fill="#444441" font-family="DM Sans,sans-serif">Glenoid</text>
+              <circle cx="115" cy="100" r="28" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="1.5"/>
+              <text x="115" y="97" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif" font-weight="500">Humerus</text>
+              <text x="115" y="109" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif">rolls up</text>
+              <path d="M78 68 Q58 48 76 33" fill="none" stroke="#2A8F8F" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+              <text x="50" y="30" text-anchor="middle" font-size="9" fill="#0F6E56" font-family="DM Sans,sans-serif" font-weight="500">Roll ↑</text>
+              <text x="115" y="182" text-anchor="middle" font-size="10" fill="#5F5E5A" font-family="DM Sans,sans-serif">Deltoid creates this upward roll</text>
+            </svg>
+            <div>
+              <div style="display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:#E1F5EE;color:#085041;margin-bottom:.6rem">What is roll?</div>
+              <p><strong>Roll</strong> is like a ball rolling across a surface — one side of the humeral head contacts fresh areas of the glenoid as the arm lifts. Without correction, roll alone would push the ball off the top of the socket within just 20–30° of arm elevation.</p>
+              <div class="callout">The deltoid pulls in an almost vertical line — creating a large upward roll force with every contraction. Left unchecked, it would drive the ball straight into the acromion (the bony roof above the shoulder).</div>
+              <p><strong>The cuff's response:</strong> all four cuff muscles pull the ball inferiorly and medially — compressing and depressing the head to counteract the upward roll force of the deltoid with every degree of arm elevation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="mp-glide" class="mini-panel">
+          <div class="split">
+            <svg width="230" height="195" viewBox="0 0 230 195" role="img" aria-label="Glide motion showing balanced forces on humeral head">
+              <defs>
+                <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </marker>
+              </defs>
+              <ellipse cx="115" cy="118" rx="52" ry="55" fill="#D3D1C7" stroke="#888780" stroke-width="1" opacity=".45"/>
+              <text x="115" y="140" text-anchor="middle" font-size="10" fill="#444441" font-family="DM Sans,sans-serif">Glenoid</text>
+              <circle cx="115" cy="100" r="28" fill="#B4B2A9" stroke="#185FA5" stroke-width="2"/>
+              <text x="115" y="97" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif" font-weight="500">Humerus</text>
+              <text x="115" y="109" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif">centred</text>
+              <line x1="115" y1="72" x2="115" y2="44" stroke="#185FA5" stroke-width="2" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+              <line x1="115" y1="128" x2="115" y2="155" stroke="#C85A1A" stroke-width="2" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+              <text x="140" y="47" font-size="9" fill="#185FA5" font-family="DM Sans,sans-serif">Deltoid ↑</text>
+              <text x="125" y="170" font-size="9" fill="#C85A1A" font-family="DM Sans,sans-serif">Cuff ↓</text>
+              <text x="115" y="185" text-anchor="middle" font-size="10" fill="#5F5E5A" font-family="DM Sans,sans-serif">Balanced forces = centred head</text>
+            </svg>
+            <div>
+              <div style="display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:#E6F1FB;color:#0C447C;margin-bottom:.6rem">What is glide?</div>
+              <p><strong>Glide</strong> is a pure sliding movement — the humeral head translates (slides) across the glenoid surface. To keep the ball centred, every roll in one direction must be paired with an equal and opposite glide.</p>
+              <div class="callout">When the arm rises, the ball rolls upward (deltoid force). The cuff simultaneously pulls the ball downward, producing an inferior glide that keeps the centre of the humeral head stationary relative to the socket. This is happening continuously and automatically.</div>
+              <p>This paired roll-and-glide is called <strong>arthrokinematics</strong>. The cuff makes it automatic throughout the full range of motion — you don't consciously command it, it happens with every movement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="mp-spin" class="mini-panel">
+          <div class="split">
+            <svg width="230" height="195" viewBox="0 0 230 195" role="img" aria-label="Spin motion showing humeral head rotating on its axis">
+              <defs>
+                <marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </marker>
+              </defs>
+              <ellipse cx="115" cy="118" rx="52" ry="55" fill="#D3D1C7" stroke="#888780" stroke-width="1" opacity=".45"/>
+              <text x="115" y="140" text-anchor="middle" font-size="10" fill="#444441" font-family="DM Sans,sans-serif">Glenoid</text>
+              <circle cx="115" cy="100" r="28" fill="#B4B2A9" stroke="#854F0B" stroke-width="2"/>
+              <path d="M97 80 Q115 67 133 80" fill="none" stroke="#854F0B" stroke-width="2" marker-end="url(#a4)"/>
+              <path d="M133 120 Q115 133 97 120" fill="none" stroke="#854F0B" stroke-width="2" marker-end="url(#a4)"/>
+              <text x="115" y="97" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif" font-weight="500">Humerus</text>
+              <text x="115" y="109" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif">spins</text>
+              <text x="115" y="182" text-anchor="middle" font-size="10" fill="#5F5E5A" font-family="DM Sans,sans-serif">Ball rotates on its own axis</text>
+            </svg>
+            <div>
+              <div style="display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:#FAEEDA;color:#633806;margin-bottom:.6rem">What is spin?</div>
+              <p><strong>Spin</strong> is pure rotation — the humeral head pivots on its own axis, with one point of the ball contacting the same point of the socket throughout. This occurs primarily during internal and external rotation movements.</p>
+              <div class="callout">Infraspinatus and teres minor are the primary external rotators — they spin the ball laterally. Subscapularis spins it medially. The ratio of spin to roll and glide is constantly adjusted by the cuff depending on arm position and load.</div>
+              <p>In practice all three motions occur together. The cuff's constant low-level activity <strong>blends</strong> them into smooth, damage-free movement across the full range of motion.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-stability" class="tab-panel">
+        <h2>Stability vs power</h2>
+        <p>The shoulder is the most mobile joint in the body — and mobility always trades against stability. The glenoid socket is notoriously shallow, covering only about 25–30% of the humeral head. The rotator cuff provides the dynamic stability that fills the gap.</p>
+
+        <div class="stab-row">
+          <div class="stab-card">
+            <div class="sc-label">Passive stabilisers</div>
+            <p>Labrum, capsule, and ligaments provide stability at end range but offer little protection during mid-range movement under load.</p>
+          </div>
+          <div class="plus-sign">+</div>
+          <div class="stab-card accent">
+            <div class="sc-label teal">Dynamic stabilisers</div>
+            <p><strong>The rotator cuff</strong> — active throughout all ranges, constantly adjusting compressive force to keep the ball centred under load.</p>
+          </div>
+          <div class="equals-sign">=</div>
+          <div class="stab-card" style="background:#F0FAFA">
+            <div class="sc-label" style="color:#0F6E56">Stable shoulder</div>
+            <p>A centred humeral head that can produce force efficiently without impingement or subluxation.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:1.25rem">The force couple — how big and small muscles cooperate</h3>
+
+        <div class="split" style="margin-top:.75rem">
+          <svg width="250" height="210" viewBox="0 0 250 210" role="img" aria-label="Force couple diagram showing deltoid upward pull versus rotator cuff downward and compressive pull">
+            <defs>
+              <marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <ellipse cx="125" cy="125" rx="52" ry="55" fill="#D3D1C7" stroke="#888780" stroke-width="1" opacity=".4"/>
+            <circle cx="125" cy="108" r="30" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="1.5"/>
+            <text x="125" y="105" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif" font-weight="500">Humeral</text>
+            <text x="125" y="117" text-anchor="middle" font-size="9" fill="#2C2C2A" font-family="DM Sans,sans-serif">head</text>
+            <line x1="125" y1="78" x2="125" y2="18" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#a5)"/>
+            <text x="140" y="36" font-size="10" fill="#085041" font-family="DM Sans,sans-serif" font-weight="500">Deltoid</text>
+            <text x="140" y="49" font-size="9" fill="#0F6E56" font-family="DM Sans,sans-serif">pulls upward</text>
+            <line x1="110" y1="128" x2="65" y2="158" stroke="#C85A1A" stroke-width="2" marker-end="url(#a5)"/>
+            <line x1="125" y1="138" x2="125" y2="175" stroke="#C85A1A" stroke-width="2" marker-end="url(#a5)"/>
+            <line x1="140" y1="128" x2="185" y2="158" stroke="#C85A1A" stroke-width="2" marker-end="url(#a5)"/>
+            <text x="125" y="196" text-anchor="middle" font-size="10" fill="#712B13" font-family="DM Sans,sans-serif" font-weight="500">Cuff: pulls down &amp; inward</text>
+          </svg>
+          <div>
+            <p>The big muscles create <strong>torque</strong> — rotational force that moves the arm through space. The rotator cuff creates <strong>compression</strong> — force directed straight into the socket. These two types of force are not in competition — they are complementary.</p>
+            <ul>
+              <li><strong>Deltoid</strong> — powerful abductor, creates upward shear on the humeral head</li>
+              <li><strong>Latissimus dorsi</strong> — strong adductor and internal rotator, creates downward shear</li>
+              <li><strong>Pectoralis major</strong> — powerful horizontal adductor, creates anterior shear</li>
+              <li><strong>Rotator cuff</strong> — counteracts all shear forces by compressing the ball into the socket, acting as a dynamic fulcrum</li>
+            </ul>
+            <div class="callout orange" style="margin-top:.75rem">The cuff does not move the arm. Its job is to hold the joint together while the lats, delts, and pecs do the moving — like a hand gripping a ball in place while the arm swings around it.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-injury" class="tab-panel">
+        <h2>Why it matters</h2>
+        <p>Understanding the cuff's role explains why it is the most commonly injured structure in the shoulder — and why the consequences of a weak or torn cuff go far beyond localised pain.</p>
+
+        <div class="injury-grid">
+          <div class="injury-card">
+            <div class="ic-label">Impingement</div>
+            <p>A weak cuff cannot sufficiently depress the humeral head. During arm elevation the ball migrates superiorly and the supraspinatus tendon is pinched between the humeral head and the acromion. In most cases this reflects a cuff strength and control deficit rather than bony anatomy — and is addressable with targeted training.</p>
+          </div>
+          <div class="injury-card">
+            <div class="ic-label">Rotator cuff tears</div>
+            <p>Most tears begin as partial-thickness damage to the supraspinatus tendon from chronic impingement or overload. Over time partial tears become full-thickness. With a complete supraspinatus tear, the deltoid has no counterforce — the arm shrugs rather than abducts through a full arc.</p>
+          </div>
+          <div class="injury-card">
+            <div class="ic-label">Shoulder instability</div>
+            <p>A cuff that cannot maintain the compressive force couple allows the humeral head to translate excessively (subluxation). This is distinct from traumatic dislocation — it is chronic, often initially painless, and accelerates cartilage wear. Particularly common in overhead athletes.</p>
+          </div>
+        </div>
+
+        <h3 style="margin:1.25rem 0 .5rem">Training implications</h3>
+
+        <div class="callout">
+          <strong>Antagonist balance is essential</strong>
+          Climbers, swimmers, and overhead athletes chronically overdevelop the internal rotators (subscapularis, pec major, lat) relative to the external rotators (infraspinatus, teres minor). This imbalance loads the anterior capsule and accelerates cuff degeneration. A ratio of roughly 2:3 (internal:external rotation strength) is a commonly cited target.
+        </div>
+        <div class="callout">
+          <strong>Scapular positioning matters</strong>
+          The cuff can only do its job if the scapula is correctly positioned — tilted posteriorly and upwardly rotated. A protracted, anteriorly tipped scapula narrows the subacromial space and alters every cuff muscle's line of pull. Lower trapezius and serratus anterior training addresses this and should precede or accompany rotator cuff work.
+        </div>
+        <div class="callout">
+          <strong>Train the cuff in its stabiliser role, not just in isolation</strong>
+          Isolated external rotation exercises develop rotator strength, but the cuff also needs to be trained as a compressive stabiliser under load. Exercises like the bottoms-up kettlebell press, single-arm carries, and push-up plus progressions train the cuff to maintain joint centration during real movement — which is how it actually functions.
+        </div>
+      </div>
+
+    </div><!-- /tab-content -->
+  </div><!-- /tabs-wrapper -->
+</div><!-- /container -->
+
+<footer class="page-footer">
+  Module 01 · Foundations of Human Anatomy &amp; Physiology &nbsp;·&nbsp; Rotator Cuff Reference
+</footer>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+const BASE = 'https://raw.githubusercontent.com/callan-sketch/course-images/main/';
+
+const muscleData = {
+  supra: {
+    title: 'Supraspinatus',
+    img: BASE + 'Supraspinatus.png',
+    html: '<b>Origin:</b> Supraspinous fossa of the scapula<br><b>Insertion:</b> Superior facet of the greater tubercle of the humerus<br><b>Action:</b> Initiates the first 30° of arm abduction and depresses the humeral head to counter the upward shear of the deltoid. Without it, the deltoid would shrug rather than lift the arm.'
+  },
+  infra: {
+    title: 'Infraspinatus',
+    img: BASE + 'Infraspinatus.png',
+    html: '<b>Origin:</b> Infraspinous fossa of the scapula<br><b>Insertion:</b> Middle facet of the greater tubercle of the humerus<br><b>Action:</b> Primary external (lateral) rotator of the shoulder — critical for deceleration during throwing and any overhead activity. Also contributes inferior compressive force to the joint.'
+  },
+  tmin: {
+    title: 'Teres minor',
+    img: BASE + 'Teres_Minor.png',
+    html: '<b>Origin:</b> Lateral border of the scapula (upper two-thirds)<br><b>Insertion:</b> Inferior facet of the greater tubercle of the humerus<br><b>Action:</b> External rotation alongside infraspinatus, and posteroinferior compression of the humeral head. Particularly active in resisting anterior translation of the head.'
+  },
+  sub: {
+    title: 'Subscapularis',
+    img: BASE + 'Subscapularis.png',
+    html: '<b>Origin:</b> Subscapular fossa — the anterior surface of the scapula, between it and the ribcage<br><b>Insertion:</b> Lesser tubercle of the humerus<br><b>Action:</b> The only internal rotator in the cuff, and its largest, strongest muscle. Provides critical anterior stability, preventing the humeral head from sliding forward during abduction and external rotation.'
+  }
+};
+
+function showMuscle(key) {
+  const d = muscleData[key];
+  document.getElementById('detail-img').src = d.img;
+  document.getElementById('detail-img').alt = d.title;
+  document.getElementById('detail-text').innerHTML = '<strong>' + d.title + '</strong>' + d.html;
+  ['supra','infra','tmin','sub'].forEach(k => {
+    document.getElementById('mc-' + k).classList.toggle('active', k === key);
+  });
+}
+
+function showMechanic(name) {
+  ['roll','glide','spin'].forEach(k => {
+    document.getElementById('mp-' + k).classList.toggle('active', k === name);
+    const btn = document.getElementById('mt-' + k);
+    if (btn) btn.classList.toggle('active', k === name);
+  });
+}
+</script>
+</body>
+</html>
