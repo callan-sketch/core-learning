@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAR-Q+ Physical Activity Readiness Questionnaire</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1A2A4A;--teal:#2A8F8F;--teallt:#3BBFBF;
+  --acc:#C85A1A;--white:#fff;--bone:#F5F0E8;
+  --gray:#64748B;--graylt:#94A3B8;
+  --text:#1A2A4A;--textlt:#4A5568;
+  --border:#E2E8F0;--borderdk:#CBD5E0;
+  --bg:#fff;--bgsec:#F8FAFC;
+  --success:#16a34a;--successbg:#F0FDF4;--successborder:#86efac;
+  --warn:#d97706;--warnbg:#FFFBEB;--warnborder:#fcd34d;
+  --danger:#dc2626;--dangerbg:#FEF2F2;--dangerborder:#fca5a5;
+  --r:10px;--r-sm:6px;--shadow:0 2px 12px rgba(26,42,74,.08);
+  --sans:'DM Sans',system-ui,sans-serif;
+  --serif:'DM Serif Display',Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bone);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+.app-header{background:var(--navy);padding:2rem 1.5rem 1.75rem;text-align:center;position:relative}
+.app-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--acc))}
+.brand-badge{display:inline-block;background:rgba(42,143,143,.25);border:1px solid rgba(59,191,191,.4);color:var(--teallt);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:999px;margin-bottom:.75rem}
+.app-header h1{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2rem);color:#fff;font-weight:400;margin-bottom:.4rem}
+.app-header p{color:rgba(255,255,255,.6);font-size:14px;max-width:540px;margin:0 auto}
+.progress-bar-wrap{background:var(--navy);padding:0 1.5rem .75rem;max-width:760px;margin:0 auto}
+.progress-steps{display:flex;gap:4px;align-items:center}
+.step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);transition:background .3s,transform .3s;flex-shrink:0}
+.step-dot.done{background:var(--teal)}
+.step-dot.active{background:#fff;transform:scale(1.4)}
+.progress-label{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px}
+.container{max-width:760px;margin:0 auto;padding:1.5rem 1.25rem 4rem}
+.section-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:1.25rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:10px}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.section-title{font-size:15px;font-weight:500;color:var(--text)}
+.q-row{display:flex;align-items:flex-start;gap:12px;padding:.85rem 1.25rem;border-bottom:0.5px solid var(--border)}
+.q-row:last-child{border-bottom:none}
+.q-row.answered-yes{background:#FFF8F5}
+.q-text{flex:1;font-size:14px;line-height:1.6;color:var(--textlt)}
+.q-text strong{color:var(--text);font-weight:500}
+.q-text .sub{font-size:12.5px;color:var(--graylt);margin-top:3px;display:block}
+.q-options{display:flex;gap:6px;flex-shrink:0;margin-top:2px}
+.q-btn{padding:5px 14px;font-size:13px;font-weight:500;border-radius:var(--r-sm);border:1px solid var(--borderdk);background:var(--bgsec);color:var(--gray);cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.q-btn:hover{border-color:var(--teal);color:var(--teal)}
+.q-btn.sel-yes{background:#FFF0E8;border-color:var(--acc);color:var(--acc)}
+.q-btn.sel-no{background:#F0FAFA;border-color:var(--teal);color:var(--teal)}
+.text-input{width:100%;padding:8px 10px;font-size:13.5px;border:1px solid var(--borderdk);border-radius:var(--r-sm);font-family:var(--sans);color:var(--text);background:var(--bg);margin-top:6px}
+.text-input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px rgba(42,143,143,.15)}
+.result-box{border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1rem;border:1.5px solid;display:none}
+.result-box.show{display:block}
+.result-box.cleared{background:var(--successbg);border-color:var(--successborder)}
+.result-box.followup-needed{background:#FFF8F5;border-color:var(--acc)}
+.result-box.refer{background:var(--dangerbg);border-color:var(--dangerborder)}
+.result-icon{font-size:28px;margin-bottom:.6rem}
+.result-title{font-size:18px;font-weight:500;margin-bottom:.4rem}
+.result-body{font-size:14px;line-height:1.65}
+.result-list{padding-left:1.1rem;margin-top:.5rem}
+.result-list li{margin-bottom:.3rem;font-size:14px}
+.sig-section{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r);padding:1.25rem;box-shadow:var(--shadow);margin-bottom:1.25rem}
+.sig-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:.35rem}
+.sig-desc{font-size:13px;color:var(--textlt);margin-bottom:1rem;line-height:1.55}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sig-field{display:flex;flex-direction:column;gap:4px}
+.sig-label{font-size:12px;font-weight:500;color:var(--gray);letter-spacing:.04em;text-transform:uppercase}
+.sig-field input{padding:8px 10px;font-size:14px;border:1px solid var(--borderdk);border-radius:var(--r-sm);font-family:var(--sans);color:var(--text);background:var(--bg)}
+.sig-field input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px rgba(42,143,143,.15)}
+.sig-field.full{grid-column:1/-1}
+.canvas-wrap{border:1px solid var(--borderdk);border-radius:var(--r-sm);background:#FAFAFA;overflow:hidden;position:relative}
+.sig-canvas{width:100%;height:100px;display:block;cursor:crosshair;touch-action:none}
+.clear-sig{position:absolute;top:6px;right:8px;font-size:11px;color:var(--graylt);cursor:pointer;background:none;border:none;font-family:var(--sans);padding:2px 6px}
+.clear-sig:hover{color:var(--acc)}
+.nav-row{display:flex;gap:10px;margin-top:1rem}
+.nav-btn{flex:1;padding:.7rem 1rem;font-size:14px;font-weight:500;border-radius:var(--r-sm);border:1px solid var(--borderdk);background:var(--bgsec);color:var(--textlt);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.nav-btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nav-btn:hover{border-color:var(--teal);color:var(--teal)}
+.nav-btn.primary:hover{background:#243558;color:#fff;border-color:#243558}
+.nav-btn:disabled{opacity:.5;cursor:not-allowed}
+.info-callout{border-left:3px solid var(--teal);background:var(--bgsec);padding:.75rem 1rem;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13.5px;color:var(--textlt);margin:1rem 0;line-height:1.6}
+.info-callout strong{color:var(--text);font-weight:500}
+.page{display:none}.page.active{display:block}
+
+.submit-status{display:none;text-align:center;padding:1.5rem;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:1rem}
+.submit-status.show{display:block}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.submit-err{color:var(--danger);font-size:13px;margin-top:.5rem;display:none}
+.submit-err.show{display:block}
+
+.completion{text-align:center;padding:2rem 1rem}
+.completion-icon{font-size:56px;margin-bottom:1rem}
+.completion h2{font-family:var(--serif);font-size:1.8rem;color:var(--navy);margin-bottom:.5rem;font-weight:400}
+.completion p{font-size:14.5px;color:var(--textlt);max-width:460px;margin:0 auto 1.5rem}
+.completion-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.dl-btn{display:inline-block;padding:.7rem 1.75rem;background:var(--teal);color:#fff;border-radius:var(--r-sm);font-size:14px;font-weight:500;border:none;cursor:pointer;font-family:var(--sans);transition:background .2s}
+.dl-btn:hover{background:#1E7070}
+.dl-btn.outline{background:none;color:var(--navy);border:1px solid var(--borderdk)}
+.dl-btn.outline:hover{border-color:var(--teal);color:var(--teal)}
+
+.sheets-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 10px;border-radius:999px;font-weight:500;margin-top:.75rem}
+.sheets-badge.ok{background:var(--successbg);color:var(--success);border:1px solid var(--successborder)}
+.sheets-badge.fail{background:var(--dangerbg);color:var(--danger);border:1px solid var(--dangerborder)}
+.sheets-badge.sending{background:var(--bgsec);color:var(--gray);border:1px solid var(--border)}
+
+@media(max-width:540px){
+  .sig-grid{grid-template-columns:1fr}
+  .sig-field.full{grid-column:auto}
+  .q-options{flex-direction:column;gap:4px}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand-badge">PAR-Q+ 2024</div>
+  <h1>Physical Activity Readiness Questionnaire</h1>
+  <p>Determines whether you need medical clearance before beginning or increasing your level of physical activity.</p>
+</header>
+
+<div class="progress-bar-wrap">
+  <div class="progress-steps" id="progress-dots"></div>
+  <p class="progress-label" id="progress-label">Step 1 of 3</p>
+</div>
+
+<div class="container">
+
+<!-- PAGE 1 -->
+<div class="page active" id="page-1">
+  <div class="info-callout">
+    The health benefits of regular physical activity are clear. Participating in physical activity is very safe for <strong>most people</strong>. Please read the 7 questions below carefully and answer each one honestly.
+  </div>
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">A</div>
+      <div class="section-title">General health questions — answer YES or NO to each</div>
+    </div>
+    <div class="section-body" id="general-qs"></div>
+  </div>
+  <div class="nav-row">
+    <button class="nav-btn primary" onclick="submitPage1()">Continue →</button>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page-2">
+  <div class="info-callout">
+    You answered <strong>YES</strong> to one or more questions. Please answer the relevant follow-up questions below.
+  </div>
+  <div id="followup-sections"></div>
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goPage(1)">← Back</button>
+    <button class="nav-btn primary" onclick="submitPage2()">Continue →</button>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page-3">
+
+  <div class="result-box cleared" id="result-cleared">
+    <div class="result-icon">✅</div>
+    <div class="result-title" style="color:var(--success)">You are cleared for physical activity</div>
+    <div class="result-body">
+      You answered NO to all of the questions — you are ready to become more physically active.
+      <ul class="result-list">
+        <li>Start slowly and build up gradually.</li>
+        <li>Follow <a href="https://www.who.int/publications/i/item/9789240015128" target="_blank" style="color:var(--teal)">WHO Global Physical Activity Guidelines</a> for your age.</li>
+        <li>You may take part in a health and fitness appraisal.</li>
+        <li>If over 45 and not accustomed to vigorous exercise, consult a qualified exercise professional first.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="result-box followup-needed" id="result-followup-cleared">
+    <div class="result-icon">✅</div>
+    <div class="result-title" style="color:var(--acc)">You may become more physically active</div>
+    <div class="result-body">
+      You answered NO to all of the follow-up questions. It is advised that you:
+      <ul class="result-list">
+        <li>Consult a qualified exercise professional to develop a safe and effective plan.</li>
+        <li>Start slowly — 20 to 60 minutes of low to moderate intensity exercise, 3–5 days per week.</li>
+        <li>Progress toward 150 minutes or more of moderate intensity physical activity per week.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="result-box refer" id="result-refer">
+    <div class="result-icon">⚕️</div>
+    <div class="result-title" style="color:var(--danger)">Medical clearance recommended</div>
+    <div class="result-body">
+      You should seek further information before becoming more physically active. Please complete the ePARmed-X+ at <a href="https://www.eparmedx.com" target="_blank" style="color:var(--danger)">www.eparmedx.com</a> and/or visit a qualified exercise professional.
+    </div>
+  </div>
+
+  <div class="sig-section">
+    <div class="sig-title">Participant declaration</div>
+    <div class="sig-desc">I, the undersigned, have read, understood to my full satisfaction and completed this questionnaire. I acknowledge that this physical activity clearance is valid for a maximum of <strong>12 months</strong> from the date it is completed and becomes invalid if my condition changes. I also acknowledge that the community/fitness centre may retain a copy of this form for its records.</div>
+    <div class="sig-grid">
+      <div class="sig-field full">
+        <label class="sig-label">Full name *</label>
+        <input type="text" id="dec-name" placeholder="Your full name" autocomplete="name">
+      </div>
+      <div class="sig-field full">
+        <label class="sig-label">Email address <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — receive a copy of your result)</span></label>
+        <input type="email" id="dec-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="sig-field">
+        <label class="sig-label">Date *</label>
+        <input type="date" id="dec-date">
+      </div>
+      <div class="sig-field">
+        <label class="sig-label">Witness name</label>
+        <input type="text" id="dec-witness" placeholder="Witness name">
+      </div>
+      <div class="sig-field full">
+        <label class="sig-label">Parent / guardian name (if under legal age)</label>
+        <input type="text" id="dec-guardian" placeholder="Leave blank if not applicable">
+      </div>
+      <div class="sig-field full">
+        <label class="sig-label">Signature — draw below</label>
+        <div class="canvas-wrap">
+          <canvas class="sig-canvas" id="sig-canvas"></canvas>
+          <button class="clear-sig" onclick="clearSig()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submission status -->
+  <div class="submit-status" id="submit-status">
+    <div class="spinner"></div>
+    <p style="font-size:14px;color:var(--textlt)">Submitting your form and sending confirmation email…</p>
+  </div>
+  <div class="submit-err" id="submit-err">
+    Could not save to records — please take a screenshot of your completed form as a backup, or contact us directly.
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="back-btn-p3" onclick="goBack3()">← Back</button>
+    <button class="nav-btn primary" id="submit-btn" onclick="submitDeclaration()">Submit & Complete ✓</button>
+  </div>
+</div>
+
+<!-- PAGE 4: Completion -->
+<div class="page" id="page-4">
+  <div class="completion">
+    <div class="completion-icon">✅</div>
+    <h2>PAR-Q+ Complete</h2>
+    <p id="completion-message">Your questionnaire has been submitted successfully.</p>
+    <div id="email-status"></div>
+    <div class="completion-actions" style="margin-top:1.5rem">
+      <button class="dl-btn" id="pdf-btn" onclick="downloadPDF()">⬇ Download PDF</button>
+      <button class="dl-btn outline" onclick="location.reload()">Complete another form</button>
+    </div>
+    <p style="font-size:12px;color:var(--graylt);margin-top:1.5rem">
+      This clearance is valid for 12 months from the date completed.<br>
+      Copyright © 2024 PAR-Q+ Collaboration
+    </p>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// CONFIGURATION — paste your Google Apps Script Web App URL here
+// ─────────────────────────────────────────────────────────────────
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyISe00e4P07AqJ18RqZEzl9klUy6u1Ol-aJW-oJM9B6FNQ0Ue2_7vPcr-zmTN0J1Y/exec";
+// ─────────────────────────────────────────────────────────────────
+
+const GENERAL_QUESTIONS = [
+  { id:"g1", text:"Has your doctor ever said that you have a <strong>heart condition</strong> OR <strong>high blood pressure</strong>?", followupGroups:["cardiovascular","bloodpressure"], hasInput:false },
+  { id:"g2", text:"Do you feel <strong>pain in your chest</strong> at rest, during your daily activities of living, OR when you do physical activity?", followupGroups:["cardiovascular"], hasInput:false },
+  { id:"g3", text:"Do you lose balance because of <strong>dizziness</strong> OR have you <strong>lost consciousness</strong> in the last 12 months?", sub:"Answer NO if your dizziness was associated with over-breathing (including during vigorous exercise).", followupGroups:[], hasInput:false },
+  { id:"g4", text:"Have you ever been diagnosed with another <strong>chronic medical condition</strong> (other than heart disease or high blood pressure)?", followupGroups:["musculoskeletal","cancer","metabolic","mental","respiratory","spinal","stroke","other"], hasInput:true, inputLabel:"Please list condition(s) here:", inputId:"g4-text" },
+  { id:"g5", text:"Are you currently taking <strong>prescribed medications</strong> for a chronic medical condition?", followupGroups:["metabolic","mental","respiratory","spinal","stroke","other"], hasInput:true, inputLabel:"Please list condition(s) and medications here:", inputId:"g5-text" },
+  { id:"g6", text:"Do you currently have (or have had within the past 12 months) a <strong>bone, joint, or soft tissue problem</strong> that could be made worse by becoming more physically active?", sub:"Answer NO if you had a problem in the past, but it does not limit your current ability to be physically active.", followupGroups:["musculoskeletal"], hasInput:true, inputLabel:"Please list condition(s) here:", inputId:"g6-text" },
+  { id:"g7", text:"Has your doctor ever said that you should <strong>only do medically supervised physical activity</strong>?", followupGroups:[], hasInput:false },
+];
+
+const FOLLOWUP_GROUPS = [
+  { id:"musculoskeletal", title:"Arthritis, osteoporosis, or back problems", questions:[
+    { id:"f1a", text:"Do you have difficulty controlling your condition with medications or other physician-prescribed therapies?", sub:"Answer NO if you are not currently taking medications or other treatments" },
+    { id:"f1b", text:"Do you have joint problems causing pain, a recent fracture or fracture caused by osteoporosis or cancer, displaced vertebra (e.g., spondylolisthesis), and/or spondylolysis/pars defect?" },
+    { id:"f1c", text:"Have you had steroid injections or taken steroid tablets regularly for more than 3 months?" },
+  ]},
+  { id:"cancer", title:"Cancer of any kind", questions:[
+    { id:"f2a", text:"Does your cancer diagnosis include any of the following types: lung/bronchogenic, multiple myeloma, head, and/or neck?" },
+    { id:"f2b", text:"Are you currently receiving cancer therapy (such as chemotherapy or radiotherapy)?" },
+  ]},
+  { id:"cardiovascular", title:"Heart or cardiovascular condition", subTitle:"Coronary artery disease, heart failure, diagnosed abnormality of heart rhythm", questions:[
+    { id:"f3a", text:"Do you have difficulty controlling your condition with medications or other physician-prescribed therapies?", sub:"Answer NO if you are not currently taking medications or other treatments" },
+    { id:"f3b", text:"Do you have an irregular heart beat that requires medical management? (e.g., atrial fibrillation, premature ventricular contraction)" },
+    { id:"f3c", text:"Do you have chronic heart failure?" },
+    { id:"f3d", text:"Do you have diagnosed coronary artery disease and have not participated in regular physical activity in the last 2 months?" },
+  ]},
+  { id:"bloodpressure", title:"High blood pressure", questions:[
+    { id:"f4a", text:"Do you have difficulty controlling your condition with medications or other physician-prescribed therapies?", sub:"Answer NO if you are not currently taking medications or other treatments" },
+    { id:"f4b", text:"Do you have a resting blood pressure equal to or greater than 160/90 mmHg with or without medication?", sub:"Answer YES if you do not know your resting blood pressure" },
+  ]},
+  { id:"metabolic", title:"Metabolic conditions", subTitle:"Type 1 Diabetes, Type 2 Diabetes, Pre-Diabetes", questions:[
+    { id:"f5a", text:"Do you often have difficulty controlling your blood sugar levels with foods, medications, or other physician-prescribed therapies?" },
+    { id:"f5b", text:"Do you often suffer from signs and symptoms of low blood sugar (hypoglycemia) following exercise and/or during activities of daily living?", sub:"Signs include shakiness, nervousness, unusual irritability, abnormal sweating, dizziness, mental confusion, difficulty speaking, weakness, or sleepiness" },
+    { id:"f5c", text:"Do you have any signs or symptoms of diabetes complications such as heart or vascular disease and/or complications affecting your eyes, kidneys, or the sensation in your toes and feet?" },
+    { id:"f5d", text:"Do you have other metabolic conditions (such as current pregnancy-related diabetes, chronic kidney disease, or liver problems)?" },
+    { id:"f5e", text:"Are you planning to engage in what for you is unusually high (or vigorous) intensity exercise in the near future?" },
+  ]},
+  { id:"mental", title:"Mental health problems or learning difficulties", subTitle:"Alzheimer's, Dementia, Depression, Anxiety, Eating Disorder, Psychotic Disorder, Intellectual Disability, Down Syndrome", questions:[
+    { id:"f6a", text:"Do you have difficulty controlling your condition with medications or other physician-prescribed therapies?", sub:"Answer NO if you are not currently taking medications or other treatments" },
+    { id:"f6b", text:"Do you have Down Syndrome AND back problems affecting nerves or muscles?" },
+  ]},
+  { id:"respiratory", title:"Respiratory disease", subTitle:"COPD, Asthma, Pulmonary High Blood Pressure", questions:[
+    { id:"f7a", text:"Do you have difficulty controlling your condition with medications or other physician-prescribed therapies?", sub:"Answer NO if you are not currently taking medications or other treatments" },
+    { id:"f7b", text:"Has your doctor ever said your blood oxygen level is low at rest or during exercise and/or that you require supplemental oxygen therapy?" },
+    { id:"f7c", text:"If asthmatic, do you currently have symptoms of chest tightness, wheezing, laboured breathing, consistent cough (more than 2 days/week), or have you used your rescue medication more than twice in the last week?" },
+    { id:"f7d", text:"Has your doctor ever said you have high blood pressure in the blood vessels of your lungs?" },
+  ]},
+  { id:"spinal", title:"Spinal cord injury", subTitle:"Tetraplegia and Paraplegia", questions:[
+    { id:"f8a", text:"Do you have difficulty controlling your condition with medications or other physician-prescribed therapies?", sub:"Answer NO if you are not currently taking medications or other treatments" },
+    { id:"f8b", text:"Do you commonly exhibit low resting blood pressure significant enough to cause dizziness, light-headedness, and/or fainting?" },
+    { id:"f8c", text:"Has your physician indicated that you exhibit sudden bouts of high blood pressure (known as Autonomic Dysreflexia)?" },
+  ]},
+  { id:"stroke", title:"Stroke", subTitle:"Transient Ischemic Attack (TIA) or Cerebrovascular Event", questions:[
+    { id:"f9a", text:"Do you have difficulty controlling your condition with medications or other physician-prescribed therapies?", sub:"Answer NO if you are not currently taking medications or other treatments" },
+    { id:"f9b", text:"Do you have any impairment in walking or mobility?" },
+    { id:"f9c", text:"Have you experienced a stroke or impairment in nerves or muscles in the past 6 months?" },
+  ]},
+  { id:"other", title:"Other medical conditions", questions:[
+    { id:"f10a", text:"Have you experienced a blackout, fainted, or lost consciousness as a result of a head injury within the last 12 months OR have you had a diagnosed concussion within the last 12 months?" },
+    { id:"f10b", text:"Do you have a medical condition that is not listed (such as epilepsy, neurological conditions, kidney problems)?" },
+    { id:"f10c", text:"Do you currently live with two or more medical conditions?" },
+  ]},
+];
+
+const answers = {};
+const followupAnswers = {};
+let currentPage = 1;
+let needsFollowup = false;
+let activeFollowupGroupIds = [];
+let outcomeResult = "";
+
+function initProgressDots() {
+  const wrap = document.getElementById("progress-dots");
+  wrap.innerHTML = "";
+  for (let i = 1; i <= 3; i++) {
+    const d = document.createElement("div");
+    d.className = "step-dot" + (i === currentPage ? " active" : i < currentPage ? " done" : "");
+    d.id = "dot-" + i;
+    wrap.appendChild(d);
+  }
+  document.getElementById("progress-label").textContent = `Step ${currentPage} of 3`;
+}
+
+function updateProgressDots() {
+  for (let i = 1; i <= 3; i++) {
+    const d = document.getElementById("dot-" + i);
+    if (!d) return;
+    d.className = "step-dot" + (i === currentPage ? " active" : i < currentPage ? " done" : "");
+  }
+  document.getElementById("progress-label").textContent = `Step ${currentPage} of 3`;
+}
+
+function buildGeneralQuestions() {
+  const container = document.getElementById("general-qs");
+  container.innerHTML = "";
+  GENERAL_QUESTIONS.forEach((q, idx) => {
+    const row = document.createElement("div");
+    row.className = "q-row";
+    row.id = "qrow-" + q.id;
+    const textDiv = document.createElement("div");
+    textDiv.className = "q-text";
+    textDiv.innerHTML = `<strong>${idx + 1}.</strong> ` + q.text;
+    if (q.sub) textDiv.innerHTML += `<span class="sub">${q.sub}</span>`;
+    if (q.hasInput) {
+      const inp = document.createElement("input");
+      inp.type = "text"; inp.className = "text-input";
+      inp.placeholder = q.inputLabel || "Please list here";
+      inp.id = q.inputId;
+      textDiv.appendChild(inp);
+    }
+    const opts = document.createElement("div");
+    opts.className = "q-options";
+    ["YES","NO"].forEach(val => {
+      const btn = document.createElement("button");
+      btn.className = "q-btn"; btn.textContent = val;
+      btn.onclick = () => setAnswer(q.id, val, btn, opts, row);
+      opts.appendChild(btn);
+    });
+    row.appendChild(textDiv);
+    row.appendChild(opts);
+    container.appendChild(row);
+  });
+}
+
+function setAnswer(qId, val, btn, opts, row) {
+  answers[qId] = val;
+  opts.querySelectorAll(".q-btn").forEach(b => b.className = "q-btn");
+  btn.className = "q-btn sel-" + val.toLowerCase();
+  row.className = "q-row" + (val === "YES" ? " answered-yes" : "");
+}
+
+function submitPage1() {
+  const unanswered = GENERAL_QUESTIONS.filter(q => !answers[q.id]);
+  if (unanswered.length > 0) {
+    alert("Please answer all 7 questions before continuing.");
+    document.getElementById("qrow-" + unanswered[0].id).scrollIntoView({ behavior:"smooth", block:"center" });
+    return;
+  }
+  const anyYes = GENERAL_QUESTIONS.some(q => answers[q.id] === "YES");
+  if (!anyYes) {
+    needsFollowup = false;
+    outcomeResult = "Cleared — No to all general questions";
+    goPage(3);
+    showResult("cleared");
+    return;
+  }
+  needsFollowup = true;
+  buildFollowupSections();
+  goPage(2);
+}
+
+function buildFollowupSections() {
+  const container = document.getElementById("followup-sections");
+  container.innerHTML = "";
+  activeFollowupGroupIds = [];
+  const yesIds = GENERAL_QUESTIONS.filter(q => answers[q.id] === "YES").map(q => q.id);
+  let shown = 0;
+  FOLLOWUP_GROUPS.forEach(group => {
+    const triggered = GENERAL_QUESTIONS.some(q => answers[q.id] === "YES" && q.followupGroups.includes(group.id));
+    if (!triggered) return;
+    activeFollowupGroupIds.push(group.id);
+    shown++;
+    const card = document.createElement("div");
+    card.className = "section-card";
+    card.innerHTML = `
+      <div class="section-header">
+        <div class="section-num">${shown}</div>
+        <div>
+          <div class="section-title">${group.title}</div>
+          ${group.subTitle ? `<div style="font-size:12px;color:var(--graylt);margin-top:2px">${group.subTitle}</div>` : ""}
+        </div>
+      </div>
+      <div id="group-${group.id}"></div>`;
+    container.appendChild(card);
+    const body = card.querySelector("#group-" + group.id);
+    group.questions.forEach(q => {
+      const row = document.createElement("div");
+      row.className = "q-row"; row.id = "fqrow-" + q.id;
+      const textDiv = document.createElement("div");
+      textDiv.className = "q-text"; textDiv.innerHTML = q.text;
+      if (q.sub) textDiv.innerHTML += `<span class="sub">${q.sub}</span>`;
+      const opts = document.createElement("div");
+      opts.className = "q-options";
+      ["YES","NO"].forEach(val => {
+        const btn = document.createElement("button");
+        btn.className = "q-btn"; btn.textContent = val;
+        btn.onclick = () => {
+          followupAnswers[q.id] = val;
+          opts.querySelectorAll(".q-btn").forEach(b => b.className = "q-btn");
+          btn.className = "q-btn sel-" + val.toLowerCase();
+          row.className = "q-row" + (val === "YES" ? " answered-yes" : "");
+        };
+        opts.appendChild(btn);
+      });
+      row.appendChild(textDiv); row.appendChild(opts);
+      body.appendChild(row);
+    });
+  });
+  if (shown === 0) {
+    needsFollowup = false;
+    outcomeResult = "Cleared — No to all general questions";
+    goPage(3); showResult("cleared");
+  }
+}
+
+function submitPage2() {
+  const allFollowupIds = [];
+  activeFollowupGroupIds.forEach(gid => {
+    const group = FOLLOWUP_GROUPS.find(g => g.id === gid);
+    if (group) group.questions.forEach(q => allFollowupIds.push(q.id));
+  });
+  const unanswered = allFollowupIds.filter(id => !followupAnswers[id]);
+  if (unanswered.length > 0) {
+    alert("Please answer all follow-up questions before continuing.");
+    document.getElementById("fqrow-" + unanswered[0]).scrollIntoView({ behavior:"smooth", block:"center" });
+    return;
+  }
+  const anyYes = allFollowupIds.some(id => followupAnswers[id] === "YES");
+  outcomeResult = anyYes
+    ? "Refer to ePARmed-X+ — Yes to one or more follow-up questions"
+    : "May become more active — No to all follow-up questions";
+  goPage(3);
+  showResult(anyYes ? "refer" : "followup-cleared");
+}
+
+function showResult(type) {
+  document.querySelectorAll(".result-box").forEach(b => b.classList.remove("show"));
+  if (type === "cleared") document.getElementById("result-cleared").classList.add("show");
+  else if (type === "followup-cleared") document.getElementById("result-followup-cleared").classList.add("show");
+  else if (type === "refer") document.getElementById("result-refer").classList.add("show");
+}
+
+function goBack3() {
+  if (needsFollowup) goPage(2); else goPage(1);
+}
+
+function goPage(n) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + n).classList.add("active");
+  currentPage = n;
+  updateProgressDots();
+  window.scrollTo({ top: 0, behavior:"smooth" });
+}
+
+function clearSig() {
+  const canvas = document.getElementById("sig-canvas");
+  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function initSignaturePad() {
+  const canvas = document.getElementById("sig-canvas");
+  canvas.width = canvas.offsetWidth || 600;
+  canvas.height = 100;
+  const ctx = canvas.getContext("2d");
+  ctx.strokeStyle = "#1A2A4A"; ctx.lineWidth = 1.8;
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  let drawing = false, lx = 0, ly = 0;
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: src.clientX - r.left, y: src.clientY - r.top };
+  }
+  canvas.addEventListener("mousedown", e => { drawing = true; const p = getPos(e); lx = p.x; ly = p.y; });
+  canvas.addEventListener("mousemove", e => {
+    if (!drawing) return;
+    const p = getPos(e);
+    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(p.x, p.y); ctx.stroke();
+    lx = p.x; ly = p.y;
+  });
+  canvas.addEventListener("mouseup", () => drawing = false);
+  canvas.addEventListener("mouseleave", () => drawing = false);
+  canvas.addEventListener("touchstart", e => { e.preventDefault(); drawing = true; const p = getPos(e); lx = p.x; ly = p.y; }, { passive:false });
+  canvas.addEventListener("touchmove", e => {
+    if (!drawing) return; e.preventDefault();
+    const p = getPos(e);
+    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(p.x, p.y); ctx.stroke();
+    lx = p.x; ly = p.y;
+  }, { passive:false });
+  canvas.addEventListener("touchend", () => drawing = false);
+}
+
+// ── Build the data payload ─────────────────────────────────────────────────
+function buildPayload() {
+  const name = document.getElementById("dec-name").value.trim();
+  const email = document.getElementById("dec-email").value.trim();
+  const date = document.getElementById("dec-date").value;
+  const witness = document.getElementById("dec-witness").value.trim();
+  const guardian = document.getElementById("dec-guardian").value.trim();
+
+  const generalSection = {};
+  GENERAL_QUESTIONS.forEach((q, i) => {
+    generalSection[`Q${i+1}`] = answers[q.id] || "";
+    if (q.hasInput) {
+      const el = document.getElementById(q.inputId);
+      if (el) generalSection[`Q${i+1}_detail`] = el.value.trim();
+    }
+  });
+
+  const followupSection = {};
+  activeFollowupGroupIds.forEach(gid => {
+    const group = FOLLOWUP_GROUPS.find(g => g.id === gid);
+    if (!group) return;
+    group.questions.forEach(q => {
+      followupSection[q.id] = followupAnswers[q.id] || "";
+    });
+  });
+
+  const canvas = document.getElementById("sig-canvas");
+  const sigData = canvas.toDataURL("image/png");
+
+  return {
+    timestamp: new Date().toISOString(),
+    name, email, date, witness, guardian,
+    outcome: outcomeResult,
+    general: generalSection,
+    followup: followupSection,
+    signatureDataUrl: sigData,
+    formVersion: "PAR-Q+ 2024 (01-11-2023)",
+  };
+}
+
+// ── Submit form ────────────────────────────────────────────────────────────────
+async function submitDeclaration() {
+  const name  = document.getElementById("dec-name").value.trim();
+  const email = document.getElementById("dec-email").value.trim();
+  const date  = document.getElementById("dec-date").value;
+  if (!name)  { alert("Please enter your full name to complete the declaration."); return; }
+  if (!date)  { alert("Please enter the date to complete the declaration."); return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert("Please enter a valid email address, or leave it blank."); return;
+  }
+
+  const btn       = document.getElementById("submit-btn");
+  const statusBox = document.getElementById("submit-status");
+  const errBox    = document.getElementById("submit-err");
+
+  btn.disabled = true;
+  statusBox.classList.add("show");
+  errBox.classList.remove("show");
+
+  const payload = buildPayload();
+
+  // Update completion message
+  const valid = new Date(date);
+  valid.setFullYear(valid.getFullYear() + 1);
+  const validStr = valid.toLocaleDateString("en-GB", { day:"numeric", month:"long", year:"numeric" });
+  document.getElementById("completion-message").textContent =
+    `Thank you, ${name}. Your PAR-Q+ has been completed and is valid until ${validStr}.`;
+
+  // If no script URL configured, go straight to completion
+  if (!SCRIPT_URL || SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+    statusBox.classList.remove("show");
+    btn.disabled = false;
+    goPage(4);
+    document.getElementById("email-status").innerHTML =
+      `<span class="sheets-badge fail">⚠ Email not configured — please download your PDF</span>`;
+    document.getElementById("progress-dots").innerHTML = "";
+    document.getElementById("progress-label").textContent = "Complete ✓";
+    return;
+  }
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    statusBox.classList.remove("show");
+    btn.disabled = false;
+    goPage(4);
+    document.getElementById("email-status").innerHTML = email
+      ? `<span class="sheets-badge ok">✉ Confirmation email sent to ${email}</span>`
+      : `<span class="sheets-badge sending">No email address provided — download your PDF below</span>`;
+    document.getElementById("progress-dots").innerHTML = "";
+    document.getElementById("progress-label").textContent = "Complete ✓";
+
+  } catch (err) {
+    statusBox.classList.remove("show");
+    btn.disabled = false;
+    errBox.classList.add("show");
+    goPage(4);
+    document.getElementById("email-status").innerHTML =
+      `<span class="sheets-badge fail">⚠ Could not send email — please download your PDF</span>`;
+    document.getElementById("progress-dots").innerHTML = "";
+    document.getElementById("progress-label").textContent = "Complete ✓";
+  }
+}
+
+// ── PDF Download ───────────────────────────────────────────────────────────────
+async function downloadPDF() {
+  const btn = document.getElementById("pdf-btn");
+  btn.textContent = "Generating…";
+  btn.disabled = true;
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+    const pageW = 210, pageH = 297, margin = 14;
+    const contentW = pageW - margin * 2;
+    let y = margin;
+
+    function checkPage(needed = 8) {
+      if (y + needed > pageH - margin) { doc.addPage(); y = margin; }
+    }
+    function drawLine(x1, y1, x2, y2, color = [200,200,200]) {
+      doc.setDrawColor(...color); doc.line(x1, y1, x2, y2);
+    }
+    function sectionHeader(label, num) {
+      checkPage(14);
+      doc.setFillColor(26, 42, 74);
+      doc.roundedRect(margin, y, contentW, 9, 1.5, 1.5, "F");
+      doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(255,255,255);
+      doc.text(`${num}   ${label}`, margin + 4, y + 6);
+      y += 12;
+    }
+    function questionRow(num, text, answer, detail) {
+      const lines = doc.splitTextToSize(text, contentW - 28);
+      const rowH = Math.max(8, lines.length * 5 + (detail ? 6 : 0) + 3);
+      checkPage(rowH);
+      doc.setFillColor(248, 250, 252);
+      doc.rect(margin, y, contentW, rowH, "F");
+      drawLine(margin, y, margin + contentW, y);
+      doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(100,116,139);
+      doc.text(String(num) + ".", margin + 2, y + 5.5);
+      doc.setTextColor(50,50,60);
+      doc.text(lines, margin + 8, y + 5.5);
+      if (detail) { doc.setTextColor(80,80,100); doc.text(`Conditions: ${detail}`, margin + 8, y + 5 + lines.length * 5); }
+      const ans = answer || "—";
+      const badgeX = margin + contentW - 18;
+      doc.setFillColor(ans === "YES" ? 200 : ans === "NO" ? 240 : 230,
+                       ans === "YES" ? 80  : ans === "NO" ? 250 : 230,
+                       ans === "YES" ? 30  : ans === "NO" ? 250 : 230);
+      doc.roundedRect(badgeX, y + 1.5, 16, 6, 1, 1, "F");
+      doc.setFont("helvetica","bold"); doc.setFontSize(7.5);
+      doc.setTextColor(ans === "YES" ? 180 : 20, ans === "YES" ? 30 : (ans === "NO" ? 100 : 80), 10);
+      doc.text(ans, badgeX + 8, y + 6, { align:"center" });
+      y += rowH;
+    }
+
+    doc.setFillColor(26, 42, 74);
+    doc.rect(0, 0, pageW, 30, "F");
+    doc.setFont("helvetica","bold"); doc.setFontSize(16); doc.setTextColor(255,255,255);
+    doc.text("PAR-Q+ 2024", pageW/2, 12, { align:"center" });
+    doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(180,200,220);
+    doc.text("Physical Activity Readiness Questionnaire for Everyone", pageW/2, 19, { align:"center" });
+    doc.setFillColor(42,143,143); doc.rect(0, 28, pageW/2, 2.5, "F");
+    doc.setFillColor(200,90,26);  doc.rect(pageW/2, 28, pageW/2, 2.5, "F");
+    y = 38;
+
+    const pName     = document.getElementById("dec-name").value.trim();
+    const pEmail    = document.getElementById("dec-email").value.trim();
+    const pDate     = document.getElementById("dec-date").value;
+    const pWitness  = document.getElementById("dec-witness").value.trim();
+    const pGuardian = document.getElementById("dec-guardian").value.trim();
+
+    doc.setFillColor(245,250,252);
+    doc.roundedRect(margin, y, contentW, pGuardian ? 28 : 22, 2, 2, "F");
+    drawLine(margin, y, margin+contentW, y, [26,42,74]);
+    doc.setFont("helvetica","bold"); doc.setFontSize(8); doc.setTextColor(26,42,74);
+    doc.text("PARTICIPANT", margin+4, y+5.5);
+    doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor(30,30,40);
+    doc.text(`Name: ${pName}`, margin+4, y+12);
+    doc.text(`Date: ${pDate}`, margin+4, y+18);
+    if (pEmail)    doc.text(`Email: ${pEmail}`,     pageW/2, y+12);
+    if (pWitness)  doc.text(`Witness: ${pWitness}`, pageW/2, y+18);
+    if (pGuardian) doc.text(`Parent/Guardian: ${pGuardian}`, margin+4, y+24);
+    y += pGuardian ? 34 : 28;
+
+    checkPage(20);
+    let outColor, outLabel, outDetail;
+    if (outcomeResult.includes("Cleared")) {
+      outColor = [22,163,74]; outLabel = "✓  CLEARED FOR PHYSICAL ACTIVITY";
+      outDetail = "You answered NO to all questions — you are ready to become more physically active.";
+    } else if (outcomeResult.includes("May become")) {
+      outColor = [217,119,6]; outLabel = "⚠  MAY BECOME MORE PHYSICALLY ACTIVE";
+      outDetail = "Answer NO to all follow-up questions. Consult a qualified exercise professional before starting.";
+    } else {
+      outColor = [220,38,38]; outLabel = "⚕  MEDICAL CLEARANCE RECOMMENDED";
+      outDetail = "Please complete the ePARmed-X+ at www.eparmedx.com before increasing physical activity.";
+    }
+    doc.setFillColor(...outColor.map(c => Math.min(255, c + 200)));
+    doc.roundedRect(margin, y, contentW, 18, 2, 2, "F");
+    doc.setDrawColor(...outColor); doc.setLineWidth(0.8);
+    doc.roundedRect(margin, y, contentW, 18, 2, 2, "S");
+    doc.setLineWidth(0.2);
+    doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(...outColor);
+    doc.text(outLabel, margin+4, y+7);
+    doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(50,50,60);
+    const detLines = doc.splitTextToSize(outDetail, contentW - 8);
+    doc.text(detLines, margin+4, y+13);
+    y += 24;
+
+    sectionHeader("GENERAL HEALTH QUESTIONS — Page 1", "A");
+    const gLabels = [
+      "Heart condition or high blood pressure",
+      "Chest pain at rest, during daily activities, or during physical activity",
+      "Dizziness / lost consciousness in the last 12 months",
+      "Diagnosed chronic medical condition (other than heart disease or high blood pressure)",
+      "Currently taking prescribed medications for a chronic medical condition",
+      "Bone, joint, or soft tissue problem that could worsen with physical activity",
+      "Doctor said: only do medically supervised physical activity",
+    ];
+    const gKeys = ["g1","g2","g3","g4","g5","g6","g7"];
+    const detailKeys = {g4:"g4-text",g5:"g5-text",g6:"g6-text"};
+    gLabels.forEach((lbl, i) => {
+      const key = gKeys[i];
+      const ans = answers[key] || "";
+      const detEl = detailKeys[key] ? document.getElementById(detailKeys[key]) : null;
+      const detail = detEl ? detEl.value.trim() : "";
+      questionRow(i+1, lbl, ans, detail);
+    });
+
+    if (activeFollowupGroupIds.length > 0) {
+      y += 4;
+      sectionHeader("FOLLOW-UP QUESTIONS — Page 2", "B");
+      let fNum = 1;
+      activeFollowupGroupIds.forEach(gid => {
+        const group = FOLLOWUP_GROUPS.find(g => g.id === gid);
+        if (!group) return;
+        checkPage(10);
+        doc.setFont("helvetica","bold"); doc.setFontSize(8); doc.setTextColor(26,42,74);
+        doc.text(group.title.toUpperCase(), margin+2, y+5);
+        y += 8;
+        group.questions.forEach(q => {
+          questionRow(fNum++, q.text, followupAnswers[q.id] || "", "");
+        });
+      });
+    }
+
+    y += 6;
+    checkPage(32);
+    sectionHeader("PARTICIPANT DECLARATION", "C");
+    doc.setFont("helvetica","normal"); doc.setFontSize(7.5); doc.setTextColor(60,60,70);
+    const declText = "I, the undersigned, have read, understood to my full satisfaction and completed this questionnaire. I acknowledge that this physical activity clearance is valid for a maximum of 12 months from the date it is completed and becomes invalid if my condition changes. I also acknowledge that the community/fitness centre may retain a copy of this form for its records.";
+    const declLines = doc.splitTextToSize(declText, contentW);
+    doc.text(declLines, margin, y);
+    y += declLines.length * 4 + 6;
+
+    const canvas = document.getElementById("sig-canvas");
+    const sigDataUrl = canvas.toDataURL("image/png");
+    checkPage(28);
+    doc.setFont("helvetica","bold"); doc.setFontSize(8); doc.setTextColor(26,42,74);
+    doc.text("Signature:", margin, y+4);
+    doc.setFillColor(250,250,252);
+    doc.roundedRect(margin+24, y-1, 80, 18, 1.5, 1.5, "F");
+    drawLine(margin+24, y-1, margin+104, y-1, [180,180,190]);
+    doc.addImage(sigDataUrl, "PNG", margin+25, y, 78, 16);
+    y += 24;
+
+    checkPage(14);
+    drawLine(margin, y, margin+contentW, y, [180,180,200]);
+    y += 5;
+    const valid = new Date(pDate);
+    valid.setFullYear(valid.getFullYear()+1);
+    const validStr = valid.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+    doc.setFont("helvetica","normal"); doc.setFontSize(7.5); doc.setTextColor(100,116,139);
+    doc.text(`PAR-Q+ 2024 (01-11-2023)  •  Version: ${document.getElementById("dec-date").value}  •  Valid until: ${validStr}`, pageW/2, y, {align:"center"});
+    y += 4;
+    doc.text("© 2024 PAR-Q+ Collaboration. Questions may not be altered. Warburton DER et al, Health & Fitness Journal of Canada 4(2):3–23, 2011.", pageW/2, y, {align:"center"});
+
+    const totalPages = doc.getNumberOfPages();
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p);
+      doc.setFont("helvetica","normal"); doc.setFontSize(7); doc.setTextColor(160,160,170);
+      doc.text(`Page ${p} of ${totalPages}`, pageW - margin, pageH - 6, {align:"right"});
+    }
+
+    const fileName = `PARQ_${pName.replace(/\s+/g,"_")}_${pDate}.pdf`;
+    doc.save(fileName);
+
+  } catch(err) {
+    console.error("PDF error:", err);
+    alert("PDF generation failed — please use your browser's Print function (Ctrl/Cmd+P → Save as PDF) as a backup.");
+  }
+
+  btn.textContent = "⬇ Download PDF";
+  btn.disabled = false;
+}
+
+document.getElementById("dec-date").value = new Date().toISOString().split("T")[0];
+buildGeneralQuestions();
+initProgressDots();
+initSignaturePad();
+</script>
+</body>
+</html>
