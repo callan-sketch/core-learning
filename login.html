@@ -517,11 +517,20 @@
       <p class="sub">A few details for your course record. More fields can be added here later without affecting your account.</p>
 
       <div class="field">
-        <label for="ob-phone">Phone number</label>
-        <input type="tel" id="ob-phone" placeholder="e.g. 082 123 4567">
+        <label for="ob-name">Full name</label>
+        <input type="text" id="ob-name" placeholder="Your full name">
+        <p class="hint">This will be used on your completion certificate.</p>
       </div>
       <div class="field">
-        <label for="ob-experience">Coaching experience</label>
+        <label for="ob-age">Age</label>
+        <input type="number" id="ob-age" placeholder="e.g. 34" min="10" max="99">
+      </div>
+      <div class="field">
+        <label for="ob-email">Email address</label>
+        <input type="email" id="ob-email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="ob-experience">Years of experience coaching</label>
         <select id="ob-experience">
           <option value="">Select one</option>
           <option value="new">New to coaching</option>
@@ -530,7 +539,7 @@
         </select>
       </div>
       <div class="field">
-        <label for="ob-gym">Climbing gym / employer</label>
+        <label for="ob-gym">Gym you predominantly coach at</label>
         <input type="text" id="ob-gym" placeholder="Where do you currently coach or climb?">
         <p class="hint">Leave blank if not applicable.</p>
       </div>
@@ -540,30 +549,27 @@
 
     <!-- ================= STEP 3: PAYMENT ================= -->
     <div class="panel" id="panel-3">
-      <h2>Choose how to pay</h2>
+      <h2>Complete your payment</h2>
       <p class="sub">Module 01 unlocks as soon as payment is confirmed.</p>
 
       <div class="plan-options">
-        <div class="plan-card selected" data-plan="upfront" onclick="selectPlan('upfront')">
+        <div class="plan-card selected" data-plan="upfront">
           <div class="top-row">
-            <span class="tier-label">Pay upfront</span>
+            <span class="tier-label">Full course</span>
             <span class="price">R2,500</span>
           </div>
           <p>One payment for full access to all 7 modules.</p>
-        </div>
-        <div class="plan-card" data-plan="permodule" onclick="selectPlan('permodule')">
-          <div class="top-row">
-            <span class="tier-label">Pay per module</span>
-            <span class="price">R400<span> /module</span></span>
-          </div>
-          <p>Pay as you go — this covers Module 01 to start.</p>
         </div>
       </div>
 
       <button class="btn btn-primary" id="pay-btn" onclick="initiateYocoCheckout()">Continue to Yoco</button>
       <p class="payment-status" id="payment-status">Connecting to Yoco…</p>
 
-      <!-- Demo-only bypass — remove once the Yoco Cloud Function is live -->
+      <p class="sub" style="margin: 18px 0 0; text-align: center;">
+        Prefer to pay per module, or need a custom arrangement? Email <a href="mailto:callan@wam.co.za" style="color: var(--teal); font-weight: 600;">callan@wam.co.za</a> and we'll sort it out directly.
+      </p>
+
+      <!-- Demo-only bypass — remove once ready to launch for real -->
       <div class="demo-bypass">
         Payment isn't wired up yet. <a href="dashboard.html">Skip to dashboard (demo preview) →</a>
       </div>
@@ -602,7 +608,7 @@
   const db = getFirestore(app);
 
   let currentUser = null;
-  let selectedPlan = "upfront";
+  const selectedPlan = "upfront"; // per-module option removed — handled manually via email now
 
   function showError(msg) {
     const el = document.getElementById('auth-error');
@@ -665,9 +671,19 @@
    * based on whether their account is brand new and whether they've
    * already paid.
    */
+  function prefillOnboarding() {
+    const nameField = document.getElementById('ob-name');
+    const emailField = document.getElementById('ob-email');
+    if (currentUser) {
+      if (nameField && !nameField.value) nameField.value = currentUser.displayName || '';
+      if (emailField && !emailField.value) emailField.value = currentUser.email || '';
+    }
+  }
+
   function routeAfterAuth(isNew, data) {
     if (isNew) {
       // Never seen before — take them through onboarding + payment.
+      prefillOnboarding();
       goToStep(2);
       return;
     }
@@ -723,6 +739,7 @@
       await updateProfile(currentUser, { displayName: name });
       // A brand-new email/password signup always needs a fresh doc.
       await ensureUserDoc(currentUser, name);
+      prefillOnboarding();
       goToStep(2);
     } catch (err) {
       showError(err.message);
@@ -769,27 +786,22 @@
   };
 
   window.submitOnboarding = async function() {
-    const phone = document.getElementById('ob-phone').value.trim();
+    const name = document.getElementById('ob-name').value.trim();
+    const age = document.getElementById('ob-age').value;
+    const email = document.getElementById('ob-email').value.trim();
     const experience = document.getElementById('ob-experience').value;
     const gym = document.getElementById('ob-gym').value.trim();
 
     if (currentUser) {
       try {
         await updateDoc(doc(db, "users", currentUser.uid), {
-          phone, experience, gym
+          name, age, email, experience, gym
         });
       } catch (err) {
         console.error("Onboarding save failed:", err);
       }
     }
     goToStep(3);
-  };
-
-  window.selectPlan = function(plan) {
-    selectedPlan = plan;
-    document.querySelectorAll('.plan-card').forEach(card => {
-      card.classList.toggle('selected', card.dataset.plan === plan);
-    });
   };
 
   window.initiateYocoCheckout = async function() {
