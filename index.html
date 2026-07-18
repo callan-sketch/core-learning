@@ -45,10 +45,10 @@
   a { color: inherit; }
 
   /* ================= HEADER ================= */
-
   .site-nav {
     background: var(--navy);
     padding: 0 24px;
+    position: relative;
   }
 
   .site-nav-inner {
@@ -112,7 +112,9 @@
 
   @media (max-width: 720px) {
     .nav-toggle { display: block; }
+
     .site-links {
+      display: none;
       position: absolute;
       top: 60px;
       left: 0;
@@ -121,14 +123,12 @@
       flex-direction: column;
       gap: 0;
       padding: 8px;
-      display: none;
+      z-index: 100;
     }
+
     .site-links.open { display: flex; }
     .site-links a { padding: 12px 14px; }
-    .site-nav { position: relative; }
   }
-
-  /* ================= END SHARED HEADER ================= */
 
   /* ---------- Hero ---------- */
   .hero {
@@ -224,10 +224,7 @@
     justify-content: space-between;
   }
 
-  .course-intro-text h3 {
-    font-size: 20px;
-    margin: 0 0 8px;
-  }
+  .course-intro-text h3 { font-size: 20px; margin: 0 0 8px; }
 
   .course-intro-text p {
     color: var(--ink-mute);
@@ -237,15 +234,9 @@
     margin: 0;
   }
 
-  .course-intro-meta {
-    display: flex;
-    gap: 22px;
-    flex-shrink: 0;
-  }
+  .course-intro-meta { display: flex; gap: 22px; flex-shrink: 0; }
 
-  .meta-item {
-    text-align: center;
-  }
+  .meta-item { text-align: center; }
 
   .meta-item .num {
     font-family: 'Fraunces', serif;
@@ -255,11 +246,7 @@
     line-height: 1;
   }
 
-  .meta-item .label {
-    font-size: 11.5px;
-    color: var(--ink-mute);
-    margin-top: 4px;
-  }
+  .meta-item .label { font-size: 11.5px; color: var(--ink-mute); margin-top: 4px; }
 
   /* ---------- Module grid ---------- */
   .module-grid {
@@ -278,16 +265,9 @@
     flex-direction: column;
   }
 
-  .module-card-img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    display: block;
-  }
+  .module-card-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
 
-  .module-card-body {
-    padding: 18px 20px 20px;
-  }
+  .module-card-body { padding: 18px 20px 20px; }
 
   .module-card-num {
     font-size: 11px;
@@ -298,24 +278,12 @@
     margin: 0 0 6px;
   }
 
-  .module-card h3 {
-    font-size: 16px;
-    margin: 0 0 6px;
-  }
+  .module-card h3 { font-size: 16px; margin: 0 0 6px; }
 
-  .module-card p {
-    font-size: 13.5px;
-    color: var(--ink-mute);
-    line-height: 1.55;
-    margin: 0;
-  }
+  .module-card p { font-size: 13.5px; color: var(--ink-mute); line-height: 1.55; margin: 0; }
 
   /* ---------- Pricing ---------- */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-  }
+  .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
 
   .price-tier {
     background: var(--white);
@@ -342,18 +310,9 @@
     margin-bottom: 6px;
   }
 
-  .price-tier .price span {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ink-mute);
-  }
+  .price-tier .price span { font-size: 14px; font-weight: 500; color: var(--ink-mute); }
 
-  .price-tier .price-desc {
-    font-size: 13.5px;
-    color: var(--ink-mute);
-    line-height: 1.55;
-    margin-bottom: 18px;
-  }
+  .price-tier .price-desc { font-size: 13.5px; color: var(--ink-mute); line-height: 1.55; margin-bottom: 18px; }
 
   /* ---------- CTA banner ---------- */
   .cta-banner {
@@ -363,11 +322,7 @@
     text-align: center;
   }
 
-  .cta-banner h2 {
-    color: var(--white);
-    font-size: clamp(22px, 3vw, 28px);
-    margin: 0 0 12px;
-  }
+  .cta-banner h2 { color: var(--white); font-size: clamp(22px, 3vw, 28px); margin: 0 0 12px; }
 
   .cta-banner p {
     color: rgba(255,255,255,0.7);
@@ -377,12 +332,7 @@
     line-height: 1.6;
   }
 
-  .cta-buttons {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+  .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
   .btn {
     display: inline-flex;
@@ -407,26 +357,14 @@
     box-shadow: 0 4px 14px rgba(217,118,74,0.35);
   }
 
-  .btn-secondary {
-    background: rgba(255,255,255,0.1);
-    color: var(--white);
-    border: 1px solid rgba(255,255,255,0.35);
-  }
-
-  .btn-secondary:hover { background: rgba(255,255,255,0.18); }
-
-  @media (max-width: 900px) {
-    .module-grid { grid-template-columns: repeat(2, 1fr); }
-  }
+  @media (max-width: 900px) { .module-grid { grid-template-columns: repeat(2, 1fr); } }
 
   @media (max-width: 760px) {
     .pricing-grid { grid-template-columns: 1fr; }
     .course-intro { flex-direction: column; align-items: flex-start; }
   }
 
-  @media (max-width: 560px) {
-    .module-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 560px) { .module-grid { grid-template-columns: 1fr; } }
 
   /* ---------- Footer ---------- */
   .site-footer {
@@ -437,17 +375,12 @@
     font-size: 13px;
   }
 
-  .site-footer a {
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-  }
-
+  .site-footer a { color: rgba(255,255,255,0.75); text-decoration: none; }
   .site-footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
 <nav class="site-nav">
   <div class="site-nav-inner">
     <a class="site-logo" href="index.html">Core <span>Learning</span></a>
@@ -458,7 +391,6 @@
     </ul>
   </div>
 </nav>
-<!-- ================= END HEADER ================= -->
 
 <header class="hero">
   <div class="hero-inner">
@@ -580,7 +512,7 @@
 </section>
 
 <footer class="site-footer">
-  <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za.co.za</a></p>
+  <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
 </footer>
 
 <script>
