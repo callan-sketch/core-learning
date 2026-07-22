@@ -240,6 +240,29 @@
   }
 
   .site-footer a:hover { text-decoration: underline; }
+  /* ---------- Loading state ---------- */
+  .loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink-mute);
+    padding: 80px 24px;
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--line);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #page-content { display: none; }
 </style>
 </head>
 <body>
@@ -250,6 +273,13 @@
     <a class="nav-link" href="dashboard.html">← Back to dashboard</a>
   </div>
 </nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
 
 <header class="hero">
   <div class="hero-inner">
@@ -304,7 +334,7 @@
       <div class="resource-icon" style="background: var(--terracotta-soft);">⚖️</div>
       <span class="resource-tag tag-form">Screening</span>
       <h3>RED-S Screening</h3>
-      <p>Relative Energy Deficiency in Sport screening, based on the IOC REDs Consensus Statement, EDE-Q, LEAF-Q, and LEAM-Q.</p>
+      <p>Relative Energy Deficiency in Sport screening, based on the IOC REDs Consensus Statement, EDE-QS, LEAF-Q, and LEAM-Q.</p>
       <span class="go">Open form →</span>
     </a>
 
@@ -327,9 +357,40 @@
   </div>
 </section>
 
+</div>
+
 <footer class="site-footer">
   <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
 </footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+</script>
 
 </body>
 </html>
