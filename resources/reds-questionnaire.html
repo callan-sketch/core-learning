@@ -153,13 +153,13 @@ input:focus { border-color:var(--accent); background:#fff; }
   <div class="masthead">
     <div class="masthead-label">World Climbing · REDs Health Screening</div>
     <h1>Relative Energy Deficiency in Sport<br>Screening Questionnaire</h1>
-    <p>Based on IOC REDs Consensus Statement (2023) · EDE-Q · LEAF-Q · LEAM-Q · Biometric Assessment</p>
+    <p>Based on IOC REDs Consensus Statement (2023) · EDE-QS · LEAF-Q · LEAM-Q · Biometric Assessment</p>
   </div>
 
   <div class="step-track">
     <div class="step-pip active" id="pip-0"><span class="dot"></span>Profile</div>
     <div class="step-pip" id="pip-1"><span class="dot"></span>Biometrics</div>
-    <div class="step-pip" id="pip-2"><span class="dot"></span>EDE-Q</div>
+    <div class="step-pip" id="pip-2"><span class="dot"></span>EDE-QS</div>
     <div class="step-pip" id="pip-3"><span class="dot"></span>LEA</div>
     <div class="step-pip" id="pip-4"><span class="dot"></span>Declaration</div>
     <div class="step-pip" id="pip-5"><span class="dot"></span>Results</div>
@@ -168,7 +168,7 @@ input:focus { border-color:var(--accent); background:#fff; }
   <!-- ═══ STEP 0: PROFILE ═══ -->
   <div class="panel active" id="panel-0">
     <div class="section-hd">Step 1 of 5 — <span>Athlete Profile</span></div>
-    <div class="info-box"><strong>Before you begin:</strong> This questionnaire takes approximately 10–15 minutes. All answers relate to the past 28 days unless stated otherwise. All information is confidential.</div>
+    <div class="info-box"><strong>Before you begin:</strong> This questionnaire takes approximately 10–15 minutes. Recall periods vary by section (7 days for the EDE-QS, 12 months for the LEAF-Q) — each section states its own timeframe. All information is confidential.</div>
 
     <div class="q-block"><div class="q-text">Full Name <span style="color:#c94040">*</span></div>
       <input type="text" id="f-name" placeholder="Athlete's full name" oninput="chkP()"></div>
@@ -242,13 +242,13 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="nav-row">
       <button class="btn btn-ghost" onclick="go(0)">← Back</button>
-      <button class="btn btn-primary" id="btn-1-next" disabled onclick="go(2)">Next: EDE-Q →</button></div>
+      <button class="btn btn-primary" id="btn-1-next" disabled onclick="go(2)">Next: EDE-QS →</button></div>
   </div>
 
-  <!-- ═══ STEP 2: EDE-Q ═══ -->
+  <!-- ═══ STEP 2: EDE-QS ═══ -->
   <div class="panel" id="panel-2">
-    <div class="section-hd">Step 3 of 5 — <span>Eating Disorder Examination Questionnaire (EDE-Q 6.0)</span></div>
-    <div class="info-box"><strong>Instructions:</strong> These questions relate to the past <strong>28 days</strong>.</div>
+    <div class="section-hd">Step 3 of 5 — <span>Eating Disorder Examination Questionnaire – Short (EDE-QS)</span></div>
+    <div class="info-box"><strong>Instructions:</strong> These questions relate to the past <strong>7 days</strong>.</div>
     <div id="edeq-container"></div>
     <div class="nav-row">
       <button class="btn btn-ghost" onclick="go(1)">← Back</button>
@@ -260,7 +260,7 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="section-hd" id="lea-hd">Step 4 of 5 — <span>Low Energy Availability Assessment</span></div>
     <div id="lea-container"></div>
     <div class="nav-row">
-      <button class="btn btn-ghost" onclick="go(2)">← Back to EDE-Q</button>
+      <button class="btn btn-ghost" onclick="go(2)">← Back to EDE-QS</button>
       <button class="btn btn-primary" id="btn-3-next" disabled onclick="go(4)">Next: Declaration →</button></div>
   </div>
 
@@ -308,150 +308,166 @@ const S = {
   outcome:null
 };
 
-// ─── EDE-Q DATA ───────────────────────────────────────────────────────────────
-const DAY_OPTS  = ['0 days','1–5 days','6–12 days','13–15 days','16–22 days','23–27 days','Every day (28)'];
-const SEV_OPTS  = ['Not at all','Slightly','Moderately','Quite a bit','Considerably','Markedly','Extremely'];
-const FREQ_OPTS = ['0 times','1–5 times','6–12 times','13–15 times','16–22 times','23–27 times','28+ times'];
-const FREQ_IDS  = new Set([13,14,15,16,17,18]);
-const SEV_IDS   = new Set([21,22,23,24,25,26,27,28]);
+// ─── EDE-QS DATA (World Climbing / IFSC required instrument) ─────────────────
+// 12 items, 0-7 day recall for items 1-10, 4-point severity scale for 11-12.
+// Total score = simple sum of all 12 items (range 0-36). No subscales.
+const DAY_OPTS = ['0 days','1–2 days','3–5 days','6–7 days'];
+const SEV_OPTS = ['Not at all','Slightly','Moderately','Markedly'];
 
 const EDEQ = [
-  {id:1, sub:'restraint',      q:'On how many days have you been deliberately trying to limit the amount of food you eat to influence your shape or weight?'},
-  {id:2, sub:'restraint',      q:'On how many days have you gone for long periods (8+ waking hours) without eating in order to influence your shape or weight?'},
-  {id:3, sub:'restraint',      q:'On how many days have you tried to exclude from your diet any foods that you like in order to influence your shape or weight?'},
-  {id:4, sub:'restraint',      q:'On how many days have you tried to follow definite rules regarding your eating (e.g. a calorie limit) in order to influence your shape or weight?'},
-  {id:5, sub:'restraint',      q:'On how many days have you wanted your stomach to be empty?'},
-  {id:6, sub:'shape',          q:'On how many days has thinking about food, eating or calories made it difficult to concentrate on things you are interested in?'},
-  {id:7, sub:'eating_concern', q:'On how many days have you been afraid of losing control over your eating?'},
-  {id:8, sub:'shape',          q:'On how many days have you been concerned about other people seeing you eat?'},
-  {id:9, sub:'eating_concern', q:'On how many days has food, eating or calories taken up a lot of your time and headspace?'},
-  {id:10,sub:'shape',          q:'On how many days have you been afraid of gaining weight?'},
-  {id:11,sub:'shape',          q:'On how many days have you felt fat?'},
-  {id:12,sub:'weight_concern', q:'On how many days have you had a strong desire to lose weight?'},
-  {id:13,sub:null,             q:'Over the last 28 days, how many times have you eaten what others would regard as an unusually large amount of food?'},
-  {id:14,sub:null,             q:'On how many of those times did you have a sense of having lost control over your eating?'},
-  {id:15,sub:null,             q:'Over the last 28 days, on how many DAYS have overeating episodes occurred?'},
-  {id:16,sub:null,             q:'Over the last 28 days, how many times have you made yourself sick (vomited) to control your shape or weight?'},
-  {id:17,sub:null,             q:'Over the last 28 days, how many times have you taken laxatives to control your shape or weight?'},
-  {id:18,sub:null,             q:'Over the last 28 days, how many times have you exercised in a driven or compulsive way to burn calories or control your weight?'},
-  {id:19,sub:'eating_concern', q:'On how many days have you eaten in secret (not counting eating during a binge)?'},
-  {id:20,sub:'eating_concern', q:'On how many days have you felt guilty about eating (not counting eating during a binge)?'},
-  {id:21,sub:'eating_concern', q:'Has eating, food or calories been an important part of how you view yourself as a person?'},
-  {id:22,sub:'weight_concern', q:'Has your weight been an important part of how you view yourself as a person?'},
-  {id:23,sub:'shape',          q:'Has your shape been an important part of how you view yourself as a person?'},
-  {id:24,sub:'weight_concern', q:'How much would it upset you if you had to weigh yourself once a week for the next 4 weeks?'},
-  {id:25,sub:'weight_concern', q:'How dissatisfied have you been with your weight?'},
-  {id:26,sub:'shape',          q:'How dissatisfied have you been with your shape?'},
-  {id:27,sub:'shape',          q:'How uncomfortable have you felt seeing your body (e.g. mirror, shop windows, while undressing)?'},
-  {id:28,sub:'shape',          q:'How uncomfortable have you felt about others seeing your shape or figure?'},
+  {id:1,  scale:'day', q:'Have you been deliberately trying to limit the amount of food you eat to influence your weight or shape (whether or not you have succeeded)?'},
+  {id:2,  scale:'day', q:'Have you gone for long periods of time (e.g., 8 or more waking hours) without eating anything at all in order to influence your weight or shape?'},
+  {id:3,  scale:'day', q:'Has thinking about food, eating or calories made it very difficult to concentrate on things you are interested in (such as working, following a conversation, or reading)?'},
+  {id:4,  scale:'day', q:'Has thinking about your weight or shape made it very difficult to concentrate on things you are interested in (such as working, following a conversation, or reading)?'},
+  {id:5,  scale:'day', q:'Have you had a definite fear that you might gain weight?'},
+  {id:6,  scale:'day', q:'Have you had a strong desire to lose weight?'},
+  {id:7,  scale:'day', q:'Have you tried to control your weight or shape by making yourself sick (vomit) or taking laxatives?'},
+  {id:8,  scale:'day', q:'Have you exercised in a driven or compulsive way as a means of controlling your weight, shape, or body fat, or to burn off calories?'},
+  {id:9,  scale:'day', q:'Have you had a sense of having lost control over your eating (at the time that you were eating)?'},
+  {id:10, scale:'day', q:'On how many of these days (i.e. days on which you had a sense of having lost control over your eating) did you eat what other people would regard as an unusually large amount of food in one go?'},
+  {id:11, scale:'sev', q:'Has your weight or shape influenced how you think about (judge) yourself as a person?'},
+  {id:12, scale:'sev', q:'How dissatisfied have you been with your weight or shape?'},
 ];
 
+// EDE-QS validated screening cutoff (Prnjak et al.) — total score, out of 36
+const EDEQS_CUTOFF = 15;
+
 // ─── LEAF-Q DATA ─────────────────────────────────────────────────────────────
+// Item wording and answer options match the official LEAF-Q (Melin et al.) PDF
+// exactly. Verified: total cutoff ≥8 (of 49), Injury ≥2, GI ≥2, Menstrual ≥4
+// (Melin et al., 2014). NOT verified: the exact point value assigned to each
+// individual answer choice below — Melin's original per-item scoring key is
+// not publicly available, so points here are graduated best-effort estimates
+// (more days/frequency of disruption = more points), not the validated table.
 const LEAFQ = [
-  {id:'la1',sec:'injury',   secLabel:'Section A — Injuries',
-   q:'Have you had any injuries in the last 12 months that caused you to miss training or competition?',
-   opts:[{l:'No',v:0},{l:'Yes, 1 time',v:1},{l:'Yes, 2 or more times',v:2}]},
-  {id:'la2',sec:'injury',   secLabel:'Section A — Injuries',
-   q:'Have you ever had a stress fracture (bone injury from overuse), diagnosed by a doctor?',
-   opts:[{l:'No',v:0},{l:'Yes',v:2}]},
-  {id:'la3',sec:'injury',   secLabel:'Section A — Injuries',
-   q:'Have you had muscle or tendon injuries (e.g. Achilles, shin splints, knee pain) more than once?',
+  {id:'la1',sec:'injury',secLabel:'Section 1 — Injuries',
+   q:'Have you had absences from your training, or participation in competitions during the last year due to injuries?',
+   opts:[{l:'No, not at all',v:0},{l:'Yes, once or twice',v:1},{l:'Yes, three or four times',v:2},{l:'Yes, five times or more',v:3}]},
+  {id:'la2',sec:'injury',secLabel:'Section 1 — Injuries',
+   q:'If yes, for how many days absence from training or participation in competition due to injuries have you had in the last year?',
+   opts:[{l:'Not applicable / no absence',v:0},{l:'1–7 days',v:0},{l:'8–14 days',v:1},{l:'15–21 days',v:2},{l:'22 days or more',v:3}]},
+  {id:'lb1',sec:'gastro',secLabel:'Section 2 — Gastrointestinal Function',
+   q:'Do you feel gaseous or bloated in the abdomen, also when you do not have your period?',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
+  {id:'lb2',sec:'gastro',secLabel:'Section 2 — Gastrointestinal Function',
+   q:'Do you get cramps or stomach ache which cannot be related to your menstruation?',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
+  {id:'lb3',sec:'gastro',secLabel:'Section 2 — Gastrointestinal Function',
+   q:'How would you describe your normal stool?',
+   opts:[{l:'Normal (soft)',v:0},{l:'Diarrhoea-like (watery)',v:2},{l:'Hard and dry',v:2}]},
+  {id:'lc1',sec:'menstrual',secLabel:'Section 3 — Menstrual Function',
+   q:'How old were you when you had your first period?',
+   opts:[{l:'11 years or younger',v:0},{l:'12–14 years',v:0},{l:'15 years or older',v:1},{l:"I don't remember",v:0},{l:'I have never menstruated',v:4}]},
+  {id:'lc2',sec:'menstrual',secLabel:'Section 3 — Menstrual Function',
+   q:'How many periods have you had during the last 12 months?',
+   opts:[{l:'12 or more',v:0},{l:'9–11',v:1},{l:'6–8',v:2},{l:'3–5',v:3},{l:'0–2',v:4}]},
+  {id:'lc3',sec:'menstrual',secLabel:'Section 3 — Menstrual Function',
+   q:'Are your periods regular (every 28th to 34th day)?',
+   opts:[{l:'Yes, most of the time',v:0},{l:'No, mostly not',v:1}]},
+  {id:'lc4',sec:'menstrual',secLabel:'Section 3 — Menstrual Function',
+   q:'Have your periods ever stopped for 3 consecutive months or longer (besides pregnancy)?',
+   opts:[{l:'No, never',v:0},{l:'Yes, it has happened before',v:2},{l:'Yes, that\u2019s the situation now',v:4}]},
+  {id:'lc5',sec:'menstrual',secLabel:'Section 3 — Menstrual Function',
+   q:'Do you experience that your menstruation changes when you increase your exercise intensity, frequency, or duration?',
    opts:[{l:'No',v:0},{l:'Yes',v:1}]},
-  {id:'lb1',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
-   q:'Do you often have stomach ache or cramps unrelated to menstruation?',
-   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes (monthly)',v:1},{l:'Often (weekly or more)',v:2}]},
-  {id:'lb2',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
-   q:'Do you often experience bloating or flatulence?',
-   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2}]},
-  {id:'lb3',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
-   q:'Do you often experience diarrhoea during or after training?',
-   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2}]},
-  {id:'lb4',sec:'gastro',   secLabel:'Section B — Gastrointestinal Function',
-   q:'Do you often experience nausea or vomiting unrelated to illness?',
-   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2}]},
-  {id:'lc1',sec:'menstrual',secLabel:'Section C — Menstrual Function',
-   q:'How old were you when you had your first menstrual period?',
-   opts:[{l:'15 years or younger',v:0},{l:'16 years or older',v:1}]},
-  {id:'lc2',sec:'menstrual',secLabel:'Section C — Menstrual Function',
-   q:'How many menstrual periods have you had in the last 12 months?',
-   opts:[{l:'Regular (10–13 periods)',v:0},{l:'Slightly irregular (6–9 periods)',v:2},{l:'Very irregular or absent (0–5 periods)',v:4}]},
-  {id:'lc3',sec:'menstrual',secLabel:'Section C — Menstrual Function',
-   q:'Have you ever been without a period for 3 or more consecutive months (excluding pregnancy)?',
-   opts:[{l:'No',v:0},{l:'Yes, once',v:1},{l:'Yes, more than once',v:2}]},
-  {id:'lc4',sec:'menstrual',secLabel:'Section C — Menstrual Function',
-   q:'Has your period stopped or become irregular when you increased your training load?',
-   opts:[{l:'No / Not applicable',v:0},{l:'Yes',v:1}]},
-  {id:'lc5',sec:'menstrual',secLabel:'Section C — Menstrual Function',
-   q:'Are you currently using hormonal contraception?',
-   opts:[{l:'No',v:0},{l:'Yes (note: may mask menstrual irregularity)',v:0}]},
 ];
 
 // ─── LEAM-Q DATA ─────────────────────────────────────────────────────────────
+// Item wording matches the official LEAM-Q (Melin/Torstveit) PDF. Only the
+// sex-drive items (me1-me4 below) have a validated flagging rule — everything
+// else is descriptive context only, per the LEAM-Q validation research, and
+// carries no cutoff score (matches the app's existing "no validated cutoff"
+// framing for the total).
 const LEAMQ = [
   {id:'ma1',dom:'dizziness', domLabel:'Dizziness',
-   q:'How often do you experience dizziness during or immediately after exercise?',
-   opts:[{l:'Never',v:0},{l:'Rarely',v:1},{l:'Sometimes',v:2},{l:'Often',v:3}]},
+   q:'Do you feel dizzy or lightheaded when you rise quickly?',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
   {id:'ma2',dom:'dizziness', domLabel:'Dizziness',
-   q:'How often do you experience dizziness at rest?',
-   opts:[{l:'Never',v:0},{l:'Rarely',v:1},{l:'Sometimes',v:2},{l:'Often',v:3}]},
-  {id:'mb1',dom:'illness',   domLabel:'Illness Frequency',
-   q:'How often do you get sick (colds, infections) compared with other athletes you know?',
-   opts:[{l:'Less often',v:0},{l:'About the same',v:1},{l:'More often',v:2},{l:'Much more often',v:3}]},
-  {id:'mb2',dom:'illness',   domLabel:'Illness Frequency',
-   q:'When you get sick, how long do illnesses typically last?',
-   opts:[{l:'Normal duration',v:0},{l:'Slightly longer than expected',v:1},{l:'Much longer than expected',v:2}]},
-  {id:'mc1',dom:'fatigue',   domLabel:'Fatigue',
-   q:'How often do you feel lethargic or lacking energy during the day (outside of training)?',
-   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2},{l:'Almost always',v:3}]},
-  {id:'mc2',dom:'fatigue',   domLabel:'Fatigue',
-   q:'How often do you feel difficulty concentrating or mentally foggy?',
-   opts:[{l:'Never / Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2},{l:'Almost always',v:3}]},
-  {id:'md1',dom:'recovery',  domLabel:'Recovery',
-   q:'How well do you recover between training sessions?',
-   opts:[{l:'Very well',v:0},{l:'Adequately',v:1},{l:'Poorly',v:2},{l:'Very poorly',v:3}]},
-  {id:'md2',dom:'recovery',  domLabel:'Recovery',
-   q:'How often do your muscles feel excessively sore or stiff between sessions?',
-   opts:[{l:'Rarely',v:0},{l:'Sometimes',v:1},{l:'Often',v:2},{l:'Almost always',v:3}]},
-  {id:'me1',dom:'sex_drive', domLabel:'Sex Drive (Primary Clinical Indicator)',
-   q:'Compared to a year ago, how would you describe your sex drive / libido? (A1)',
-   opts:[{l:'Same or higher',v:0},{l:'Slightly lower',v:1},{l:'Noticeably lower',v:2},{l:'Much lower or absent',v:3}]},
-  {id:'me2',dom:'sex_drive', domLabel:'Sex Drive (Primary Clinical Indicator)',
-   q:'Over the last 3 months, have you noticed a decrease in sexual interest or arousal? (B1)',
-   opts:[{l:'No',v:0},{l:'Slight decrease',v:1},{l:'Moderate decrease',v:2},{l:'Marked decrease',v:3}]},
-  {id:'me3',dom:'sex_drive', domLabel:'Sex Drive (Primary Clinical Indicator)',
-   q:'Over the last 3 months, have you experienced any difficulty with erections? (B2)',
-   opts:[{l:'No difficulty',v:0},{l:'Occasional difficulty',v:1},{l:'Frequent difficulty',v:2},{l:'Almost always / unable',v:3}]},
+   q:'Do you experience problems with vision (blurring, seeing spots, tunnel vision, etc.)?',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
+  {id:'mb1',dom:'gastro', domLabel:'Gastrointestinal Function',
+   q:'Do you feel gaseous or bloated in the abdomen?',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
+  {id:'mb2',dom:'gastro', domLabel:'Gastrointestinal Function',
+   q:'Do you get cramps or stomach ache?',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
+  {id:'mc1',dom:'temperature', domLabel:'Body Temperature Regulation (at rest)',
+   q:'Are you very cold even when you are normally dressed?',
+   opts:[{l:'Rarely or never',v:0},{l:'Once or twice a week or more seldom',v:1},{l:'Several times a week',v:2},{l:'Yes, almost every day',v:3}]},
+  {id:'mc2',dom:'temperature', domLabel:'Body Temperature Regulation (at rest)',
+   q:'Do you dress more warmly than your companions regardless of the weather?',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, sometimes',v:1},{l:'Yes, almost always',v:2}]},
+  {id:'md1',dom:'fatigue',   domLabel:'Well-being — Fatigue',
+   q:'I feel overtired.',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
+  {id:'md2',dom:'fatigue',   domLabel:'Well-being — Fatigue',
+   q:"I'm unable to concentrate well.",
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several times a week',v:2},{l:'Yes, several times a day',v:3}]},
+  {id:'me_fit1',dom:'fitness', domLabel:'Well-being — Fitness',
+   q:'I feel vulnerable to injuries.',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, in some training periods',v:1},{l:'Yes, in most training periods',v:2},{l:'Yes, always',v:3}]},
+  {id:'me_fit2',dom:'fitness', domLabel:'Well-being — Fitness',
+   q:'I feel physically exhausted.',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several days a week',v:2},{l:'Yes, almost daily',v:3}]},
+  {id:'mf1',dom:'sleep', domLabel:'Sleep',
+   q:'I get enough sleep.',
+   opts:[{l:'Yes, almost every night',v:0},{l:'Yes, several nights a week',v:1},{l:'Yes, once or twice a week or more seldom',v:2},{l:'Rarely or never',v:3}]},
+  {id:'mf2',dom:'sleep', domLabel:'Sleep',
+   q:'I sleep restlessly.',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several nights a week',v:2},{l:'Yes, almost every night',v:3}]},
+  {id:'mg1',dom:'recovery', domLabel:'Recovery',
+   q:'I recover well physically.',
+   opts:[{l:'Yes, after almost all training sessions',v:0},{l:'Yes, often',v:1},{l:'Yes, sometimes',v:2},{l:'Rarely or never',v:3}]},
+  {id:'mg2',dom:'recovery', domLabel:'Recovery',
+   q:'My body feels strong.',
+   opts:[{l:'Yes, almost every day',v:0},{l:'Yes, several days a week',v:1},{l:'Yes, once or twice a week or more seldom',v:2},{l:'Rarely or never',v:3}]},
+  {id:'mh1',dom:'energy', domLabel:'Energy Levels',
+   q:'I feel very energetic in general.',
+   opts:[{l:'Yes, almost every day',v:0},{l:'Yes, several days a week',v:1},{l:'Yes, once or twice a week or more seldom',v:2},{l:'Rarely or never',v:3}]},
+  {id:'mh2',dom:'energy', domLabel:'Energy Levels',
+   q:'I feel down and less happy than I used to feel or would like to feel.',
+   opts:[{l:'Rarely or never',v:0},{l:'Yes, once or twice a week or more seldom',v:1},{l:'Yes, several days a week',v:2},{l:'Yes, almost every day',v:3}]},
+  // ── Sex drive — the ONE validated indicator in LEAM-Q ──────────────────────
+  // Flag = (me1 rated "low" or "not much interest") OR
+  //        (me2 = "rarely or never" AND me3 = "a little less" or "much less")
+  {id:'me1',dom:'sex_drive', domLabel:'Sex Drive (validated indicator)',
+   q:'In general, I would rate my sex drive as:',
+   opts:[{l:'High',v:0},{l:'Moderate',v:0},{l:'Low',v:2},{l:"I don't have much interest in sex",v:3}]},
+  {id:'me2',dom:'sex_drive', domLabel:'Sex Drive (validated indicator)',
+   q:'It is common to wake in the morning with an erection. Over the last month, how often has this happened?',
+   opts:[{l:'5–7 per week',v:0},{l:'3–4 per week',v:0},{l:'1–2 per week',v:1},{l:'Rarely or never',v:2}]},
+  {id:'me3',dom:'sex_drive', domLabel:'Sex Drive (validated indicator)',
+   q:'Compared to what you would consider normal for you, is your morning erection frequency:',
+   opts:[{l:'More often',v:0},{l:'About the same',v:0},{l:'A little less often',v:1},{l:'Much less often',v:2}]},
 ];
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
 function bmiCalc(w,h){ return (!w||!h)?null:w/((h/100)**2); }
-function bmiCatFn(b){
-  if(!b) return null;
-  if(b<17.5) return {l:'Severely Underweight',cls:'bmi-flag',flag:true};
-  if(b<18.5) return {l:'Underweight',      cls:'bmi-warn',flag:true};
-  if(b<25)   return {l:'Normal',               cls:'bmi-ok',  flag:false};
-  if(b<30)   return {l:'Overweight',         cls:'bmi-warn',flag:false};
-  return           {l:'Obese',                 cls:'bmi-flag',flag:true};
+// World Climbing Athlete of Concern thresholds (2026 REDs Health Screening Rules, Step 1)
+function bmiCatFn(b, age, sex){
+  if(!b || !age || !sex) return null;
+  const isAdult = age >= 18;
+  let threshold;
+  if(sex==='Male')   threshold = isAdult ? 18.5 : 18;
+  else               threshold = isAdult ? 18   : 17.5;
+  const flag = b < threshold;
+  return { l: flag ? `Below WC threshold (<${threshold})` : `Above WC threshold (≥${threshold})`, cls: flag?'bmi-flag':'bmi-ok', flag, threshold };
 }
 function bpCatFn(s,d){
   if(!s||!d) return null;
-  if(s<90||d<60)    return {l:'Hypotension',         flag:true};
-  if(s<=120&&d<=80) return {l:'Normal',               flag:false};
-  if(s<=129&&d<80)  return {l:'Elevated',             flag:false};
-  if(s<=139||d<=89) return {l:'Stage 1 Hypertension', flag:true};
-  return                   {l:'Stage 2 Hypertension', flag:true};
+  // World Climbing: severe hypotension = systolic AND diastolic both at/below 90/45
+  const flag = s<=90 && d<=45;
+  return { l: flag ? 'Severe hypotension (≤90/45) — WC threshold' : 'Above WC threshold', flag };
 }
-function hrCatFn(hr){
-  if(!hr) return null;
-  if(hr<40)  return {l:'Bradycardia',    flag:true};
-  if(hr<60)  return {l:'Low (athletic)', flag:false};
-  if(hr<=100) return {l:'Normal',         flag:false};
-  if(hr<=120) return {l:'Elevated',       flag:true};
-  return             {l:'Tachycardia',   flag:true};
+function hrCatFn(hr, age){
+  if(!hr || !age) return null;
+  const threshold = age >= 18 ? 40 : 50;
+  const flag = hr < threshold;
+  return { l: flag ? `Bradycardia (<${threshold}bpm) — WC threshold` : `Above WC threshold (≥${threshold}bpm)`, flag, threshold };
 }
-function getEdeqLabel(id, vi){
-  const opts = FREQ_IDS.has(id)?FREQ_OPTS: SEV_IDS.has(id)?SEV_OPTS: DAY_OPTS;
+function getEdeqLabel(item, vi){
+  const opts = item.scale==='sev' ? SEV_OPTS : DAY_OPTS;
   return opts[vi] ?? '';
 }
 
@@ -479,7 +495,7 @@ function chkP(){
 function calcBMI(){
   S.ht=parseFloat($('f-ht').value)||''; S.wt=parseFloat($('f-wt').value)||'';
   const bmi=bmiCalc(S.wt,S.ht), disp=$('bmi-display');
-  if(bmi){ const cat=bmiCatFn(bmi); $('bmi-val').textContent=bmi.toFixed(1); $('bmi-cat').textContent=cat.l; $('bmi-cat').className='bmi-cat '+cat.cls; disp.style.display='block'; }
+  if(bmi){ const cat=bmiCatFn(bmi, S.age, S.sex); $('bmi-val').textContent=bmi.toFixed(1); $('bmi-cat').textContent=cat.l; $('bmi-cat').className='bmi-cat '+cat.cls; disp.style.display='block'; }
   else disp.style.display='none';
 }
 function chkB(){
@@ -488,11 +504,11 @@ function chkB(){
   $('btn-1-next').disabled=!(S.ht&&S.wt&&S.hr&&S.sys&&S.dia);
 }
 
-// ─── EDE-Q BUILD ─────────────────────────────────────────────────────────────
+// ─── EDE-QS BUILD ─────────────────────────────────────────────────────────────
 function buildEdeq(){
   const c=$('edeq-container'); c.innerHTML='';
   EDEQ.forEach((item,i)=>{
-    const opts=FREQ_IDS.has(item.id)?FREQ_OPTS:SEV_IDS.has(item.id)?SEV_OPTS:DAY_OPTS;
+    const opts = item.scale==='sev' ? SEV_OPTS : DAY_OPTS;
     const ans=S.edeq[item.id]!==undefined;
     const div=document.createElement('div');
     div.className='q-block'+(ans?' answered':''); div.id='eq-'+item.id;
@@ -539,12 +555,11 @@ function updLeaBtn(){
 function chkD(){ S.sig=$('f-sig').value.trim(); $('btn-4-next').disabled=!S.sig; }
 
 // ─── SCORING ─────────────────────────────────────────────────────────────────
+// EDE-QS: simple sum of all 12 items, no subscales. Range 0-36. Flag if >= 15.
 function scoreEdeq(){
-  const subs={restraint:[],eating_concern:[],shape:[],weight_concern:[]};
-  EDEQ.forEach(i=>{ if(i.sub&&S.edeq[i.id]!==undefined) subs[i.sub].push(S.edeq[i.id]); });
-  const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
-  const r=avg(subs.restraint),ec=avg(subs.eating_concern),sc=avg(subs.shape),wc=avg(subs.weight_concern);
-  return {r,ec,sc,wc,global:(r!=null&&ec!=null&&sc!=null&&wc!=null)?(r+ec+sc+wc)/4:null};
+  let total=0;
+  EDEQ.forEach(i=>{ if(S.edeq[i.id]!==undefined) total+=S.edeq[i.id]; });
+  return { total, flagged: total>=EDEQS_CUTOFF };
 }
 function scoreLeaf(){
   let inj=0,gi=0,men=0;
@@ -553,13 +568,18 @@ function scoreLeaf(){
 }
 function scoreLeam(){
   let total=0; LEAMQ.forEach(i=>{ if(S.leam[i.id]!==undefined)total+=S.leam[i.id]; });
-  const a1=S.leam['me1']??0,b1=S.leam['me2']??0,b2=S.leam['me3']??0;
-  return {total,lowSD:a1>=2||(b1>=2&&b2>=1),a1,b1,b2};
+  // Validated flag (Melin/Torstveit LEAM-Q sex-drive indicator):
+  // (A) me1 = "Low" or "I don't have much interest in sex" (score 2 or 3), OR
+  // (B) me2 = "Rarely or never" (score 2) AND me3 = "A little less" or "Much less often" (score 1 or 2)
+  const me1=S.leam['me1'], me2=S.leam['me2'], me3=S.leam['me3'];
+  const branchA = me1!==undefined && me1>=2;
+  const branchB = me2!==undefined && me2>=2 && me3!==undefined && me3>=1;
+  return { total, lowSD: branchA || branchB, me1, me2, me3 };
 }
 function getOutcome(eq,leaf,leam){
-  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr);
+  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi, S.age, S.sex), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr, S.age);
   let flags=0,cautions=0;
-  if(eq.global!=null){ if(eq.global>=2.3)flags++; else if(eq.global>=1.5)cautions++; }
+  if(eq.flagged) flags++;
   if(bc?.flag)flags++; if(bpc?.flag)cautions++; if(hrc?.flag)cautions++;
   if(S.sex==='Female'&&leaf){ if(leaf.total>=8)flags++; else if(leaf.total>=5)cautions++; }
   if(S.sex==='Male'&&leam){ if(leam.lowSD)flags++; else if(leam.total>=10)cautions++; }
@@ -568,12 +588,12 @@ function getOutcome(eq,leaf,leam){
 
 // ─── BUILD SUBMISSION PAYLOAD ─────────────────────────────────────────────────
 function buildPayload(eq,leaf,leam,outcome){
-  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr);
+  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi, S.age, S.sex), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr, S.age);
   const OTITLES={green:'Low Risk — No Immediate Concerns',amber:'Moderate Risk — Practitioner Referral Recommended',red:'High Risk — Medical Clearance Required'};
 
-  // Build EDE-Q answer rows: label (e.g. "6-12 days") and raw score
+  // Build EDE-QS answer rows: label (e.g. "3-5 days") and raw score
   const edeqAnswers={};
-  EDEQ.forEach(item=>{ edeqAnswers['EDE-Q Q'+item.id]=getEdeqLabel(item.id,S.edeq[item.id]); edeqAnswers['EDE-Q Q'+item.id+' (score)']=S.edeq[item.id]; });
+  EDEQ.forEach(item=>{ edeqAnswers['EDE-QS Q'+item.id]=getEdeqLabel(item,S.edeq[item.id]); edeqAnswers['EDE-QS Q'+item.id+' (score)']=S.edeq[item.id]; });
 
   // LEA answers
   const leaAnswers={};
@@ -608,13 +628,9 @@ function buildPayload(eq,leaf,leam,outcome){
     diastolic      : S.dia,
     bpCategory     : bpc?.l || '',
     bpFlagged      : bpc?.flag ? 'YES' : 'NO',
-    // EDE-Q scores
-    edeqGlobal     : eq.global!=null ? +eq.global.toFixed(3) : '',
-    edeqRestraint  : eq.r!=null ? +eq.r.toFixed(3) : '',
-    edeqEatingConcern: eq.ec!=null ? +eq.ec.toFixed(3) : '',
-    edeqShapeConcern : eq.sc!=null ? +eq.sc.toFixed(3) : '',
-    edeqWeightConcern: eq.wc!=null ? +eq.wc.toFixed(3) : '',
-    edeqFlagged    : eq.global>=2.3 ? 'YES' : 'NO',
+    // EDE-QS score (World Climbing format — single total, no subscales)
+    edeqTotal      : eq.total,
+    edeqFlagged    : eq.flagged ? 'YES' : 'NO',
     // LEA scores
     leafTotal      : S.sex==='Female' ? leaf?.total : '',
     leafInjury     : S.sex==='Female' ? leaf?.inj   : '',
@@ -671,13 +687,12 @@ function buildResults(eq,leaf,leam,outcome){
     <div class="outcome-title">${OTITLES[outcome]}</div>
     <div class="outcome-body">${OBODIES[outcome]}</div></div>`;
 
-  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr);
-  const eqFl=eq.global>=2.3, eqCa=eq.global>=1.5&&!eqFl;
+  const bmi=bmiCalc(S.wt,S.ht), bc=bmiCatFn(bmi, S.age, S.sex), bpc=bpCatFn(S.sys,S.dia), hrc=hrCatFn(S.hr, S.age);
   let tiles=`<div class="scores-grid">
-    <div class="score-tile${eqFl?' flagged':eqCa?' caution':''}">
-      <div class="score-tile-label">EDE-Q Global</div>
-      <div class="score-tile-val${eqFl?' flagged':''}">${eq.global!=null?eq.global.toFixed(2):'—'}</div>
-      <div class="score-tile-cat">${eqFl?'⚠ Flagged (≥2.3)':eqCa?'△ Caution':'Within range'}</div></div>
+    <div class="score-tile${eq.flagged?' flagged':''}">
+      <div class="score-tile-label">EDE-QS Total</div>
+      <div class="score-tile-val${eq.flagged?' flagged':''}">${eq.total} / 36</div>
+      <div class="score-tile-cat">${eq.flagged?'⚠ Flagged (≥15)':'Within range'}</div></div>
     <div class="score-tile${bc?.flag?' flagged':''}">
       <div class="score-tile-label">BMI</div>
       <div class="score-tile-val">${bmi?bmi.toFixed(1):'—'}</div>
@@ -695,12 +710,7 @@ function buildResults(eq,leaf,leam,outcome){
   tiles+='</div>';
   $('scores-area').innerHTML=tiles;
 
-  let detail=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;">
-    <div class="section-hd" style="margin-bottom:14px;"><span>EDE-Q Subscale Scores</span></div>`;
-  [{l:'Restraint',v:eq.r},{l:'Eating Concern',v:eq.ec},{l:'Shape Concern',v:eq.sc},{l:'Weight Concern',v:eq.wc}].forEach(s=>{
-    detail+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13.5px;"><span style="color:var(--muted)">${s.l}</span><span style="font-family:'DM Mono',monospace;font-weight:600">${s.v!=null?s.v.toFixed(2):'—'}</span></div>`;
-  });
-  detail+='</div>';
+  let detail='';
   if(S.sex==='Female'&&leaf){
     detail+=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;"><div class="section-hd" style="margin-bottom:14px;"><span>LEAF-Q Subscores</span></div>
       ${[{l:'Injury',v:leaf.inj,c:'≥2',f:leaf.inj>=2},{l:'Gastrointestinal',v:leaf.gi,c:'≥2',f:leaf.gi>=2},{l:'Menstrual Function',v:leaf.men,c:'≥4',f:leaf.men>=4}].map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13.5px;"><span style="color:var(--muted)">${s.l} <span style="font-size:11px">(cutoff ${s.c})</span></span><span style="font-family:'DM Mono',monospace;font-weight:600;color:${s.f?'var(--red)':'inherit'}">${s.v}${s.f?' ⚠':''}</span></div>`).join('')}</div>`;
@@ -738,7 +748,7 @@ function dlPDF(){
   if(S.tester) addLine('Assessed by: '+S.tester,{size:9,color:[100,100,100]});
   y+=2;
 
-  const bmi=bmiCalc(S.wt,S.ht),bc=bmiCatFn(bmi),bpc=bpCatFn(S.sys,S.dia),hrc=hrCatFn(S.hr);
+  const bmi=bmiCalc(S.wt,S.ht),bc=bmiCatFn(bmi, S.age, S.sex),bpc=bpCatFn(S.sys,S.dia),hrc=hrCatFn(S.hr, S.age);
   addLine('BIOMETRICS',{size:8,bold:true,color:[100,100,100]}); rule();
   [['Height',S.ht+' cm'],['Weight',S.wt+' kg'],
    ['BMI',bmi?bmi.toFixed(1)+' — '+bc.l+(bc.flag?' [FLAG]':''):'—'],
@@ -761,19 +771,14 @@ function dlPDF(){
   y+=28;
 
   const eq=scoreEdeq();
-  addLine('EDE-Q RESULTS (cutoff: global score ≥ 2.3)',{size:8,bold:true,color:[100,100,100]}); rule();
-  [['Global Score',eq.global!=null?eq.global.toFixed(2)+' / 6.0':'—',eq.global>=2.3],
-   ['Restraint',eq.r!=null?eq.r.toFixed(2):'—',false],
-   ['Eating Concern',eq.ec!=null?eq.ec.toFixed(2):'—',false],
-   ['Shape Concern',eq.sc!=null?eq.sc.toFixed(2):'—',false],
-   ['Weight Concern',eq.wc!=null?eq.wc.toFixed(2):'—',false],
-  ].forEach(([k,v,fl])=>{ doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80); doc.text(k+':',ml,y); doc.setFont('helvetica','bold'); doc.setTextColor(fl?139:30,fl?26:30,fl?26:30); doc.text(v+(fl?' [FLAGGED]':''),ml+50,y); y+=5; });
+  addLine('EDE-QS RESULTS (cutoff: total ≥ 15)',{size:8,bold:true,color:[100,100,100]}); rule();
+  [['Total Score',eq.total+' / 36',eq.flagged]].forEach(([k,v,fl])=>{ doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80); doc.text(k+':',ml,y); doc.setFont('helvetica','bold'); doc.setTextColor(fl?139:30,fl?26:30,fl?26:30); doc.text(v+(fl?' [FLAGGED]':''),ml+50,y); y+=5; });
   y+=2;
 
   if(S.sex==='Female'){
     const lf=scoreLeaf();
     addLine('LEAF-Q RESULTS (cutoff: total ≥ 8)',{size:8,bold:true,color:[100,100,100]}); rule();
-    [['Total',lf.total+' / 49',lf.total>=8],['Injury subscale',lf.inj+' (cutoff ≥2)',lf.inj>=2],
+    [['Total',lf.total+' / 28 (approx. — see note)',lf.total>=8],['Injury subscale',lf.inj+' (cutoff ≥2)',lf.inj>=2],
      ['Gastrointestinal',lf.gi+' (cutoff ≥2)',lf.gi>=2],['Menstrual function',lf.men+' (cutoff ≥4)',lf.men>=4],
     ].forEach(([k,v,fl])=>{ doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80); doc.text(k+':',ml,y); doc.setFont('helvetica','bold'); doc.setTextColor(fl?139:30,fl?26:30,fl?26:30); doc.text(v+(fl?' [FLAGGED]':''),ml+55,y); y+=5; });
     y+=2;
