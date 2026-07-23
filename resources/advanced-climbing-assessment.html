@@ -90,9 +90,37 @@ iframe#gform {
 @media (max-width:480px){
   iframe#gform, .frame-loading { height:1500px; }
 }
+
+  .cl-loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #6b7480;
+    padding: 80px 24px;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .cl-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e2e0da;
+    border-top-color: #3a8a8c;
+    border-radius: 50%;
+    animation: cl-spin 0.7s linear infinite;
+  }
+  @keyframes cl-spin { to { transform: rotate(360deg); } }
+  #cl-page-content { display: none; }
 </style>
 </head>
 <body>
+<div class="cl-loading-state" id="cl-loading-state">
+  <div class="cl-spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="cl-page-content">
+
   <nav class="cl-banner">
   <div class="cl-banner-inner">
     <a class="cl-banner-logo" href="https://corelearning.co.za/dashboard.html">Core <span>Learning</span></a>
@@ -128,5 +156,36 @@ iframe#gform {
   <div class="footer-note">If the form doesn't load above, use "Open in New Tab" to complete it directly.</div>
 
 </div>
+
+</div>
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "https://corelearning.co.za/index.html";
+      return;
+    }
+    document.getElementById("cl-loading-state").style.display = "none";
+    document.getElementById("cl-page-content").style.display = "block";
+  });
+</script>
+
 </body>
 </html>
