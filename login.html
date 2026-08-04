@@ -612,7 +612,7 @@
 
       <div class="discount-row" id="discount-row">
         <input type="text" id="discount-input" placeholder="Enter code" maxlength="20" oninput="this.value = this.value.toUpperCase()">
-        <button class="btn btn-primary btn-sm" onclick="applyDiscount()">Apply</button>
+        <button class="btn btn-primary btn-sm" id="discount-apply-btn" onclick="applyDiscount()">Apply</button>
       </div>
 
       <div class="discount-feedback" id="discount-feedback"></div>
@@ -655,18 +655,15 @@
 
   let currentUser = null;
   const BASE_PRICE = 1800;
-  let finalPrice = BASE_PRICE;
-  let appliedCode = null;
 
-  // ── Discount codes ──────────────────────────────────────────────
-  // Codes are stored here as uppercase key → percentage off.
-  // maxUses: null = unlimited. A number = hard cap tracked in Firestore.
-  const DISCOUNT_CODES = {
-    "CORE20":  { pct: 20,  maxUses: null },
-    "CORE10":  { pct: 10,  maxUses: null },
-    "CORE100": { pct: 100, maxUses: 4    }
-  };
-  // ────────────────────────────────────────────────────────────────
+  // The discount is only ever a DISPLAY value here, refreshed from the
+  // validateDiscountCode Cloud Function. Nothing about it is trusted for
+  // the actual charge — createYocoCheckout re-validates the code itself
+  // server-side using the real Firestore discountCodes collection.
+  let appliedCode = null;
+  let previewFinalPrice = BASE_PRICE;
+
+  const FUNCTIONS_BASE = "https://us-central1-core-coaching-login.cloudfunctions.net";
 
   function showError(msg) {
     const el = document.getElementById('auth-error');
@@ -817,7 +814,7 @@
     goToStep(3);
   };
 
-  // ── Discount code logic ──────────────────────────────────────────
+  // ── Discount code — preview only, via validateDiscountCode ─────────
   window.toggleDiscountRow = function() {
     const row = document.getElementById('discount-row');
     const isOpen = row.classList.toggle('open');
@@ -827,9 +824,22 @@
     if (isOpen) document.getElementById('discount-input').focus();
   };
 
+  function resetPriceDisplay() {
+    const priceDisplay = document.getElementById('price-display');
+    const priceOriginal = document.getElementById('price-original');
+    previewFinalPrice = BASE_PRICE;
+    appliedCode = null;
+    priceDisplay.textContent = 'R' + BASE_PRICE.toLocaleString();
+    priceDisplay.classList.remove('discounted');
+    priceOriginal.classList.remove('visible');
+    document.getElementById('pay-btn').textContent = 'Continue to Yoco';
+  }
+
   window.applyDiscount = async function() {
-    const code = document.getElementById('discount-input').value.trim().toUpperCase();
+    const codeInput = document.getElementById('discount-input');
+    const code = codeInput.value.trim().toUpperCase();
     const feedback = document.getElementById('discount-feedback');
+    const applyBtn = document.getElementById('discount-apply-btn');
     const priceDisplay = document.getElementById('price-display');
     const priceOriginal = document.getElementById('price-original');
 
@@ -842,69 +852,54 @@
       return;
     }
 
-    const codeConfig = DISCOUNT_CODES[code];
+    applyBtn.disabled = true;
+    applyBtn.textContent = 'Checking…';
 
-    if (!codeConfig) {
+    try {
+      const response = await fetch(FUNCTIONS_BASE + '/validateDiscountCode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, plan: 'upfront' })
+      });
+      const result = await response.json();
+
+      if (!result.valid) {
+        feedback.classList.add('error');
+        feedback.textContent = result.message || "That code isn't valid.";
+        resetPriceDisplay();
+        return;
+      }
+
+      // Server-confirmed valid — update the PREVIEW only. The real
+      // amount is still recalculated independently when checkout is
+      // actually created.
+      appliedCode = result.code;
+      previewFinalPrice = result.finalAmountCents / 100;
+
+      priceOriginal.textContent = 'R' + BASE_PRICE.toLocaleString();
+      priceOriginal.classList.add('visible');
+
+      if (previewFinalPrice === 0) {
+        priceDisplay.textContent = 'Free';
+        priceDisplay.classList.add('discounted');
+        feedback.classList.add('success');
+        feedback.textContent = '✓ 100% discount applied — no payment needed.';
+        document.getElementById('pay-btn').textContent = 'Enrol for free';
+      } else {
+        priceDisplay.textContent = 'R' + previewFinalPrice.toLocaleString();
+        priceDisplay.classList.add('discounted');
+        feedback.classList.add('success');
+        feedback.textContent = '✓ Discount applied — you pay R' + previewFinalPrice.toLocaleString();
+        document.getElementById('pay-btn').textContent = 'Continue to Yoco';
+      }
+    } catch (err) {
+      console.error('Discount validation failed:', err);
       feedback.classList.add('error');
-      feedback.textContent = 'That code isn\'t valid — check the spelling and try again.';
-      appliedCode = null;
-      finalPrice = BASE_PRICE;
-      priceDisplay.textContent = 'R' + BASE_PRICE.toLocaleString();
-      priceDisplay.classList.remove('discounted');
-      priceOriginal.classList.remove('visible');
-      return;
-    }
-
-    // Check usage limit if one exists
-    if (codeConfig.maxUses !== null) {
-      try {
-        const codeDoc = await getDoc(doc(db, "discountCodes", code));
-        const usedCount = codeDoc.exists() ? (codeDoc.data().usedCount || 0) : 0;
-        if (usedCount >= codeConfig.maxUses) {
-          feedback.classList.add('error');
-          feedback.textContent = 'Sorry, this code has reached its maximum number of uses.';
-          return;
-        }
-      } catch (err) {
-        console.error("Failed to check discount code usage:", err);
-      }
-    }
-
-    // Code is valid and within limit — apply discount
-    const discountPct = codeConfig.pct;
-    const discount = Math.round(BASE_PRICE * discountPct / 100);
-    finalPrice = BASE_PRICE - discount;
-    appliedCode = code;
-
-    if (finalPrice === 0) {
-      priceOriginal.textContent = 'R' + BASE_PRICE.toLocaleString();
-      priceOriginal.classList.add('visible');
-      priceDisplay.textContent = 'Free';
-      priceDisplay.classList.add('discounted');
-      feedback.classList.add('success');
-      feedback.textContent = '✓ 100% discount applied — no payment needed.';
-      // Hide the Yoco button and show a direct enrol button instead
-      document.getElementById('pay-btn').textContent = 'Enrol for free';
-    } else {
-      priceOriginal.textContent = 'R' + BASE_PRICE.toLocaleString();
-      priceOriginal.classList.add('visible');
-      priceDisplay.textContent = 'R' + finalPrice.toLocaleString();
-      priceDisplay.classList.add('discounted');
-      feedback.classList.add('success');
-      feedback.textContent = '✓ ' + discountPct + '% discount applied — you pay R' + finalPrice.toLocaleString();
-    }
-
-    // Record discount code against this user in Firestore
-    if (currentUser) {
-      try {
-        await updateDoc(doc(db, "users", currentUser.uid), {
-          discountCode: code,
-          discountPct: discountPct,
-          finalPrice: finalPrice
-        });
-      } catch (err) {
-        console.error("Failed to save discount code:", err);
-      }
+      feedback.textContent = "Couldn't check that code right now — please try again.";
+      resetPriceDisplay();
+    } finally {
+      applyBtn.disabled = false;
+      applyBtn.textContent = 'Apply';
     }
   };
   // ────────────────────────────────────────────────────────────────
@@ -919,38 +914,6 @@
       return;
     }
 
-    // 100% discount — no payment needed, unlock directly
-    if (finalPrice === 0) {
-      btn.disabled = true;
-      status.textContent = "Setting up your course access…";
-      status.classList.add('visible');
-      try {
-        // Increment usage counter for this code in Firestore
-        const { setDoc: sd, increment } = await import("https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js");
-        const codeRef = doc(db, "discountCodes", appliedCode);
-        const codeSnap = await getDoc(codeRef);
-        const currentCount = codeSnap.exists() ? (codeSnap.data().usedCount || 0) : 0;
-        await setDoc(codeRef, { usedCount: currentCount + 1, lastUsed: serverTimestamp() }, { merge: true });
-
-        // Mark user as paid and unlock Module 1
-        await updateDoc(doc(db, "users", currentUser.uid), {
-          paid: true,
-          unlockedModules: [1],
-          "moduleProgress.module01.unlockedLessons": [1],
-          "moduleProgress.module01.completed": false,
-          paidAt: serverTimestamp(),
-          paymentMethod: "discount-100pct"
-        });
-        window.location.href = "dashboard.html";
-      } catch (err) {
-        console.error("Free enrolment failed:", err);
-        status.textContent = "Something went wrong — please email callan@wam.co.za for help.";
-        btn.disabled = false;
-      }
-      return;
-    }
-
-    // Paid checkout via Yoco
     btn.disabled = true;
     status.textContent = "Connecting to Yoco… this can take a few seconds on the first attempt.";
     status.classList.add('visible');
@@ -959,13 +922,15 @@
     const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     try {
-      const response = await fetch("https://us-central1-core-coaching-login.cloudfunctions.net/createYocoCheckout", {
+      // The server independently re-validates appliedCode and computes
+      // the real final amount — it never trusts previewFinalPrice or
+      // anything else calculated in this file.
+      const response = await fetch(FUNCTIONS_BASE + '/createYocoCheckout', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           uid: currentUser.uid,
           plan: "upfront",
-          amountCents: finalPrice * 100,
           discountCode: appliedCode || null
         }),
         signal: controller.signal
@@ -974,10 +939,20 @@
       clearTimeout(timeoutId);
       const data = await response.json();
 
-      if (!response.ok || !data.redirectUrl) {
+      if (!response.ok) {
+        // e.g. a code that became invalid between preview and checkout
+        // (someone else used up the last slot in the meantime)
+        status.textContent = data.error || "Couldn't start checkout — please try again.";
+        btn.disabled = false;
+        return;
+      }
+
+      if (!data.redirectUrl) {
         throw new Error("Checkout creation failed");
       }
 
+      // Covers both the "free via 100% code" case (server already marked
+      // the account paid and unlocked) and the normal Yoco redirect.
       window.location.href = data.redirectUrl;
     } catch (err) {
       clearTimeout(timeoutId);
