@@ -357,6 +357,56 @@
     box-shadow: 0 4px 14px rgba(217,118,74,0.35);
   }
 
+  /* ---------- Endorsed by ---------- */
+  .endorsed-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 56px;
+    text-align: center;
+  }
+
+  .endorsed-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 700;
+    margin: 0 0 18px;
+  }
+
+  .endorsed-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .endorsed-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink-mute);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+    opacity: 0.85;
+  }
+
+  .endorsed-item:hover { opacity: 1; }
+
+  .endorsed-item img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .endorsed-item .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--navy);
+  }
+
   @media (max-width: 900px) { .module-grid { grid-template-columns: repeat(2, 1fr); } }
 
   @media (max-width: 760px) {
@@ -510,6 +560,18 @@
     </div>
   </div>
 </section>
+
+<!-- ================= ENDORSED BY ================= -->
+<section class="endorsed-section">
+  <p class="endorsed-label">Endorsed by</p>
+  <div class="endorsed-logos">
+    <div class="endorsed-item">
+      <img src="images/wcc-logo.png" alt="Western Cape Climbing logo">
+      <span class="name">Western Cape Climbing</span>
+    </div>
+  </div>
+</section>
+<!-- ================= END ENDORSED BY ================= -->
 
 <footer class="site-footer">
   <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
