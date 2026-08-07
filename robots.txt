@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /index.html
+Allow: /login.html
+Allow: /images/
+
+Disallow: /dashboard.html
+Disallow: /module-01.html
+Disallow: /module-02.html
+Disallow: /module-03.html
+Disallow: /module-04.html
+Disallow: /module-05.html
+Disallow: /module-06.html
+Disallow: /module-07.html
+Disallow: /resources.html
+Disallow: /resources/
+
+Sitemap: https://corelearning.co.za/sitemap.xml
