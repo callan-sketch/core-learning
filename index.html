@@ -44,6 +44,7 @@
   }
 }
 </script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -397,6 +398,49 @@
     box-shadow: 0 4px 14px rgba(217,118,74,0.35);
   }
 
+  /* ---------- About the creator ---------- */
+  .about-creator {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .about-creator-text { flex: 1; min-width: 280px; }
+
+  .about-creator-text h3 {
+    font-size: 21px;
+    margin: 0 0 4px;
+  }
+
+  .about-creator-role {
+    font-size: 13px;
+    color: var(--teal);
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+
+  .about-creator-text p {
+    color: var(--ink-mute);
+    font-size: 14.5px;
+    line-height: 1.65;
+    margin: 0 0 14px;
+  }
+
+  .about-creator-text p:last-child { margin-bottom: 0; }
+
+  .about-creator-stats {
+    display: flex;
+    gap: 26px;
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+
   /* ---------- Endorsed by ---------- */
   .endorsed-section {
     max-width: 1100px;
@@ -452,6 +496,8 @@
   @media (max-width: 760px) {
     .pricing-grid { grid-template-columns: 1fr; }
     .course-intro { flex-direction: column; align-items: flex-start; }
+    .about-creator { flex-direction: column; }
+    .about-creator-stats { padding-top: 0; }
   }
 
   @media (max-width: 560px) { .module-grid { grid-template-columns: 1fr; } }
@@ -600,6 +646,32 @@
     </div>
   </div>
 </section>
+
+<!-- ================= ABOUT THE CREATOR ================= -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-head">
+    <p class="section-eyebrow">About the creator</p>
+  </div>
+  <div class="about-creator">
+    <div class="about-creator-text">
+      <h3>Chris Allan</h3>
+      <p class="about-creator-role">Sports Physiotherapist &amp; High-Performance Coach</p>
+      <p>Chris Allan is a sports physiotherapist, high-performance coach and educator with over 25 years of experience in sports rehabilitation, biomechanics and athlete development. He holds an MPhil in Sports Physiotherapy from the University of Cape Town, with distinction for his research, and regularly lectures and presents on sports physiotherapy, biomechanics and return to sport.</p>
+      <p>Chris is also deeply involved in climbing. He is the Director of the Western Cape Climbing High Performance Programme, where he works with developing and elite climbers, and the founder of Core High Performance Training, designing periodised training programmes for climbers. He has also worked as Physiotherapist, Performance and Medical Manager for the South African Youth Climbing Team at the World Championships.</p>
+    </div>
+    <div class="about-creator-stats">
+      <div class="meta-item">
+        <div class="num">25+</div>
+        <div class="label">Years experience</div>
+      </div>
+      <div class="meta-item">
+        <div class="num">MPhil</div>
+        <div class="label">Sports Physio, UCT</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================= END ABOUT THE CREATOR ================= -->
 
 <!-- ================= ENDORSED BY ================= -->
 <section class="endorsed-section">
