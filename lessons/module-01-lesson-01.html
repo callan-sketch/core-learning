@@ -197,7 +197,7 @@
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a class="site-logo" href="dashboard.html">Core <span>Learning</span></a>
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
     <button class="nav-link" id="logout-btn">Log out</button>
   </div>
 </nav>
@@ -210,7 +210,7 @@
 <div id="page-content">
 <div class="shell">
 
-  <a class="back-link" href="module-01.html">← Back to Module 01</a>
+  <a class="back-link" href="../module-01.html">← Back to Module 01</a>
 
   <div class="lesson-head">
     <p class="lesson-eyebrow">Module 01 · Lesson 01</p>
@@ -259,7 +259,7 @@
       <p>Movements of the human body are described in terms of the plane in which they occur. There are three planes and climbing is a multi-planar activity — coaches must understand all three:</p>
 
       <div class="lesson-figure">
-        <img src="images/lessons/module-01/anatomical-planes.png" alt="Diagram of the sagittal, coronal, and transverse anatomical planes">
+        <img src="../images/lessons/module-01/anatomical-planes.png" alt="Diagram of the sagittal, coronal, and transverse anatomical planes">
       </div>
 
       <div class="lesson-table-wrap">
@@ -276,7 +276,7 @@
       <h3 class="subsection-title">1.4 Key Joint Actions for Climbing Coaches</h3>
 
       <div class="lesson-figure">
-        <img src="images/lessons/module-01/joint-movements.png" alt="Diagram showing flexion, extension, rotation, abduction, adduction and circumduction of the body">
+        <img src="../images/lessons/module-01/joint-movements.png" alt="Diagram showing flexion, extension, rotation, abduction, adduction and circumduction of the body">
       </div>
 
       <div class="lesson-table-wrap">
@@ -316,7 +316,7 @@
       <h2 class="section-title">Section 3: The Skeletal System</h2>
 
       <div class="lesson-figure">
-        <img src="images/lessons/module-01/skeleton-anterior-posterior.png" alt="Full labeled human skeleton, anterior and posterior views">
+        <img src="../images/lessons/module-01/skeleton-anterior-posterior.png" alt="Full labeled human skeleton, anterior and posterior views">
       </div>
 
       <p>The human skeleton is a collection of approximately 206 differently shaped bones that align to create a protective framework for the body that muscles can connect to and provide movement from. The skeleton serves four major functions:</p>
@@ -379,7 +379,7 @@
       </div>
 
       <div class="lesson-figure">
-        <img src="images/lessons/module-01/vertebral-column.png" alt="Diagram of the vertebral column showing cervical, thoracic, lumbar, sacrum and coccygeal vertebrae">
+        <img src="../images/lessons/module-01/vertebral-column.png" alt="Diagram of the vertebral column showing cervical, thoracic, lumbar, sacrum and coccygeal vertebrae">
       </div>
 
       <h3 class="subsection-title">3.4 Key Bones for Climbing Coaches</h3>
@@ -439,7 +439,7 @@
       <p>Synovial joints are the most commonly occurring joint type and produce the greatest range of movement. There are six subtypes, all present in the climbing athlete's body:</p>
 
       <div class="lesson-figure">
-        <img src="images/lessons/module-01/synovial-joint-types.png" alt="Diagram of the six synovial joint types: gliding, hinge, pivot, condyloid, saddle, and ball and socket">
+        <img src="../images/lessons/module-01/synovial-joint-types.png" alt="Diagram of the six synovial joint types: gliding, hinge, pivot, condyloid, saddle, and ball and socket">
       </div>
 
       <div class="lesson-table-wrap">
@@ -511,7 +511,7 @@
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      window.location.href = "index.html";
+      window.location.href = "../index.html";
       return;
     }
     document.getElementById("loading-state").style.display = "none";
@@ -521,7 +521,7 @@
   document.getElementById("logout-btn").addEventListener("click", async () => {
     try {
       await signOut(auth);
-      window.location.href = "index.html";
+      window.location.href = "../index.html";
     } catch (err) {
       console.error("Sign out failed:", err);
     }
