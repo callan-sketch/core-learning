@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 01 · Lesson 01 — Introduction & Skeletal System | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  /* ---------- Loading state ---------- */
+  .loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink-mute);
+    padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--line);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  /* ---------- Header ---------- */
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  /* ---------- Shell ---------- */
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  /* ---------- Lesson header ---------- */
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  /* ---------- Content card ---------- */
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title {
+    font-size: 16px;
+    margin: 28px 0 12px;
+  }
+  .subsection-title:first-child { margin-top: 0; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  /* ---------- Tables ---------- */
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
+
+  /* ---------- Images ---------- */
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img {
+    max-width: 100%; height: auto;
+    border-radius: 10px; border: 1px solid var(--line);
+  }
+
+  /* ---------- Callouts ---------- */
+  .callout {
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 20px 0;
+  }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+
+  /* ---------- Quiz footer ---------- */
+  .quiz-footer {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="module-01.html">← Back to Module 01</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 01 · Lesson 01</p>
+    <h1>Introduction &amp; Skeletal System</h1>
+    <p class="lesson-sub">Foundations of Human Anatomy &amp; Physiology</p>
+  </div>
+
+  <div class="content-card">
+
+    <!-- SECTION 1 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 1: Anatomical Terminology &amp; Planes of Movement</h2>
+
+      <p>A common anatomical language allows coaches to communicate precisely with other health professionals (physiotherapists, sports physicians, and strength and conditioning coaches). It also helps when analysing movement and communicating observations about technique. All anatomical descriptions are made with reference to the anatomical position.</p>
+
+      <h3 class="subsection-title">1.1 The Anatomical Position</h3>
+      <p>The anatomical position is the standard reference point for all anatomical descriptions. It is achieved by:</p>
+      <ol>
+        <li>Standing upright with the head facing forward</li>
+        <li>Arms hanging by the sides</li>
+        <li>Palms of hands facing forward (anteriorly)</li>
+        <li>Feet slightly separated with toes pointing forward</li>
+      </ol>
+      <p>Using the anatomical position ensures that all movement descriptions are consistent and universally understood — essential when collaborating with physiotherapists and medical professionals.</p>
+
+      <h3 class="subsection-title">1.2 Anatomical Terms of Location</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Term</th><th>Definition &amp; Example</th></tr>
+          <tr><td>Anterior</td><td>The front — e.g. the chest is on the anterior surface of the body</td></tr>
+          <tr><td>Posterior</td><td>The back — e.g. the spine is on the posterior part of the trunk</td></tr>
+          <tr><td>Superior</td><td>Toward the head — e.g. the shoulder is superior to the hip</td></tr>
+          <tr><td>Inferior</td><td>Toward the feet — e.g. the knee is inferior to the hip</td></tr>
+          <tr><td>Lateral</td><td>Toward the side/outside — e.g. the little toe is on the lateral side of the foot</td></tr>
+          <tr><td>Medial</td><td>Toward the midline/inside — e.g. the big toe is medial to the little toe</td></tr>
+          <tr><td>Proximal</td><td>Nearer the trunk — e.g. the elbow is proximal to the wrist</td></tr>
+          <tr><td>Distal</td><td>Further from the trunk — e.g. the fingertips are distal to the wrist</td></tr>
+          <tr><td>Superficial</td><td>Nearer to the surface — e.g. the skin is more superficial than the muscle</td></tr>
+          <tr><td>Deep</td><td>Further from the surface — e.g. the bone is deep to the muscle</td></tr>
+          <tr><td>Prone</td><td>Face down — e.g. lying on the stomach</td></tr>
+          <tr><td>Supine</td><td>Face up — e.g. lying on the back</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">1.3 The Three Planes of Movement</h3>
+      <p>Movements of the human body are described in terms of the plane in which they occur. There are three planes and climbing is a multi-planar activity — coaches must understand all three:</p>
+
+      <div class="lesson-figure">
+        <img src="images/lessons/module-01/anatomical-planes.png" alt="Diagram of the sagittal, coronal, and transverse anatomical planes">
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Plane</th><th>Description</th><th>Climbing Examples</th></tr>
+          <tr><td>Sagittal plane</td><td>Passes from front to back, dividing the body into left and right halves. Front-to-back movements.</td><td>Pull-ups, squats, deadlifts, pushing movements, walking to the crag</td></tr>
+          <tr><td>Coronal plane (also known as frontal)</td><td>Passes from side to side, dividing the body into anterior and posterior halves. Side-to-side movements.</td><td>Lateral step-through on a traverse, arm flagging to the side, lateral raises</td></tr>
+          <tr><td>Transverse plane</td><td>Passes horizontally, dividing the body into upper and lower halves. Rotational movements.</td><td>Drop-knee (hip rotation), cross through moves, trunk twisting on steep terrain</td></tr>
+        </table>
+      </div>
+
+      <p>Most climbing movements are multi-planar. A single move on an overhang might simultaneously involve sagittal plane pulling, transverse plane hip rotation, and frontal plane flagging. This complexity is what makes climbing skill so challenging to learn and coach.</p>
+
+      <h3 class="subsection-title">1.4 Key Joint Actions for Climbing Coaches</h3>
+
+      <div class="lesson-figure">
+        <img src="images/lessons/module-01/joint-movements.png" alt="Diagram showing flexion, extension, rotation, abduction, adduction and circumduction of the body">
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Joint Action</th><th>Definition</th><th>Climbing Application</th></tr>
+          <tr><td>Flexion</td><td>Decreasing the angle between two bones (bending)</td><td>Pulling into a lock-off — elbow and shoulder flexion</td></tr>
+          <tr><td>Extension</td><td>Increasing the angle between two bones (straightening)</td><td>Straightening the arm on a rest jug — elbow extension</td></tr>
+          <tr><td>Abduction</td><td>Moving a limb away from the midline of the body</td><td>Raising the leg out to the side for a high foothold</td></tr>
+          <tr><td>Adduction</td><td>Moving a limb toward the midline of the body</td><td>Drawing the leg back toward the body after a high step</td></tr>
+          <tr><td>Rotation (medial/lateral)</td><td>Turning a limb around its long axis</td><td>Hip rotation in a drop-knee; shoulder rotation on sidepulls</td></tr>
+          <tr><td>Circumduction</td><td>Circular movement combining flex, extension, abduct, adduct</td><td>Warming up the shoulder before a session</td></tr>
+          <tr><td>Pronation</td><td>Rotating the forearm so palm faces down/backward</td><td>Pulling on a jug with palm facing toward the climber</td></tr>
+          <tr><td>Supination</td><td>Rotating the forearm so palm faces up/forward</td><td>Undercling position — forearm supinated</td></tr>
+          <tr><td>Dorsiflexion</td><td>Moving top of foot toward the shin</td><td>Toe hook — ankle maximally dorsiflexed to lock onto hold</td></tr>
+          <tr><td>Plantar flexion</td><td>Moving top of foot away from the shin (pointing toes)</td><td>Toe down — getting maximal pressure onto a small hold</td></tr>
+          <tr><td>Protraction</td><td>Forward movement of the scapula (rounding shoulders)</td><td>Common postural fault in climbers from dominant pulling</td></tr>
+          <tr><td>Retraction</td><td>Backward movement of the scapula (squaring shoulders)</td><td>Scapular retraction exercises for antagonist training</td></tr>
+          <tr><td>Depression</td><td>Downward movement of the scapula</td><td>Initiating a pull-up correctly — scapular depression before elbow flexion</td></tr>
+          <tr><td>Elevation</td><td>Upward movement of the scapula (shrugging)</td><td>A common fault when fatigued — 'shrugging' into lock-off positions</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 2: The Musculoskeletal System</h2>
+      <p>The musculoskeletal system is the combination of the muscular and skeletal systems working together. It includes the bones, muscles, tendons, and ligaments of the body, and provides shape, protection of internal organs, and the ability to move. Every time you sit, stand, walk, or climb you are using the musculoskeletal system. When it is injured or not functioning properly, our ability to complete even everyday tasks is greatly reduced — something every injured climber knows firsthand.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Insight</p>
+        <p>You don't need to memorise every anatomical term. What matters is understanding how the systems connect — so when a climber says their forearms 'pump out' on a route, you know what is happening physiologically and can adjust their training accordingly.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 3: The Skeletal System</h2>
+
+      <div class="lesson-figure">
+        <img src="images/lessons/module-01/skeleton-anterior-posterior.png" alt="Full labeled human skeleton, anterior and posterior views">
+      </div>
+
+      <p>The human skeleton is a collection of approximately 206 differently shaped bones that align to create a protective framework for the body that muscles can connect to and provide movement from. The skeleton serves four major functions:</p>
+      <ol>
+        <li><strong>Support</strong> — provides a framework to support the organs and tissues of the body</li>
+        <li><strong>Protection</strong> — protects internal organs (skull protects the brain; thorax protects heart and lungs)</li>
+        <li><strong>Movement</strong> — provides a framework for muscles to attach to; when muscles contract they pull on bones which act like levers to create movement</li>
+        <li><strong>Supply &amp; Storage</strong> — bones produce red blood cells (which transport oxygen) and white blood cells (which fight infection) in the bone marrow; they also store minerals including calcium</li>
+      </ol>
+
+      <h3 class="subsection-title">3.1 Bone Structure</h3>
+      <p>Bone is a rigid living organ with its own nerves and blood vessels. Its construction allows it to remain lightweight yet strong. Each bone is formed from multiple layers of three types of tissue:</p>
+      <ul>
+        <li><strong>Compact bone</strong> — heavy, dense, and strong; thickest at the bone's weakest point (usually the centre of the shaft); provides the primary structural strength</li>
+        <li><strong>Cancellous bone</strong> — has a honeycombed appearance; strong and hard without the weight of compact bone; found mainly in the ends of bones where it can absorb compressive loads</li>
+        <li><strong>Periosteum</strong> — the membrane of connective tissue lining the outer surface of all bones; houses nerves and blood vessels that nourish the underlying bone; acts as the attachment point for tendons and ligaments</li>
+      </ul>
+      <p>Bone (osseous tissue) is constantly being broken down and rebuilt throughout life. This process, known as bone remodelling, allows the skeleton to adapt to mechanical loading, repair micro damage, and regulate blood calcium levels. Bone remodelling is maintained by four specialised cell types:</p>
+      <ul>
+        <li><strong>Osteogenic Cells</strong> — stem-like precursors that divide to produce osteoblasts</li>
+        <li><strong>Osteoblasts</strong> — bone-building cells that initiate mineralisation (calcification)</li>
+        <li><strong>Osteocytes</strong> — mature bone cells embedded in the matrix; maintain daily bone metabolism</li>
+        <li><strong>Osteoclasts</strong> — resorb old bone during remodelling and fracture repair</li>
+      </ul>
+
+      <h3 class="subsection-title">3.2a The Axial and Appendicular Skeleton</h3>
+      <p>The skeleton is divided into two main groups:</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Division</th><th>Components &amp; Climbing Relevance</th></tr>
+          <tr><td>Axial skeleton</td><td>Skull, vertebral column, and bony thorax (ribs and sternum). Primary purpose: protect the central nervous system (brain and spinal cord) and vital organs. In climbing, the vertebral column must maintain stiffness and stability — particularly during overhanging climbing where spinal extension and rotation are key.</td></tr>
+          <tr><td>Appendicular skeleton</td><td>Shoulder girdle, arms, hands, pelvic girdle, legs, and feet. Primary purpose: allow movement through the joints of the arms and legs. In climbing, the shoulder girdle, upper limb, and finger bones are the most critical structures. The pelvis and lower limb drive footwork, high steps, heel hooks, and drop-knee technique.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">3.2b Types of Bone</h3>
+      <p>Bones are classified by shape into five categories, each suited to specific functions:</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Term</th><th>Definition / Description</th></tr>
+          <tr><td>Long bones</td><td>Cylindrical shaft with expanded ends acting as levers. Examples: femur, humerus, ulna.</td></tr>
+          <tr><td>Short bones</td><td>Small, cube-shaped, high surface area for shock absorption and articulation. Examples: carpals, tarsals.</td></tr>
+          <tr><td>Flat bones</td><td>Thin and often curved; protect organs and provide large muscle attachment areas. Examples: ribs, ilium, scapula, skull.</td></tr>
+          <tr><td>Irregular bones</td><td>Complex shapes for multiple functions. Examples: vertebrae, pubis, maxilla.</td></tr>
+          <tr><td>Sesamoid bones</td><td>Embedded within tendons to protect joints and improve mechanical advantage. Example: patella.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">3.3 The Vertebral Column</h3>
+      <p>The vertebral column (spine) is a key part of the axial skeleton and a common site of injury and postural issues. It is made up of 33 individual vertebrae grouped into five sections:</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Section</th><th>Number of Vertebrae &amp; Coaching Notes</th></tr>
+          <tr><td>Cervical (C1–C7)</td><td>7 vertebrae — forms the neck. C1 and C2 allow head rotation. Climbers frequently develop stiffness here from looking up repeatedly.</td></tr>
+          <tr><td>Thoracic (T1–T12)</td><td>12 vertebrae — articulates with the rib cage. Thoracic extension and rotation are critical for efficient movement on overhangs and drop-knee technique. Loss of thoracic mobility is one of the most common postural findings in climbers.</td></tr>
+          <tr><td>Lumbar (L1–L5)</td><td>5 vertebrae — the lower back. Must remain stable during climbing to transfer force between upper and lower body. Excessive flexion under load (rounding) is a common technical fault and injury risk.</td></tr>
+          <tr><td>Sacrum (S1–S5)</td><td>5 fused vertebrae — connects the spine to the pelvis. Important in transmitting ground reaction forces up through the kinetic chain.</td></tr>
+          <tr><td>Coccyx</td><td>4 fused vertebrae — the tailbone. Minimal functional role in climbing.</td></tr>
+        </table>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="images/lessons/module-01/vertebral-column.png" alt="Diagram of the vertebral column showing cervical, thoracic, lumbar, sacrum and coccygeal vertebrae">
+      </div>
+
+      <h3 class="subsection-title">3.4 Key Bones for Climbing Coaches</h3>
+      <p>The following bones are of particular importance for understanding climbing movement and injury risk:</p>
+      <ul>
+        <li><strong>Phalanges (finger bones)</strong> — the proximal, middle, and distal phalanges form the three segments of each finger. The flexor tendons run along the palm-side surface, held in place by annular pulleys. These are the most commonly injured structures in climbing.</li>
+        <li><strong>Metacarpals</strong> — the hand bones connecting the fingers to the wrist. Important in grip and load transfer.</li>
+        <li><strong>Carpals</strong> — eight wrist bones that allow the wrist's wide range of motion (flexion, extension, abduction, adduction, and circumduction).</li>
+        <li><strong>Radius and Ulna</strong> — the two forearm bones. The radius is the insertion point for the biceps brachii, making it central to elbow flexion during pulling.</li>
+        <li><strong>Humerus</strong> — the upper arm bone connecting the shoulder to the elbow; attachment site for the deltoid, biceps, and rotator cuff muscles.</li>
+        <li><strong>Scapula (shoulder blade)</strong> — a highly mobile bone providing the attachment for 17 muscles; its stability is critical for shoulder health in climbers.</li>
+        <li><strong>Clavicle</strong> — the collarbone; connects the scapula to the sternum and contributes to the shoulder girdle complex.</li>
+        <li><strong>Femur</strong> — the thigh bone; the largest bone in the body; its range of motion at the hip determines a climber's ability to high-step and drop-knee effectively.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 4: Connective Tissue &amp; Joints — Types, Structure &amp; Movement</h2>
+
+      <h3 class="subsection-title">4.1 Cartilage</h3>
+      <p>Cartilage is an avascular connective tissue composed of collagen and elastic fibres within a gel-like matrix. It has three main roles: supporting soft tissues, providing smooth articulating surfaces, and enabling long-bone growth at the epiphyseal plates.</p>
+      <ul>
+        <li><strong>Hyaline Cartilage</strong> — moderate collagen content. Found on articular surfaces of bones in synovial joints and on ribs attaching to the sternum.</li>
+        <li><strong>Elastic Cartilage</strong> — higher proportion of elastic fibres; resilient and flexible. Found in the external ear and epiglottis.</li>
+        <li><strong>Fibrocartilage</strong> — very dense collagen fibres; tough and resistant to compression. Found in intervertebral discs and the pubic symphysis.</li>
+      </ul>
+
+      <h3 class="subsection-title">4.2 Fasciae</h3>
+      <p>Fasciae are sheets of fibrous connective tissue that envelop muscles and organs, providing insulation and protection from trauma. They also form conduits for nerves, blood vessels, and lymphatics. Recent research has highlighted fasciae as important sensory organs — richly innervated with proprioceptors and nociceptors — meaning that fascial health is directly relevant to movement quality and pain perception.</p>
+      <ul>
+        <li><strong>Superficial Fascia</strong> — separates skin from underlying muscles.</li>
+        <li><strong>Deep Fascia</strong> — lines the body wall and limbs, compartmentalising muscle groups.</li>
+      </ul>
+
+      <h3 class="subsection-title">4.3 Tendons &amp; Ligaments</h3>
+      <p>Both tendons and ligaments are dense fibrous connective tissues, but they connect different structures and perform distinct mechanical roles:</p>
+      <ul>
+        <li><strong>Tendons</strong> — attach muscle to bone. They transmit the force generated by muscle contraction to the skeleton, producing movement. The Achilles tendon, for example, connects the gastrocnemius and soleus to the calcaneus.</li>
+        <li><strong>Ligaments</strong> — attach bone to bone, providing static joint stability and guiding joint motion within safe ranges. Damage to ligaments (sprains) compromises joint stability.</li>
+      </ul>
+
+      <h3 class="subsection-title">4.4 Joints</h3>
+      <p>A joint (or articulation) is the point where two or more bones meet. Joints allow movement while also needing to provide stability. Joints that prioritise stability sacrifice mobility, and those that prioritise mobility sacrifice stability. There are three main categories of joint, classified according to the degree of movement they allow:</p>
+
+      <h3 class="subsection-title">4.4a Joint Classifications</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Joint Type</th><th>Structure</th><th>Movement &amp; Climbing Example</th></tr>
+          <tr><td>Fibrous (Synarthrosis)</td><td>Bones joined by fibrous tissue</td><td>No movement — e.g. skull sutures. Not relevant to climbing movement but important for head protection.</td></tr>
+          <tr><td>Cartilaginous (Amphiarthrosis)</td><td>Bones joined by cartilage</td><td>Very limited movement — e.g. sternocostal joints and intervertebral discs. The discs act as shock absorbers during landing and high-impact moves.</td></tr>
+          <tr><td>Synovial (Diarthrosis)</td><td>Fluid-filled joint capsule</td><td>Greatest range of movement — e.g. shoulder, elbow, hip, knee, finger joints. The most important joint type for climbing coaches to understand.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">4.4b The Six Types of Synovial Joint</h3>
+      <p>Synovial joints are the most commonly occurring joint type and produce the greatest range of movement. There are six subtypes, all present in the climbing athlete's body:</p>
+
+      <div class="lesson-figure">
+        <img src="images/lessons/module-01/synovial-joint-types.png" alt="Diagram of the six synovial joint types: gliding, hinge, pivot, condyloid, saddle, and ball and socket">
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Synovial Joint Type</th><th>Movement Allowed</th><th>Climbing Example</th></tr>
+          <tr><td>Gliding (plane)</td><td>Sliding/gliding — side to side and back and forth</td><td>Between the carpal bones of the wrist; between the tarsal bones of the ankle</td></tr>
+          <tr><td>Hinge</td><td>Flexion and extension only</td><td>Elbow (humeroulnar joint); interphalangeal finger joints; knee</td></tr>
+          <tr><td>Pivot</td><td>Rotation around a single axis</td><td>Atlas-axis joint (C1-C2) — allows head rotation; radioulnar joint — allows forearm pronation/supination</td></tr>
+          <tr><td>Condyloid (ellipsoid)</td><td>Flexion, extension, abduction, adduction, circumduction</td><td>Metacarpophalangeal joints (knuckles) — the joints between hand bones and finger bones</td></tr>
+          <tr><td>Saddle</td><td>Side to side and back and forth; no rotation</td><td>Carpometacarpal joint of the thumb — critical for pinch grip strength</td></tr>
+          <tr><td>Ball and socket</td><td>Multi-directional: flexion, extension, abduction, adduction, rotation, circumduction</td><td>Shoulder (glenohumeral) and hip — the two most mobile joints; critical for all overhead reaching and high-stepping</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">4.4c Anatomy of a Synovial Joint</h3>
+      <p>Understanding the internal structure of synovial joints helps coaches explain why injury occurs and what factors limit range of movement. The six key characteristics of synovial joints are:</p>
+      <ol>
+        <li><strong>Articular cartilage</strong> — the smooth, white, shiny tissue covering the joint surfaces of bones; reduces friction and protects bone tissue. Cartilage has poor blood supply and heals slowly when damaged.</li>
+        <li><strong>Articular capsule</strong> — strong fibrous tissue surrounding the joint; adds stability and contains the joint cavity. Provides the housing for synovial fluid.</li>
+        <li><strong>Synovial fluid</strong> — a yellowish oily fluid that lubricates the articulating surfaces, forms a cushion between them, provides nutrients for cartilage, and absorbs debris produced by friction.</li>
+        <li><strong>Ligaments</strong> — strong fibrous bands connecting bone to bone; control movement and provide stability. In the fingers, the collateral ligaments prevent sideways displacement of the joint.</li>
+        <li><strong>Articular discs (menisci)</strong> — found in some synovial joints such as the knee; made of tough fibrous tissue to absorb shock and maintain joint stability.</li>
+        <li><strong>Bursae</strong> — closed sacs filled with synovial fluid found in some joints (notably the shoulder); reduce friction between tendons and bones. Bursitis — inflammation of these sacs — is a common shoulder complaint in climbers.</li>
+      </ol>
+
+      <h3 class="subsection-title">4.4d Factors Limiting Synovial Joint Range of Movement</h3>
+      <p>Three factors determine the range of motion available at any synovial joint:</p>
+      <ul>
+        <li><strong>Joint articulation</strong> — how the bones of the joint fit together. The shoulder socket is shallow (allowing high mobility but requiring muscular support); the hip socket is deep (providing stability but limiting range).</li>
+        <li><strong>Joint ligaments and capsule</strong> — restrict unwanted movement while allowing normal motion. Tight or shortened ligaments reduce flexibility; overstretched ligaments reduce stability and increase injury risk.</li>
+        <li><strong>Condition of muscles and tendons around the joint</strong> — muscles and tendons provide dynamic stabilisation and protection. The rotator cuff, for example, is the primary stabiliser of the shallow shoulder joint. When these structures are weak or have been overstretched, injury risk increases significantly. Shortened muscles and their fasciae limit ROM (Range of Motion) on the opposite side of the joint (e.g., tight hip flexors limit hip extension).</li>
+        <li><strong>Temperature</strong> — warm tissues are more extensible. A proper warm-up increases ROM by raising local tissue temperature.</li>
+        <li><strong>Injury/Inflammation</strong> — swelling, scar tissue, and pain guarding all reduce ROM around an injured joint.</li>
+        <li><strong>Training history</strong> — regular flexibility training (static, dynamic, PNF) can increase ROM through both neural adaptation and structural changes in connective tissue.</li>
+      </ul>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Key Climbing Joints</p>
+        <p>The finger PIP (Proximal Interphalangeal) and DIP (Distal Interphalangeal) joints (hinge), the shoulder glenohumeral joint (ball and socket), the elbow (hinge), and the hip joint (ball and socket) are the four highest-priority joints for climbing coaches to understand. Most climbing injuries involve one of these four joints or the connective tissue immediately surrounding them.</p>
+      </div>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Lesson 01 and Module 1 — proceed to the Lesson 01 quiz when ready.</p>
+      <a class="quiz-btn" href="https://forms.gle/2eh7jKJHA3YyPm2U7" target="_blank" rel="noopener">Take the quiz →</a>
+      <p class="quiz-note">Once you've completed the quiz you'll get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next lesson will open.</p>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
