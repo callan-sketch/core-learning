@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 01 · Lesson 04 — Finger & Hand Structure for Climbers | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 8px; }
+  .lesson-tagline { color: var(--ink-mute); font-size: 14px; font-style: italic; margin: 0 0 32px; }
+
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 24px 0 10px; }
+  .subsection-title:first-child { margin-top: 0; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img {
+    max-width: 100%; height: auto;
+    border-radius: 10px; border: 1px solid var(--line);
+  }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+  .fig-narrow img { max-width: 320px; }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+
+  .further-reading {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .further-reading h4 {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 12px;
+  }
+  .further-reading .ref { margin-bottom: 10px; font-size: 13.5px; }
+  .further-reading .ref-title { color: var(--ink); }
+  .further-reading .ref a { display: block; word-break: break-all; }
+
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+  .quiz-pending {
+    display: inline-block; padding: 13px 28px; border-radius: 999px;
+    background: var(--line); color: var(--ink-mute);
+    font-size: 14.5px; font-weight: 600;
+  }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-01.html">← Back to Module 01</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 01 · Lesson 04</p>
+    <h1>Finger &amp; Hand Structure for Climbers</h1>
+    <p class="lesson-sub">Foundations of Human Anatomy &amp; Physiology</p>
+    <p class="lesson-tagline">How the fingers are built, how they bend, and how load actually travels through them when climbing.</p>
+  </div>
+
+  <div class="content-card">
+
+    <p>Climbing places more demand on the fingers than almost any other sport. Yet very few coaches or athletes have a clear picture of what is actually happening inside a finger when it's loaded on a small edge. This lesson builds that picture — not at a medical or clinical level, but at the level a coach needs: enough to understand why certain grip positions and hold sizes carry more risk than others, and why training and injury management decisions are built on this anatomy in the first place.</p>
+
+    <div class="section-block">
+      <h2 class="section-title">1. The Bones and Joints of the Wrist, Thumb &amp; Fingers</h2>
+
+      <h3 class="subsection-title">The Wrist</h3>
+      <p>The wrist is not a single joint but a complex of eight small bones called the carpal bones, arranged in two rows between the forearm and the hand. The proximal row (closer to the forearm) consists of the scaphoid, lunate, triquetrum, and pisiform. The distal row (closer to the fingers) consists of the trapezium, trapezoid, capitate, and hamate. These bones articulate with each other and with the radius and ulna of the forearm to allow the wrist to flex, extend, deviate side to side, and rotate in a limited arc.</p>
+      <p>For climbers, the most clinically relevant carpal bone is the scaphoid, which sits at the thumb side of the wrist and is vulnerable to injury in hard landings. The hamate, on the small-finger side, has a bony projection called the hook of the hamate that sits directly beneath the palm; this is a known stress site in climbers who load the pinky-side of the hand repeatedly in specific grip positions.</p>
+      <p>Another structure worth knowing is the <strong>triangular fibrocartilage complex (TFCC)</strong> — a disc of cartilage sitting on the small-finger side of the wrist, between the ulna and the carpal bones. It acts as a cushion and stabiliser for the wrist during load-bearing and rotational movements. In climbing, the TFCC is most commonly stressed during sidepull and undercling moves, and in any position where the wrist is loaded while twisted or deviated toward the small-finger side (ulnar deviation).</p>
+      <p>The way the wrist joint complex is constructed forms the carpal tunnel. The carpal tunnel acts as the wrist-level equivalent of a pulley system — a fibrous roof (the flexor retinaculum) holds the long flexor tendons close to the wrist as they pass through on their way to the fingers.</p>
+      <p>Wrist position during a grip directly affects the mechanical advantage of those tendons — a flexed wrist reduces grip strength significantly, which is why coaches cue a neutral or slightly extended wrist on the wall.</p>
+
+      <h3 class="subsection-title">The Thumb</h3>
+      <p>The thumb differs from the fingers in two important ways: it has only two phalanges (proximal and distal) rather than three, and its base joint — the carpometacarpal (CMC) joint — is a saddle joint rather than a hinge. This saddle shape gives the thumb its unique ability to move across the palm (opposition), which is essential for pinch grips, side-pulls, and underclings.</p>
+      <p>The joints of the thumb are:</p>
+      <ul>
+        <li><strong>CMC (carpometacarpal joint)</strong> — the base joint at the wrist. A saddle joint allowing multi-directional movement. The most mobile joint in the thumb, and the one most commonly affected by overuse in climbers who train pinch grip heavily.</li>
+        <li><strong>MCP (metacarpophalangeal joint)</strong> — the large knuckle of the thumb. A hinge joint with some side-to-side mobility. Stabilised by the ulnar collateral ligament (UCL), which is the structure injured in a classic "skier's thumb" or gamekeeper's thumb — a ligament sprain coaches should be aware of when athletes fall on an outstretched thumb.</li>
+        <li><strong>IP (interphalangeal joint)</strong> — the single middle joint of the thumb, equivalent to the PIP of a finger. Involved in pinch and compression moves.</li>
+      </ul>
+
+      <h3 class="subsection-title">The Fingers</h3>
+      <p>Each finger — excluding the thumb — is built from three small bones called phalanges: the proximal phalanx (closest to the hand), the middle phalanx, and the distal phalanx (the fingertip bone). These are connected by two main hinge joints and attached to the hand at a third joint at their base, making three load-bearing joints per finger.</p>
+      <ul>
+        <li><strong>MCP (metacarpophalangeal joint)</strong> — the large knuckle where the finger meets the hand. This joint flexes during all grip types and also allows a small amount of side-to-side spread (abduction and adduction), which is relevant in wide pinches and palming.</li>
+        <li><strong>PIP (proximal interphalangeal joint)</strong> — the middle joint of the finger. The largest and most powerful of the finger joints, and the joint that bends most during a crimp grip. The PIP joint is surrounded by a robust capsule and supported by the volar plate on its palm side — a thick fibrocartilaginous structure that resists hyperextension. This joint is the most commonly injured in climbing, primarily through pulley strain and volar plate sprains. The A2 pulley, which sits just proximal to this joint, is the most frequently ruptured pulley in climbing.</li>
+        <li><strong>DIP (distal interphalangeal joint)</strong> — the small joint closest to the fingertip. This joint bends most during an open-hand or drag grip, drawing the fingertip into greater flexion while the PIP remains relatively more extended. The A4 pulley crosses this region and, though less commonly injured than A2, can be strained in climbers who favour a very open-hand position on small edges.</li>
+      </ul>
+      <p>The amount each of these joints bends changes depending on grip type, and that difference matters. A tighter PIP bend (as in crimping) concentrates more force through the structures near the base of the finger — particularly the A2 pulley and the flexor digitorum superficialis tendon, which inserts on the middle phalanx. A deeper DIP curl (as in open-hand or drag positions) shifts more of the demand toward the fingertip end of the tendon system, loading the flexor digitorum profundus, which runs all the way to the distal phalanx, and the A4 pulley.</p>
+      <p>Coaches should think of grip type as a decision about where load gets concentrated, not simply a stronger or weaker hand position. Both crimping and open-hand positions carry injury risk — they just load different structures. Understanding which structures are under load in each grip type is essential for programming decisions, injury prevention conversations, and client education.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-01/hand-wrist-bones.png" alt="Diagram of the bones of the hand and wrist, including carpal bones, metacarpals, and phalanges">
+        <p class="fig-caption">The bones of the hand and wrist</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">2. The Muscles of the Hand and Wrist</h2>
+      <p>A common misconception is that finger strength comes from the hand itself. In fact, the primary muscles responsible for finger flexion — the flexor digitorum superficialis and flexor digitorum profundus — sit in the forearm, transmitting their force to the fingers via long tendons that run through the carpal tunnel. The wrist flexors and extensors are also forearm muscles, which is why forearm fatigue and pump are the dominant limiting factor in climbing endurance.</p>
+      <p>The hand does contain its own intrinsic muscles, but their role is largely one of stability and fine motor control rather than raw force production. The lumbricals, for example, assist in coordinating MCP flexion with IP extension — a subtle but important action in transitioning between grip positions. The interossei muscles spread and draw the fingers together, contributing to the precise finger placement climbers develop over years of practice.</p>
+      <p>The thenar muscles at the base of the thumb and the hypothenar muscles at the base of the small finger round out the intrinsic group, controlling thumb opposition and small-finger positioning respectively. Coaches should understand that training grip strength is fundamentally forearm training, while hand stability and precision develop through movement practice and accumulated volume on the wall.</p>
+
+      <div class="lesson-figure fig-narrow">
+        <img src="../images/lessons/module-01/lumbrical-muscles.png" alt="Diagram of the lumbrical muscles of the hand">
+        <p class="fig-caption">The lumbrical muscles — intrinsic hand muscles coordinating MCP flexion with IP extension</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">3. The Flexor Tendons — Where Finger Strength Actually Comes From</h2>
+      <p>A detail that surprises many climbers: there is no muscle tissue inside the fingers themselves. Every bit of finger-closing force is generated by muscles located in the forearm, and transmitted down into the fingers through long tendons.</p>
+      <p>Two tendons run down the front of each finger and are directly responsible for finger flexion:</p>
+      <ul>
+        <li><strong>FDP (flexor digitorum profundus)</strong> — runs the full length of the finger and attaches at the fingertip bone. This tendon generates the majority of pulling force and is the primary tendon loaded when hanging on small edges.</li>
+        <li><strong>FDS (flexor digitorum superficialis)</strong> — attaches partway down the finger, near the PIP joint. This tendon plays more of a stabilising role, helping to share and distribute load rather than generate raw pulling force alone.</li>
+      </ul>
+      <p>Both tendons are under significant tension during almost any climbing grip, but the FDP in particular is subjected to very high force when hanging or pulling on small holds — which is exactly why finger and forearm training protocols are built around loading this tendon system progressively rather than all at once.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-01/flexor-tendons.png" alt="Diagram of the FDS and FDP flexor tendons running through the hand and fingers">
+        <p class="fig-caption">The flexor digitorum superficialis and profundus tendons</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">4. The Pulley System — Why This Is Where Most Finger Injuries Happen</h2>
+      <p>If the flexor tendons are the cables that pull the finger closed, the pulleys are the structures that keep those cables running close against the bone rather than lifting away from it. Pulleys are small, tough rings of connective tissue wrapped around the tendon at intervals down the finger.</p>
+      <p>Without a functioning pulley system, a tendon under load would lift away from the bone in a straight line between its two attachment points — a phenomenon referred to as bowstringing. Healthy pulleys prevent this by holding the tendon tight against the finger's natural curve.</p>
+      <p>Several pulleys run down each finger, but three are of particular relevance to climbers:</p>
+      <ul>
+        <li><strong>A2 pulley</strong> — located near the base of the finger. This is the single most commonly injured pulley in climbing, because it experiences the highest mechanical stress during crimped grip positions.</li>
+        <li><strong>A3 pulley</strong> — a smaller pulley located close to the PIP joint.</li>
+        <li><strong>A4 pulley</strong> — located roughly midway down the finger.</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-01/pulley-system.png" alt="Diagram of the A1-A5 annular pulleys of the finger and a cross-section showing the flexor tendon held against the bone">
+        <p class="fig-caption">The annular pulley system, A1–A5</p>
+      </div>
+
+      <p>The reason the A2 pulley in particular takes the brunt of climbing injuries comes down to grip mechanics: a tightly flexed PIP joint (as seen in crimping) dramatically increases the angle — and therefore the force — the tendon exerts against the A2 pulley as it changes direction around the joint. This is a mechanical reality of the crimp position, not simply a matter of an individual climber's strength or technique being inadequate.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Takeaway</p>
+        <p>Understanding the pulley system explains why a full crimp grip carries meaningfully more structural risk than an open-hand grip on the same hold — the difference is not just about which grip 'feels stronger', but about how much force each grip routes through the A2 pulley specifically.</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">5. How Load Actually Travels Through the Finger</h2>
+      <p>Putting the previous three sections together gives a coach a genuinely useful model: when a climber weights a hold, force does not simply arrive at the fingertip and stop there. It travels through a chain of structures, each of which experiences a different share of that load depending on grip position and hold size.</p>
+      <p>In simplified form, the chain runs: hold → fingertip (DIP) → middle joint (PIP) → A2 pulley → flexor tendon → forearm muscle.</p>
+      <p>A few practical translations follow directly from this chain:</p>
+      <ul>
+        <li>Smaller edges increase tendon and pulley force for the same body weight, because less surface area is available to distribute the same load.</li>
+        <li>A deeper PIP bend (crimping) increases stress specifically at the A2 pulley.</li>
+        <li>A deeper DIP curl increases demand on the FDP tendon specifically.</li>
+        <li>An unstable or inconsistent joint angle during a hold makes force distribution unpredictable from repetition to repetition, which is part of why controlled, repeatable positions matter in structured training.</li>
+      </ul>
+      <p>This model is also exactly why sensible finger training progresses gradually. Tendons and pulleys adapt to load over time through slow structural changes such as increased collagen density, but that adaptation happens far more slowly than muscular strength gains. A climber can become stronger in their forearm muscles well before their pulleys and tendons have caught up — which is precisely the mismatch that leads to injury when hold size or intensity increases too quickly.</p>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">Summary</h2>
+      <p>A climbing finger is a simple but genuinely high-stress structure: three bones, two major bending joints, two flexor tendons doing all of the pulling work, and a series of pulleys holding those tendons in place. Grip type and hold size directly determine how load is distributed across this system — and because the pulleys and tendons adapt to load far more slowly than muscle does, this anatomy is the foundation for every sensible decision a coach makes about grip progression, hold selection, and training load.</p>
+
+      <div class="further-reading">
+        <h4>Further Reading</h4>
+        <div class="ref">
+          <div class="ref-title">Max Climbing — "Finger Structure for Climbers: Bones, Tendons &amp; Pulleys (Simple Overview)"</div>
+          <a href="https://www.maxclimbing.com/blogs/knowledge-hub-anatomy/finger-structure-for-climbers-bones-tendons-pulleys-simple-overview" target="_blank" rel="noopener">maxclimbing.com/blogs/knowledge-hub-anatomy/finger-structure-for-climbers-bones-tendons-pulleys-simple-overview</a>
+        </div>
+        <div class="ref">
+          <div class="ref-title">TrainingBeta — Dr. Tyler Nelson, "The Simplest Finger Training Program"</div>
+          <a href="https://www.trainingbeta.com/the-simplest-finger-training-program/" target="_blank" rel="noopener">trainingbeta.com/the-simplest-finger-training-program</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Lesson 04 — proceed to the Lesson 04 quiz when ready.</p>
+      <!-- QUIZ LINK NEEDED: no quiz link was found in the source document for this lesson.
+           Replace the span below with:
+           <a class="quiz-btn" href="QUIZ_URL_HERE" target="_blank" rel="noopener">Take the quiz →</a> -->
+      <span class="quiz-pending">Quiz link coming soon</span>
+      <p class="quiz-note">Once you have completed the quiz you'll get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next lesson will open.</p>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
