@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 02 — Biomechanics & Movement Science | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .why-box {
+    background: var(--teal-soft);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .why-box p { color: #205c5d; margin: 0; font-size: 14px; }
+  .why-box .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #205c5d; margin: 0 0 8px; }
+
+  .objectives-list { margin: 0 0 28px; padding-left: 22px; }
+  .objectives-list li { font-size: 14.5px; margin-bottom: 6px; }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 24px 0 10px; }
+  .subsection-title:first-child { margin-top: 0; }
+  .sub-label { font-size: 14px; font-weight: 700; color: var(--navy); margin: 18px 0 6px; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
+
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+  .fig-pair { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin: 20px 0; }
+  .fig-pair .fig-item { flex: 1; min-width: 200px; text-align: center; }
+  .fig-pair .fig-item img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+
+  .summary-block {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-top: 44px;
+  }
+  .summary-block h2 { color: var(--white); font-size: 22px; margin: 0 0 4px; border: none; padding: 0; }
+  .summary-block .summary-sub { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 22px; }
+  .summary-block h3 { color: var(--white); font-size: 15px; margin: 26px 0 12px; }
+  .takeaway-list { margin: 0; padding-left: 20px; }
+  .takeaway-list li { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.6; margin-bottom: 10px; }
+  .looking-ahead {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+  .looking-ahead .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta); margin: 0 0 8px; }
+  .looking-ahead p { color: rgba(255,255,255,0.85); margin: 0; font-size: 13.5px; }
+
+  .glossary-wrap { border-radius: 10px; overflow: hidden; margin-bottom: 8px; background: rgba(255,255,255,0.04); }
+  table.glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.glossary-table td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  table.glossary-table tr:last-child td { border-bottom: none; }
+  table.glossary-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  table.glossary-table td:first-child { font-weight: 700; color: var(--terracotta); white-space: nowrap; width: 150px; }
+  table.glossary-table td:last-child { color: rgba(255,255,255,0.82); }
+
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+    .summary-block { padding: 24px 20px; }
+    table.glossary-table td:first-child { width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-02.html">← Back to Module 02</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 02</p>
+    <h1>Biomechanics &amp; Movement Science</h1>
+    <p class="lesson-sub">Written Guide + Quiz</p>
+  </div>
+
+  <div class="content-card">
+
+    <div class="why-box">
+      <p class="label">Why It Matters</p>
+      <p>Biomechanics uses physics and engineering concepts to describe how forces act on and within the body during movement. As a climbing coach, understanding biomechanics allows you to identify inefficient movement, predict injury risk, and provide precise technical feedback. Every coaching cue you give — 'push through your feet', 'drop your hip', 'keep your elbow in' — is rooted in biomechanical principles.</p>
+    </div>
+
+    <h2 class="section-title">Learning Objectives</h2>
+    <p>By the end of this module, you will be able to:</p>
+    <ul class="objectives-list">
+      <li>Identify the three planes of motion and axes of rotation and relate them to climbing movements</li>
+      <li>Explain the concept of levers, torque, and force production in the context of the human body</li>
+      <li>Describe and coach the seven fundamental movement patterns relevant to climbing</li>
+      <li>Conduct a basic postural assessment and identify common movement dysfunctions in climbers</li>
+      <li>Apply the principles of stability, mobility, and motor learning to coaching practice</li>
+    </ul>
+
+    <h3 class="subsection-title">Branches of Biomechanics</h3>
+    <div class="lesson-table-wrap">
+      <table class="lesson-table">
+        <tr><th>Branch</th><th>Description</th></tr>
+        <tr><td>Statics</td><td>Studies bodies in constant motion with no acceleration — foundational to postural and structural analysis.</td></tr>
+        <tr><td>Dynamics</td><td>Involves acceleration; studies systems with changing velocity including running, jumping, and sport-specific movement.</td></tr>
+        <tr><td>Kinetics</td><td>The study of forces causing motion (F = ma, torque, GRF).</td></tr>
+        <tr><td>Kinematics</td><td>The description and appearance of motion, independent of forces — angles, velocity, displacement.</td></tr>
+      </table>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">Section 1: Planes of Motion &amp; Axes of Rotation</h2>
+      <p>Human movement occurs in three-dimensional space. To describe and analyse movement precisely, we use three anatomical planes and their corresponding axes of rotation. A solid grasp of these concepts allows coaches to describe movements clearly and identify when a climber is compensating outside their optimal movement plane.</p>
+
+      <h3 class="subsection-title">1.1 The Three Planes</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Plane</th><th>Divides the Body Into</th><th>Example Movements</th></tr>
+          <tr><td>Sagittal Plane</td><td>Left and right halves</td><td>Pull-up, squat, heel raise, bicep curl — forward/backward movements</td></tr>
+          <tr><td>Frontal (Coronal) Plane</td><td>Front and back halves</td><td>Side step, lateral raise, hip abduction — side-to-side movements</td></tr>
+          <tr><td>Transverse (Horizontal) Plane</td><td>Upper and lower halves</td><td>Hip rotation, shoulder rotation, twisting drop-knee — rotational movements</td></tr>
+        </table>
+      </div>
+      <p>Climbing is a highly multi-planar activity. A single sequence on a route may involve a sagittal plane pull, a transverse plane hip rotation (drop-knee), and a frontal plane reach. Coaches who understand planes of motion can quickly identify when a move is failing because the athlete is attempting it in the wrong plane.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/anatomical-planes.png" alt="Diagram of the sagittal, coronal, and transverse anatomical planes">
+      </div>
+
+      <h3 class="subsection-title">1.2 Axes of Rotation</h3>
+      <p>Each plane has a corresponding axis around which rotational movements occur:</p>
+      <ul>
+        <li><strong>Transverse Axis (Left-Right axis)</strong> — perpendicular to the sagittal plane; allows flexion and extension around it (e.g. elbow bend)</li>
+        <li><strong>Frontal (Anteroposterior) axis</strong> — perpendicular to the frontal (coronal) plane; allows abduction and adduction around it (e.g. leg raising to the side)</li>
+        <li><strong>Longitudinal (Vertical) axis</strong> — perpendicular to the transverse plane; allows rotation around it (e.g. trunk twist for a cross-through)</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/axes-of-rotation.png" alt="Diagram of the longitudinal, transverse, and frontal axes of rotation">
+      </div>
+
+      <h3 class="subsection-title">1.3 Anatomical Terminology for Movement</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Term</th><th>Definition</th><th>Climbing Example</th></tr>
+          <tr><td>Flexion</td><td>Decreasing the angle at a joint</td><td>Pulling into a lock-off (elbow flexion)</td></tr>
+          <tr><td>Extension</td><td>Increasing the angle at a joint</td><td>Straightening the arm on a rest position</td></tr>
+          <tr><td>Abduction</td><td>Moving a limb away from the midline</td><td>Raising the leg to the side for a high foothold</td></tr>
+          <tr><td>Adduction</td><td>Moving a limb toward the midline</td><td>Drawing the arm in during a lat-dominant move</td></tr>
+          <tr><td>Rotation (Internal/External)</td><td>Rotating a limb along its long axis</td><td>Shoulder external rotation on a pinch hold</td></tr>
+          <tr><td>Pronation / Supination</td><td>Forearm rotation (palm down / palm up)</td><td>Switching grip orientation on a sloper vs. undercling</td></tr>
+          <tr><td>Dorsiflexion / Plantarflexion</td><td>Ankle up / ankle down</td><td>Precise foot placement; heel hook (plantarflexed); toe hook (dorsiflexed)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">Section 2: Basic Biomechanical Concepts</h2>
+
+      <h3 class="subsection-title">2.1 Lever Systems</h3>
+      <p>Biomechanics at the joint level is governed by lever mechanics. Every joint in the body acts as a lever system, with bones as levers, joints as fulcrums, and muscles providing the force. Understanding this helps coaches explain why technique matters — small changes in body position can dramatically alter the mechanical demand on muscles and joints.</p>
+      <p>A lever consists of a rigid bar (bone), a fulcrum (joint), an effort force (muscle), and a resistance force (weight or external load). There are three classes of lever, all of which are present in the human body:</p>
+
+      <p class="sub-label">First Class — Fulcrum between effort and resistance</p>
+      <p>Example: the atlanto-occipital joint (head nodding) — the neck muscles pull on the back of the skull to balance the face/skull weight in front.</p>
+      <div class="fig-pair">
+        <div class="fig-item"><img src="../images/lessons/module-02/lever-first-class-neck.png" alt="Diagram of the first class lever at the atlanto-occipital joint"></div>
+        <div class="fig-item"><img src="../images/lessons/module-02/lever-first-class-abstract.png" alt="Abstract diagram of a first class lever"></div>
+      </div>
+
+      <p class="sub-label">Second Class — Resistance between fulcrum and effort</p>
+      <p>Example: calf raise — the ball of the foot is the fulcrum, body weight the resistance, and the calf muscle the effort. Mechanically advantageous (force magnified).</p>
+      <div class="fig-pair">
+        <div class="fig-item"><img src="../images/lessons/module-02/lever-second-class-abstract.png" alt="Abstract diagram of a second class lever"></div>
+        <div class="fig-item"><img src="../images/lessons/module-02/lever-second-class-calf.png" alt="Diagram of the second class lever at the ankle during a calf raise"></div>
+      </div>
+
+      <p class="sub-label">Third Class — Effort between fulcrum and resistance</p>
+      <p><strong>MOST COMMON</strong> in the body. Example: bicep curl — elbow joint is fulcrum, biceps pulls just below the elbow, and the dumbbell is at the hand. Mechanically disadvantageous (speed favoured over force).</p>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/lever-third-class-bicep.png" alt="Diagram of the third class lever at the elbow during a bicep curl">
+      </div>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Insight</p>
+        <p>Because most muscles operate as third-class levers, the body must generate far more force than the load being lifted. This is why body position on the wall matters so much: moving the centre of mass closer to the wall reduces the effect of gravity and torque on the climber's body and decreases the muscular effort required to maintain position. Teaching climbers to 'stay close to the wall' is a biomechanical principle.</p>
+      </div>
+
+      <h3 class="subsection-title">2.2 Torque</h3>
+      <p>Torque (moment of force) is the rotational force applied around an axis. It is calculated as:</p>
+      <p><strong>Torque = Force × Moment Arm (perpendicular distance from axis to line of force)</strong></p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/torque-diagram.png" alt="Diagram showing how torque increases as the moment arm increases for the same force">
+      </div>
+
+      <p>In practical coaching terms: the further a body part is from a joint axis, the greater the torque — and therefore the greater the muscular demand.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/lever-arm-climbing-examples.png" alt="Diagram of short, moderate, and long lever arm examples on the climbing wall">
+      </div>
+
+      <h3 class="subsection-title">2.3 Ground Reaction Forces and the Wall</h3>
+      <p>Newton's Third Law states that every action has an equal and opposite reaction. When a climber pushes down through a foothold, the wall pushes back with equal force. When a climber pulls on a crimp, the crimp pulls back on the fingers. Understanding force vectors helps coaches explain why certain body positions allow efficient transmission of force and why others lead to slipping feet or tweaked fingers:</p>
+      <ul>
+        <li>Perpendicular force application to a hold maximises friction and reduces the chance of slipping</li>
+        <li>Oblique force on a finger hold increases shear load</li>
+        <li>Balanced body positioning distributes load across multiple points of contact, reducing peak force at any single hold</li>
+        <li>Placing as much rubber on a sloping volume increases friction and reduces slippage</li>
+      </ul>
+
+      <h3 class="subsection-title">2.4 Centre of Mass</h3>
+      <p>The <strong>centre of mass</strong> (CoM) is the single point at which the entire mass of a body can be considered to be concentrated for the purposes of analysing motion. In the human body, it lies roughly at the level of the second sacral vertebra when standing in anatomical position, though it shifts continuously with every change in limb position or body configuration — and can even fall outside the body entirely (as in a deep hip hinge or pike position). Crucially, the CoM does not need to be supported directly; what matters for balance is that its vertical projection falls within the <strong>base of support</strong>.</p>
+      <p>In climbing, this principle is fundamental: a climber who keeps their hips close to the wall and their CoM positioned directly over their feet dramatically reduces the rotational forces pulling them away from the surface, improving both balance and efficiency. Understanding CoM also explains why body positioning — not just grip strength — determines whether a move is possible at all.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/center-of-mass-climbing.png" alt="Diagram comparing center of mass positioning close to and far from a climbing wall">
+      </div>
+
+      <h3 class="subsection-title">2.5 Load Deformation Relationship</h3>
+      <p>The load vs deformation curve shows how a material responds as force is applied to it. In the elastic region, the material deforms but returns to its original shape once the load is removed. At the yield point, the material begins to deform permanently, entering the plastic region where changes in shape are no longer reversible. The ultimate failure point represents the maximum load the material can withstand before breaking or fracturing.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/load-deformation-curve.png" alt="Load deformation curve showing elastic region, yield point, plastic region, and failure point">
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Region</th><th>What Happens</th><th>Clinical Significance</th></tr>
+          <tr><td>Elastic Region</td><td>Tissue returns to original shape when load removed; no permanent damage</td><td>Normal training loads should remain in this region</td></tr>
+          <tr><td>Yield Point</td><td>Threshold beyond which permanent deformation begins; microfailure starts</td><td>Overuse injuries begin here — cumulative sub-threshold loading</td></tr>
+          <tr><td>Plastic Region</td><td>Permanent structural damage; tissue cannot return to original form</td><td>Partial tears; tissue remodelling required</td></tr>
+          <tr><td>Failure Point</td><td>Complete structural failure — fracture or complete rupture</td><td>Acute traumatic injury</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">2.6 Acute vs Repetitive Loading</h3>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/acute-vs-repetitive-load.png" alt="Diagram comparing a single acute load peak to repeated cyclical loading over time">
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Load Type</th><th>Definition</th><th>Example</th><th>Clinical Implication</th></tr>
+          <tr><td>Acute Load</td><td>A single force large enough to cause immediate structural damage</td><td>Fracture from a fall</td><td>Emergency management; structural assessment required</td></tr>
+          <tr><td>Repetitive Load</td><td>Repeated sub-threshold loads; each cycle causes micro-damage that accumulates</td><td>Repeated crimping sessions</td><td>Stress fractures, pulley overuse, tendinopathies — load management is key</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">Section 3: Forces, Motion &amp; Muscle Mechanics</h2>
+      <p>Sections 1 and 2 covered planes of motion and lever systems — the geometry of how the body moves. This section adds the physics that explains why those movements behave the way they do: the laws governing force and motion, the language used to describe movement precisely, and the mechanical properties of muscle itself. Together these give coaches a fuller toolkit for explaining technique, not just describing it.</p>
+
+      <h3 class="subsection-title">3.1 Newton's Laws of Motion in Climbing</h3>
+      <p>Sir Isaac Newton's three laws of motion describe the relationship between force and movement. Every coaching cue about generating power, controlling a fall, or staying stuck to a hold is, at root, an application of one of these laws.</p>
+
+      <p class="sub-label">Newton's First Law — Law of Inertia</p>
+      <p>A body at rest stays at rest, and a body in motion stays in motion, unless acted on by an external force. A climber hanging static on a hold will remain static until a force — muscular effort, gravity overcoming grip, or a dynamic pull — changes that state. This is also why a controlled, deliberate start to a dynamic move is harder than it looks: the climber must first overcome their own inertia before any upward momentum can build.</p>
+
+      <p class="sub-label">Newton's Second Law — Force, Mass and Acceleration</p>
+      <p>Force equals mass multiplied by acceleration (F = m × a). For a given amount of force, a lighter climber will accelerate faster than a heavier one — part of why lighter climbers often find dynamic, momentum-based moves more forgiving, while heavier or more powerfully-built climbers may rely more on raw force production. This law also underpins why deadpoint timing matters: generating force efficiently, at the right moment, produces more useful acceleration than the same force applied carelessly.</p>
+
+      <p class="sub-label">Newton's Third Law — Action and Reaction</p>
+      <p>Already introduced in Section 2.3 as the basis of ground reaction forces: every force a climber applies to a hold is met by an equal and opposite force back into the body. This is why precise, controlled foot placement (rather than a stamped or sloppy placement) transmits force efficiently back up through the leg, and why a poorly directed push can send a climber's body the wrong way off a foothold.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Insight</p>
+        <p>Newton's laws are rarely taught explicitly to climbers, but coaches use them constantly without naming them. Translating a cue like 'commit to the move' into 'you need to overcome inertia before you can accelerate' can help analytically-minded athletes understand why hesitation costs them on dynamic sequences.</p>
+      </div>
+
+      <h3 class="subsection-title">3.2 Describing Movement: Basic Kinematics</h3>
+      <p>Where Module 02's opening page introduced kinematics as 'the description and appearance of motion, independent of forces,' it's worth giving coaches the basic vocabulary to describe movement precisely on the wall.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Term</th><th>Definition</th><th>Climbing Application</th></tr>
+          <tr><td>Distance</td><td>The total length of the path travelled, regardless of direction</td><td>A climber who readjusts their feet twice before committing has covered more distance than displacement — wasted movement costs energy</td></tr>
+          <tr><td>Displacement</td><td>The straight-line distance between start and end points</td><td>Route efficiency is partly about minimising the gap between distance travelled and displacement achieved — economy of movement</td></tr>
+          <tr><td>Speed / Velocity</td><td>Distance (or displacement) covered per unit of time. Velocity includes direction</td><td>A controlled, static approach to a hold has low velocity; a dynamic move to the same hold has high velocity</td></tr>
+          <tr><td>Acceleration</td><td>The rate of change of velocity over time</td><td>Explosive moves (dynos, campus moves) require rapid acceleration; controlled lock-offs require the athlete to decelerate smoothly into control</td></tr>
+        </table>
+      </div>
+
+      <p>These terms matter most when coaching the difference between static and dynamic technique. A static move prioritises control — low velocity, minimal acceleration, continuous contact with holds. A dynamic move deliberately generates high acceleration over a short distance to cover a displacement that static technique cannot reach. Recognising which a climber needs, and coaching the appropriate one, is itself a kinematic judgement.</p>
+
+      <h3 class="subsection-title">3.3 Mechanical Advantage: Quantifying 'Stay Close to the Wall'</h3>
+      <p>Section 2.1 introduced lever classes and Section 2.2 introduced torque. Mechanical advantage builds directly on both, and gives coaches a way to reason quantitatively — not just descriptively — about why small positional changes matter so much on the wall.</p>
+      <p>Mechanical advantage (MA) is the ratio between the muscle's moment arm and the resistance's moment arm:</p>
+      <p><strong>MA = Moment arm of muscle force ÷ Moment arm of resistance force</strong></p>
+      <p>An MA greater than 1 means the muscle has a mechanical advantage — it can move a load larger than the force it generates. An MA less than 1 means the muscle is at a mechanical disadvantage and must generate more force than the load itself. Almost every major climbing movement operates at MA &lt; 1, because most human joints are third-class lever systems — the muscle's moment arm is short, and the resistance's moment arm (the distance out to the hand or foot) is comparatively long.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Insight</p>
+        <p>This is the mechanism behind 'stay close to the wall.' Moving the hips toward the wall shortens the moment arm of the resistance force (bodyweight) acting through the arms and shoulders. A shorter resistance moment arm means a more favourable (less disadvantageous) MA ratio — the same muscles now need to generate less force to hold the same position. This is precisely why two climbers of equal strength can feel completely different levels of effort on the same hold, based purely on hip position.</p>
+      </div>
+
+      <p>The practical coaching takeaway: technique fixes that look like 'body positioning' cues are very often mechanical advantage problems in disguise. A climber struggling on a steep move with hips dropped away from the wall isn't necessarily lacking strength — they may simply be operating at a worse MA ratio than the move requires.</p>
+
+      <h3 class="subsection-title">3.4 Muscle Mechanics for Coaches</h3>
+      <p>Beyond lever mechanics, the muscle itself has mechanical properties that change how much force it can produce depending on its length, its speed of contraction, and the type of action it is performing. Understanding these helps explain movement quality issues that lever mechanics alone cannot.</p>
+
+      <p class="sub-label">The Three Types of Muscle Action</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Action</th><th>What Happens</th><th>Climbing Example</th></tr>
+          <tr><td>Concentric</td><td>The muscle shortens because contraction force exceeds resistance force</td><td>Pulling into a lock-off; the biceps and lats shorten to draw the body up</td></tr>
+          <tr><td>Eccentric</td><td>The muscle lengthens under load because resistance force exceeds contraction force</td><td>Lowering with control on a downclimb, or controlling a drop onto a heel hook — higher injury risk, as tendons are loaded while stretching</td></tr>
+          <tr><td>Isometric</td><td>Muscle length stays constant; contraction force equals resistance force</td><td>Holding a static lock-off or a mid-route rest position</td></tr>
+        </table>
+      </div>
+
+      <p class="sub-label">Force-Length Relationship</p>
+      <p>A muscle produces its greatest force at a mid-range length, where the maximum number of cross-bridges can form between its contractile filaments. At very short or very long muscle lengths, force production drops off. This explains a common climbing experience: a lock-off becomes noticeably weaker in the last few degrees of full elbow flexion or extension, even though the climber is working just as hard — the muscle is simply operating outside its strongest length range.</p>
+
+      <p class="sub-label">Force-Velocity Relationship</p>
+      <p>Force and the speed of muscle shortening are inversely related: the faster a muscle contracts, the less force it can produce, and vice versa. A slow, controlled pull-up generates more force per unit of muscle activation than a fast, jerky one. This is part of why dynamic moves rely on technique, timing and momentum rather than pure strength — at high contraction speeds, the muscle physically cannot produce maximal force, so the climber must generate power through coordinated whole-body movement instead.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Insight</p>
+        <p>Together, these two relationships explain why slow strength work (e.g. controlled hangboard repeaters) and fast power work (e.g. campus board, dynos) train genuinely different qualities, and why a climber who is strong in one may still be weak in the other. Programming for climbing should include both ends of the force-velocity spectrum, not just maximal strength.</p>
+      </div>
+
+      <p>These concepts — Newton's laws, kinematic vocabulary, mechanical advantage, and muscle mechanics — don't replace anything in Sections 1 and 2; they sit underneath them, giving coaches the physics reasoning that supports the lever, torque and centre of mass principles already covered. A coach who understands why 'stay close to the wall' works mechanically is better equipped to adapt that cue when a climber's body type, injury history, or the specific move demands a different solution.</p>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">Section 4: Fundamental Movement Patterns</h2>
+      <p>Coaching movement begins with understanding fundamental patterns. In the context of strength and conditioning, movement can be categorised into several key patterns that form the basis of all human physical activity. In climbing, these patterns also manifest on the wall, and their quality has a direct impact on performance and injury risk.</p>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Programming Note</p>
+        <p>A balanced training programme for climbing should include all seven patterns, not just the pulling movements that dominate on the wall. Many common climbing injuries — shoulder impingement, elbow tendinopathy, postural dysfunction — stem directly from an imbalanced training diet that prioritises vertical pulling at the expense of pushing and hip-hinging.</p>
+      </div>
+
+      <h3 class="subsection-title">4.1 The Seven Fundamental Patterns</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Pattern</th><th>Description &amp; Climbing Relevance</th></tr>
+          <tr><td>Push (Horizontal)</td><td>Moving load away from body horizontally — press-up, dumbbell press. Antagonist to pulling; essential for shoulder health in climbers. Mantling on a ledge is a climbing-specific push.</td></tr>
+          <tr><td>Push (Vertical)</td><td>Overhead pressing — shoulder press. Relevant for shoulder stability during high-reach moves.</td></tr>
+          <tr><td>Pull (Horizontal)</td><td>Rowing movements drawing load toward the torso — bent-over row. Builds scapular retractors and mid-back stability; addresses posture. Relevant to climbing for pulling into a wall and holding a position hanging from a roof.</td></tr>
+          <tr><td>Pull (Vertical)</td><td>Pulling overhead load down — pull-up, lat pull-down. The primary movement pattern in climbing; directly trains the lat, biceps, and posterior shoulder.</td></tr>
+          <tr><td>Hinge</td><td>Hip-dominant movement with neutral spine — deadlift, Romanian deadlift. Builds posterior chain; directly trains the hip extension used in high steps, standing on footholds, heel hooks and hard toe downs.</td></tr>
+          <tr><td>Squat</td><td>Knee-dominant lower body movement — squat, goblet squat. Strengthens quads and glutes; improves leg drive for standing up on high holds and jumping for dyno's.</td></tr>
+          <tr><td>Carry</td><td>Loaded walking / unilateral stability — farmer's carry, suitcase carry. Builds core stability and shoulder girdle resilience.</td></tr>
+        </table>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/seven-movement-patterns.png" alt="Diagram of the seven fundamental movement patterns: push horizontal, push vertical, pull horizontal, pull vertical, hinge, squat, and carry">
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">Section 5: Postural Assessment &amp; Movement Dysfunction</h2>
+      <p>Before designing a training programme, coaches should assess their athlete's posture and basic movement quality. Postural assessment provides a baseline and highlights areas of tightness, weakness, or compensatory movement that may increase injury risk or limit performance.</p>
+
+      <h3 class="subsection-title">5.1 Static Postural Assessment</h3>
+      <p>A static postural assessment is conducted from the front, side, and rear with the client standing naturally. Common findings in climbers include:</p>
+      <ul>
+        <li><strong>Forward head posture</strong> — head protrudes in front of the shoulder line; associated with upper trapezius tightness and cervical strain</li>
+        <li><strong>Rounded shoulders (scapular protraction)</strong> — shoulders roll forward; associated with tight pectorals and weak rhomboids/lower trapezius</li>
+        <li><strong>Thoracic kyphosis</strong> — excessive rounding of the upper back; increased by repeated overhang climbing positions</li>
+        <li><strong>Anterior pelvic tilt</strong> — the front of the pelvis drops and the lower back arches; associated with tight hip flexors and weak glutes/core</li>
+        <li><strong>Knee valgus (knock knees)</strong> — knees cave inward; associated with weak hip abductors and poor proprioception</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/postural-assessment.png" alt="Postural assessment diagram showing poking chin, rounded shoulders, thoracic kyphosis, and valgus knees compared to ideal alignment">
+      </div>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Important Note</p>
+        <p>Static posture is not diagnostic — it identifies areas to investigate further with dynamic assessment. Many athletes with poor static posture move well under load, and vice versa. Use postural findings as hypotheses, not conclusions.</p>
+      </div>
+
+      <h3 class="subsection-title">5.2 Dynamic Movement Assessment — Overhead Squat</h3>
+      <p>The overhead squat is a practical screening tool that simultaneously loads the entire kinetic chain. Instruct the client to hold a dowel rod or band overhead, shoulder-width grip, and perform a squat to parallel. Although the overhead squat doesn't seem to replicate climbing movements, its use as an assessment tool for overall mobility is invaluable. Observe from the front and side:</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Observation</th><th>Possible Dysfunction</th></tr>
+          <tr><td>Arms fall forward</td><td>Tight lats or thoracic spine; limited shoulder flexion mobility</td></tr>
+          <tr><td>Excessive forward lean of torso</td><td>Tight hip flexors or ankle dorsiflexion restriction</td></tr>
+          <tr><td>Heels rise</td><td>Tight calves / limited ankle mobility</td></tr>
+          <tr><td>Knees cave inward (valgus)</td><td>Weak hip abductors (glute medius); tight adductors</td></tr>
+          <tr><td>Low back rounds or arches excessively</td><td>Weak core or limited hip mobility</td></tr>
+        </table>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-02/overhead-squat-assessment.png" alt="Front and side view diagram of correct overhead squat bottom position">
+      </div>
+
+      <h3 class="subsection-title">5.3 Mobility vs. Stability — The Joint-by-Joint Approach</h3>
+      <p>Gray Cook's joint-by-joint model provides a useful framework for understanding dysfunction. It proposes that joints alternate in their primary need — some primarily require mobility, others primarily require stability. When a mobility-dominant joint is restricted, an adjacent stability-dominant joint compensates by moving excessively, increasing injury risk there.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Joint</th><th>Primary Need</th></tr>
+          <tr><td>Ankle</td><td>Mobility (dorsiflexion)</td></tr>
+          <tr><td>Knee</td><td>Stability</td></tr>
+          <tr><td>Hip</td><td>Mobility (multi-directional)</td></tr>
+          <tr><td>Lumbar spine (low back)</td><td>Stability</td></tr>
+          <tr><td>Thoracic spine (mid back)</td><td>Mobility (extension and rotation)</td></tr>
+          <tr><td>Scapulothoracic (shoulder blade)</td><td>Stability</td></tr>
+          <tr><td>Glenohumeral (shoulder)</td><td>Mobility</td></tr>
+          <tr><td>Elbow</td><td>Stability</td></tr>
+          <tr><td>Wrist / Hand</td><td>Mobility</td></tr>
+        </table>
+      </div>
+
+      <p>For climbing coaches: tight hips (lost mobility) will cause the lumbar spine to compensate during high steps and rock-overs, placing excessive stress on the lower back. Similarly, restricted thoracic mobility causes the shoulder girdle to compensate, increasing impingement risk on reaching moves.</p>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-title">Section 6: Stability, Mobility &amp; Motor Learning</h2>
+
+      <h3 class="subsection-title">6.1 The Role of Stability in Climbing</h3>
+      <p>Stability is the ability to maintain or control body position, particularly under load. In climbing, stability is required at:</p>
+      <ul>
+        <li><strong>The core</strong> — to transfer and control forces between the upper and lower body, especially on steep terrain</li>
+        <li><strong>The shoulder girdle</strong> — to protect the rotator cuff and allow efficient force transmission through the arm</li>
+        <li><strong>The lower limb</strong> — to maintain precise foot placement and prevent unnecessary body sway</li>
+      </ul>
+      <p><strong>Stability is not about rigidity — it is dynamic.</strong> A climber with excellent core stability can move their limbs freely and powerfully without their torso rotating or sagging. This is sometimes called proximal stability enabling distal mobility.</p>
+
+      <h3 class="subsection-title">6.2 Mobility Requirements in Climbing</h3>
+      <p>Adequate mobility at key joints enables efficient movement on the wall and reduces compensatory patterns. High-priority mobility areas for climbers include:</p>
+      <ul>
+        <li>Hip flexion and external rotation — for high steps, frog positions, and drop-knee technique</li>
+        <li>Shoulder flexion and external rotation — for high reaches, underclings, and overhead lock-off positions</li>
+        <li>Thoracic extension and rotation — for twisting, cross-through moves, and maintaining upright posture</li>
+        <li>Ankle dorsiflexion — for precise smearing and slab climbing</li>
+      </ul>
+
+      <h3 class="subsection-title">6.3 Applying Motor Learning in Coaching Practice</h3>
+      <p>As introduced in Module 1, motor learning moves through cognitive, associative, and autonomous stages. Coaches can accelerate progress and build more durable skill by applying evidence-based principles of practice:</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Principle</th><th>Practical Application</th></tr>
+          <tr><td>Variability of Practice</td><td>Practice similar movements on different holds, angles, and problems rather than repeating the same sequence exactly. Builds adaptable motor programmes.</td></tr>
+          <tr><td>Contextual Interference</td><td>Mix different skills within a session (e.g. footwork drills, body positioning, dynamic moves) rather than blocking by skill type. Initially reduces performance but enhances long-term retention.</td></tr>
+          <tr><td>Feedback Timing</td><td>Delay feedback slightly after a movement to encourage the athlete to self-evaluate first. Immediate, constant feedback creates dependency and reduces self-monitoring.</td></tr>
+          <tr><td>Whole vs. Part Practice</td><td>Teach the full movement where possible (whole practice). Only break movements into parts (part practice) if the sequence is very long or complex.</td></tr>
+          <tr><td>Mental Rehearsal</td><td>Encourage athletes to visualise routes before attempting them. Mental rehearsal activates similar neural pathways to physical practice and improves performance under pressure.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">6.4 Effects of Fatigue</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Effect</th><th>Mechanism</th><th>Coaching Implication</th></tr>
+          <tr><td>Reduced force output</td><td>ATP production rate falls below demand</td><td>Reduce load or volume — don't train to complete failure in technical sessions</td></tr>
+          <tr><td>Loss of fine motor control</td><td>Impaired neuromuscular coordination</td><td>Fatigued climbers have significantly increased injury risk — stop technical work when technique breaks down</td></tr>
+          <tr><td>Increased injury risk</td><td>Impaired proprioception and coordination</td><td>Monitor for technique degradation as a fatigue signal; prioritise session structure accordingly</td></tr>
+        </table>
+      </div>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Rehabilitation Implication</p>
+        <p>Training to fatigue must be progressive. Fatigued athletes have impaired neuromuscular control — a primary injury risk factor. Early mobilisation after injury dramatically decreases atrophy and maintains mechanical properties of the musculotendinous unit.</p>
+      </div>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Module 02 — proceed to the Module 02 quiz when ready.</p>
+      <a class="quiz-btn" href="https://forms.gle/UzLhUcYttrskE7CL9" target="_blank" rel="noopener">Take the quiz →</a>
+      <p class="quiz-note">Once you have completed the quiz you'll get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next module will open.</p>
+    </div>
+
+  </div>
+
+  <div class="summary-block">
+    <h2>Module Summary</h2>
+    <p class="summary-sub">A quick reference before moving on</p>
+
+    <h3>Key Terms &amp; Definitions</h3>
+    <div class="glossary-wrap">
+      <table class="glossary-table">
+        <tr><td>Sagittal Plane</td><td>The plane that divides the body into left and right halves; movements in this plane include flexion and extension.</td></tr>
+        <tr><td>Frontal Plane</td><td>The plane dividing the body into front and back; movements include abduction, adduction, and lateral flexion.</td></tr>
+        <tr><td>Transverse Plane</td><td>The plane dividing the body into upper and lower halves; movements include rotation (twisting).</td></tr>
+        <tr><td>Torque</td><td>A rotational force; the product of force and the perpendicular distance (moment arm) from the axis of rotation.</td></tr>
+        <tr><td>Moment Arm</td><td>The perpendicular distance between the line of force and the axis of rotation; a longer moment arm increases torque.</td></tr>
+        <tr><td>Lever System</td><td>A rigid structure (bone) rotating around a fulcrum (joint) under the influence of an effort force (muscle) and resistance (load).</td></tr>
+        <tr><td>Kinetic Chain</td><td>The interconnected system of joints and muscles that work together to produce movement; dysfunction at one link affects the whole chain.</td></tr>
+        <tr><td>Anterior Pelvic Tilt</td><td>A postural deviation where the front of the pelvis drops and the lower back arches excessively; associated with tight hip flexors and weak core.</td></tr>
+        <tr><td>Thoracic Kyphosis</td><td>Excessive rounding of the upper/mid back; commonly seen in climbers due to the forward-flexed posture of overhang climbing.</td></tr>
+        <tr><td>Proximal Stability</td><td>Stability at the core and shoulder girdle that enables efficient and powerful distal (arm/leg) movement.</td></tr>
+        <tr><td>Joint-by-Joint Model</td><td>A framework suggesting that joints alternate between needing primarily mobility or stability; restriction at a mobile joint forces compensation at an adjacent stable joint.</td></tr>
+        <tr><td>Overhead Squat Assessment</td><td>A dynamic movement screen used to identify mobility and stability limitations throughout the kinetic chain.</td></tr>
+        <tr><td>Variability of Practice</td><td>A motor learning strategy involving practice of skill variations rather than exact repetition; improves long-term skill transfer.</td></tr>
+        <tr><td>Scapular Protraction</td><td>Forward movement (rounding) of the shoulder blades; a common postural finding in climbers due to dominant pulling and gripping.</td></tr>
+      </table>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>Movement occurs in three planes — sagittal (forward/back), frontal (side-to-side), and transverse (rotational). Climbing is multi-planar and coaches must understand all three.</li>
+      <li>Lever mechanics and torque explain why body position dramatically alters the muscular demand of holds and moves. Staying close to the wall reduces moment arms and conserves energy.</li>
+      <li>The seven fundamental movement patterns (push, pull, hinge, squat, carry — horizontal and vertical) should all feature in a climber's training programme to prevent imbalance.</li>
+      <li>Postural assessment identifies common dysfunctions in climbers — rounded shoulders, kyphosis, anterior pelvic tilt — that can be addressed through targeted mobility and strength work.</li>
+      <li>The joint-by-joint model helps coaches understand why restricting mobility at one joint causes compensatory stress elsewhere — a key insight for injury prevention.</li>
+      <li>Motor learning principles — variability, contextual interference, delayed feedback — should inform how coaches structure practice for skill development.</li>
+    </ul>
+
+    <div class="looking-ahead">
+      <p class="label">Looking Ahead</p>
+      <p>In Module 3 — Client Assessment &amp; Health Screening — we will apply both anatomical and biomechanical knowledge practically, learning how to assess climbers systematically before designing their programmes.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
