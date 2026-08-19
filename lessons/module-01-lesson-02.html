@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 01 · Lesson 02 — Muscular System | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  /* ---------- Loading state ---------- */
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  /* ---------- Header ---------- */
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  /* ---------- Shell ---------- */
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  /* ---------- Lesson header ---------- */
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  /* ---------- Content card ---------- */
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 28px 0 12px; }
+  .subsection-title:first-child { margin-top: 0; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  /* ---------- Tables ---------- */
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
+
+  table.lesson-table.compact th, table.lesson-table.compact td { font-size: 12.5px; padding: 8px 10px; }
+  table.lesson-table.compact td:first-child { white-space: normal; }
+
+  /* ---------- Images ---------- */
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img {
+    max-width: 100%; height: auto;
+    border-radius: 10px; border: 1px solid var(--line);
+  }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+
+  /* ---------- Callouts ---------- */
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+  .callout a { font-weight: 600; text-decoration: underline; }
+
+  /* ---------- Quiz footer ---------- */
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-01.html">← Back to Module 01</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 01 · Lesson 02</p>
+    <h1>Muscular System</h1>
+    <p class="lesson-sub">Foundations of Human Anatomy &amp; Physiology</p>
+  </div>
+
+  <div class="content-card">
+
+    <!-- SECTION 5 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 5: The Muscular System</h2>
+
+      <h3 class="subsection-title">5.1 What Is Muscle?</h3>
+      <p>Muscle is a type of tissue that can create force and change length. There are three types of muscle in the body:</p>
+      <ul>
+        <li><strong>Skeletal muscle</strong> — located beneath the layers of skin and fat; connects to tendons and bones; responsible for creating voluntary movement. This is the primary muscle type relevant to coaching.</li>
+        <li><strong>Cardiac muscle</strong> — found only in the heart; contracts and relaxes involuntarily to pump blood. Fatigue-resistant — essential for survival.</li>
+        <li><strong>Smooth muscle</strong> — forms the walls of blood vessels, glands, and organs; responsible for expanding and contracting to allow blood and fluids to move through them. Also involuntary.</li>
+      </ul>
+      <p>All muscle types share five unique properties:</p>
+      <ol>
+        <li><strong>Irritability</strong> — capable of receiving and responding to stimulation from nerves</li>
+        <li><strong>Contractibility</strong> — once stimulated, the muscle actively shortens (contracts)</li>
+        <li><strong>Extensibility</strong> — with the application of force, muscle can be stretched without damage</li>
+        <li><strong>Elasticity</strong> — whenever shortened or lengthened, muscle has the ability to return to its resting shape and length</li>
+        <li><strong>Adaptability</strong> — muscle hypertrophies (enlarges) in response to increased work; it atrophies (wastes) if deprived of work. This underpins all training adaptation.</li>
+      </ol>
+
+      <h3 class="subsection-title">5.2 Skeletal Muscle Structure — From Fibre to Fascicle</h3>
+      <p>Skeletal muscle is made up of thousands of muscle fibres that run the length of the muscle. Understanding this hierarchy helps coaches appreciate why training adaptations take time and why tendons and connective tissue respond more slowly than muscle tissue:</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Structural Level</th><th>Description</th></tr>
+          <tr><td>Myofilaments</td><td>The thinnest level: actin (thin) and myosin (thick) protein filaments.</td></tr>
+          <tr><td>Myofibrils</td><td>The contractile units within each muscle fibre, running the length of the fibre. Contain the proteins actin and myosin.</td></tr>
+          <tr><td>Sarcomeres</td><td>The smallest functional unit of skeletal muscle; found within myofibrils. Each sarcomere contains thin actin filaments and thick myosin filaments whose interaction produces the contraction.</td></tr>
+          <tr><td>Muscle fibres</td><td>Individual muscle cells, each wrapped in connective tissue (fascia). Contain many myofibrils.</td></tr>
+          <tr><td>Fascicles</td><td>Bundles of muscle fibres bound together by more fascia. Multiple fascicles group together to form the whole muscle.</td></tr>
+          <tr><td>Tendon</td><td>The fascia thickens as it nears the surface of the muscle and ultimately coats the entire muscle before becoming the tendon — the structure that attaches muscle to bone.</td></tr>
+        </table>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-01/muscle-structure.png" alt="Diagram of skeletal muscle structure from fascicle to whole muscle, showing endomysium, perimysium, epimysium, and connection to bone via tendon">
+        <p class="fig-caption">From muscle fibre to whole muscle — the connective tissue hierarchy</p>
+      </div>
+
+      <h3 class="subsection-title">5.3 Functions of Skeletal Muscle</h3>
+      <p>Skeletal muscle serves four major functions, all of which are relevant to coaching:</p>
+      <ol>
+        <li><strong>Force generation for movement</strong> — skeletal muscle generates the force needed to move the body. Every climbing move is created by the coordinated contraction of skeletal muscles.</li>
+        <li><strong>Force generation for breathing</strong> — the skeletal muscles of the ribs and abdomen systematically relax and contract to enable the lungs to fill with air and expel it. Breathing rhythm is a coachable skill on the wall.</li>
+        <li><strong>Force generation for postural support</strong> — skeletal muscles stabilise joints and maintain ideal posture. When posture is ideal, the effects of gravity are minimised and injury risk is reduced.</li>
+        <li><strong>Heat production</strong> — contracting muscles produce heat. During cold conditions, skeletal muscles can create heat voluntarily (exercise) or involuntarily (shivering).</li>
+      </ol>
+
+      <h3 class="subsection-title">5.4 Muscle Origin and Insertion</h3>
+      <p>Skeletal muscles are attached to bones at either end by tendons. Understanding origin and insertion explains why muscles produce the movements they do:</p>
+      <ul>
+        <li><strong>Origin</strong> — the relatively fixed end of the muscle; normally proximal (closer to the trunk). The origin provides the stable base from which the muscle pulls.</li>
+        <li><strong>Insertion</strong> — the end that moves most; normally distal. When the muscle contracts and shortens, it pulls the insertion toward the origin, creating movement at the joint between them.</li>
+      </ul>
+      <p>Example: The biceps brachii has two origins on the scapula (hence 'bi' = two). Its insertion is on the radius. When it contracts, it pulls the radius upward, flexing the elbow. The rotator cuff muscles act as fixators — stabilising the shoulder joint (the origin's joint) so that the biceps can function effectively.</p>
+
+      <h3 class="subsection-title">5.5 Muscle Roles During Movement</h3>
+      <p>When the body performs a movement, different muscles take on different roles simultaneously. Understanding these roles allows coaches to prescribe exercises that specifically target the right muscle in the right role:</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Muscle Role</th><th>Definition &amp; Climbing Example</th></tr>
+          <tr><td>Agonist (Prime Mover)</td><td>The muscle provides the major force to complete the movement. In a pull-up, the latissimus dorsi is the primary agonist. Note: the agonist can contract concentrically (shortening) or eccentrically (lengthening) — it is the prime mover in both cases.</td></tr>
+          <tr><td>Antagonist</td><td>The muscle opposing the agonist. While the agonist contracts and causes movement, the antagonist typically relaxes — but it can also contract to decelerate or stop a movement to protect the joint. In a pull-up, the triceps is the antagonist. In climbing, the pushing muscles are chronically under-trained antagonists.</td></tr>
+          <tr><td>Synergist</td><td>Muscles that assist the agonist and stabilise the joint around which movement occurs. In elbow flexion, the brachioradialis and brachialis are synergists to the biceps. They ensure the movement is smooth and the joint is protected.</td></tr>
+          <tr><td>Fixator (Stabiliser)</td><td>Stabilises the origin of the agonist and the joint it spans, allowing the agonist to function most effectively. In a pull-up, the rotator cuff muscles are fixators of the shoulder joint — without them, the humerus would be pulled out of position as the lats contract.</td></tr>
+        </table>
+      </div>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Antagonist Muscles — A Critical Coaching Concept</p>
+        <p>Climbing is a pulling-dominant sport. Climbers typically overdevelop their pulling muscles (lats, biceps, finger flexors) relative to their pushing muscles (chest, triceps, shoulder external rotators, finger extensors). This imbalance is a leading cause of shoulder, elbow, and finger injuries. A well designed climbing programme ALWAYS includes dedicated antagonist training.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 6: Types of Muscle Contraction</h2>
+      <p>Understanding how muscles contract is fundamental to coaching exercise technique safely and effectively. Muscles can produce force in three distinct ways depending on whether they are shortening, lengthening, or remaining the same length under load:</p>
+
+      <h3 class="subsection-title">6.1 Concentric Contraction</h3>
+      <p>A concentric contraction occurs when a muscle shortens under load or tension to overcome resistance. This is the most commonly recognised contraction type.</p>
+      <ul>
+        <li><strong>Example:</strong> The biceps shortens concentrically during the upward phase of a pull-up, pulling the body toward the bar.</li>
+        <li><strong>Climbing application:</strong> Any pulling or gripping movement where the muscle overcomes resistance — pulling through a move, initiating a deadpoint.</li>
+      </ul>
+
+      <h3 class="subsection-title">6.2 Eccentric Contraction</h3>
+      <p>An eccentric contraction occurs when a muscle lengthens under load or tension — it is resisting rather than producing movement, typically working against gravity.</p>
+      <ul>
+        <li><strong>Example:</strong> The biceps contracts eccentrically during the downward phase of a pull-up, controlling the descent rather than letting gravity drop the body.</li>
+        <li><strong>Climbing application:</strong> Lowering off a route; downclimbing; landing from a jump; slow, controlled movement between moves. Eccentric loading is also the most powerful stimulus for tendon adaptation.</li>
+        <li><strong>Important:</strong> Eccentric contractions generate more force than concentric contractions and cause greater muscle damage — they are the primary cause of post-exercise muscle soreness (DOMS). This is why downclimbing or heavy eccentric work requires longer recovery.</li>
+      </ul>
+
+      <h3 class="subsection-title">6.3 Isometric Contraction</h3>
+      <p>An isometric contraction occurs when muscles develop tension but no movement occurs — the muscle length remains constant. This is the dominant contraction type in climbing and is frequently underappreciated.</p>
+      <ul>
+        <li><strong>Example:</strong> Holding a lock-off position at 90 degrees of elbow flexion — the biceps is generating force but neither shortening nor lengthening.</li>
+        <li><strong>Climbing application:</strong> Holding a position on a hold between moves; maintaining body tension on steep terrain; sustaining a heel hook; gripping a hold. The majority of forearm work in climbing is isometric.</li>
+        <li><strong>The occlusion effect:</strong> Sustained isometric contractions restrict blood flow to the working muscle (particularly the forearm flexors), limiting oxygen delivery and metabolite clearance. This is the primary physiological mechanism behind forearm pump, and why ARC training — which reduces the degree of isometric tension — is effective for building endurance.</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Climbing is Largely an Isometric Sport</p>
+        <p>Unlike running or cycling (predominantly concentric/eccentric), climbing demands sustained isometric contractions in the forearms and fingers for much of the ascent. This makes local muscular endurance — the ability to sustain isometric contraction over time — a primary physical quality for climbing performance, distinct from cardiovascular endurance.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 7: Muscle Fibre Types</h2>
+      <p>There are three types of skeletal muscle fibre, each with different characteristics in terms of contraction speed, force production, fatigue resistance, and the energy systems they rely upon. Understanding fibre types helps coaches prescribe training that targets the right qualities for climbing performance.</p>
+
+      <h3 class="subsection-title">7.1 The Three Fibre Types</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Fibre Type</th><th>Characteristics &amp; Climbing Relevance</th></tr>
+          <tr><td>Type I — Slow Twitch</td><td>Contract slowly but can repeat contractions over long periods without fatigue. Rich in mitochondria and capillaries (hence 'red fibres'). Use the aerobic (oxidative) energy system primarily. Suited to endurance activities. In climbing: ARC training, long easy routes, recovery between attempts, sustained low-intensity effort.</td></tr>
+          <tr><td>Type IIa — Fast Twitch (Intermediate)</td><td>Fast contraction speed; can use both aerobic and anaerobic energy sources. Moderate fatigue resistance. Suited to high intensity activities lasting up to 2 minutes. In climbing: sustained hard bouldering, power endurance training (4x4s), sustained crux sequences on sport routes.</td></tr>
+          <tr><td>Type IIb — Fast Twitch (Power)</td><td>Contract extremely rapidly and generate very high force, but fatigue quickly. Rely almost exclusively on anaerobic energy. In climbing: single maximal effort moves, campus board, heavy hangboard, short explosive dynos.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">7.2 Muscle Fibre Characteristics Comparison</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table compact">
+          <tr><th>Characteristic</th><th>Type I</th><th>Type IIa</th><th>Type IIb</th></tr>
+          <tr><td>Contraction speed</td><td>Slow (90–140 ms)</td><td>Fast (50–100 ms)</td><td>Very fast (40–90 ms)</td></tr>
+          <tr><td>Force production</td><td>Low</td><td>High</td><td>Very high</td></tr>
+          <tr><td>Fatigue resistance</td><td>High</td><td>Intermediate</td><td>Low</td></tr>
+          <tr><td>Energy system</td><td>Aerobic (oxidative)</td><td>Both aerobic + anaerobic</td><td>Anaerobic only</td></tr>
+          <tr><td>Capillary density</td><td>High</td><td>Intermediate</td><td>Low</td></tr>
+          <tr><td>Mitochondria</td><td>High</td><td>Medium</td><td>Low</td></tr>
+          <tr><td>Glycolytic capacity</td><td>Low</td><td>High</td><td>High</td></tr>
+          <tr><td>Efficiency</td><td>High (like a scooter)</td><td>Medium</td><td>Low (like a V8 engine — power but not fuel efficient)</td></tr>
+          <tr><td>Climbing use</td><td>Long routes, ARC, recovery</td><td>4x4s, power endurance</td><td>Max moves, campus, single hard efforts</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">7.3 What Determines Fibre Type?</h3>
+      <p>An individual's muscle fibre distribution is determined by three factors:</p>
+      <ol>
+        <li><strong>Genetics</strong> — you are genetically predisposed to a certain percentage of each fibre type. The average person has approximately 60% fast twitch and 40% slow twitch, but there is considerable variation. Some elite boulderers naturally have a higher proportion of Type IIb fibres.</li>
+        <li><strong>Hormone levels</strong> — hormones naturally fluctuate across a lifetime and affect fibre type, size, and behaviour. Training type affects hormone release: heavy strength training elevates anabolic hormones that support hypertrophy; endurance training promotes oxidative adaptations.</li>
+        <li><strong>Training undertaken</strong> — while true fibre type conversion is debated, training can cause fibres to adapt and behave differently. Endurance training causes Type IIa fibres to develop more aerobic characteristics; heavy strength training causes slow-twitch fibres to generate more force. Specificity of training is key — the body adapts to the demands placed on it.</li>
+      </ol>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Implication</p>
+        <p>A climber who is genetically gifted with more fast-twitch fibres may naturally excel at bouldering but struggle with endurance routes. Coaches should focus training on addressing individual weaknesses rather than assuming a fixed 'type'. With appropriate programming, slow-twitch dominant athletes can build significant power endurance, and fast-twitch dominant athletes can develop impressive route endurance.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 8: How Muscles Contract — Physiology</h2>
+      <p>Understanding the physiology of muscle contraction helps coaches explain what is happening during training, why fatigue occurs, and why certain training methods work. This section covers the sliding filament theory, motor units, force grading, and muscle spindles.</p>
+
+      <h3 class="subsection-title">8.1 The Sliding Filament Theory</h3>
+      <p>The sliding filament theory explains how muscles produce force at the molecular level. Within each sarcomere, thin actin filaments and thick myosin filaments interact to produce contraction. The process occurs in four stages:</p>
+      <ol>
+        <li><strong>Muscle activation</strong> — a motor neuron sends an electrical impulse (action potential) to the neuromuscular junction. This triggers the sarcoplasmic reticulum (the muscle's calcium storage) to release calcium ions into the muscle cell.</li>
+        <li><strong>Muscle contraction</strong> — calcium ions bind to troponin on the actin filament, causing tropomyosin to move and expose the myosin binding sites. The myosin 'heads' reach forward, attach to actin, and pull the actin filament toward the centre of the sarcomere (the 'power stroke'). ATP is consumed to drive this process. This occurs simultaneously in all sarcomeres, shortening the muscle overall.</li>
+        <li><strong>Recharging</strong> — ATP is re-synthesised, allowing the myosin heads to detach from actin and reset for the next power stroke. The number of myosin cross-bridges formed determines how much force the muscle produces — more cross-bridges equal greater force.</li>
+        <li><strong>Relaxation</strong> — when the nerve stimulus stops, calcium is pumped back into the sarcoplasmic reticulum, tropomyosin re-covers the binding sites, and myosin detaches from actin. The muscle returns to its resting length. Relaxation also occurs when ATP is exhausted — the muscle can no longer detach the myosin heads (contracture/failure).</li>
+      </ol>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">The Three Requirements for Contraction</p>
+        <p>For a skeletal muscle to contract, three conditions must be met: (1) a neural stimulus from a motor neuron, (2) calcium present in the muscle cells, and (3) ATP available for energy. When any of these fail, contraction stops. In the context of climbing: muscle failure mid-route is primarily ATP depletion, not neural fatigue or calcium shortage.</p>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-01/sarcomere-structure.png" alt="Diagram of sarcomere structure showing myofibril, Z-lines, and actin/myosin filaments in relaxed versus contracted muscle">
+        <p class="fig-caption">Sarcomere structure — relaxed versus contracted muscle</p>
+      </div>
+
+      <h3 class="subsection-title">8.2 Motor Units and Force Grading</h3>
+      <p>A motor unit is the motor neuron and all the muscle fibres it innervates. When the neuron fires, all fibres in that unit contract simultaneously (the 'all-or-none' principle). The body controls the amount of force generated (called "Force Grading") through two mechanisms:</p>
+      <ul>
+        <li><strong>Motor unit recruitment</strong> — activating more motor units increases force. Larger motor units (with more muscle fibres) contribute more force when recruited. The nervous system recruits small motor units first (fine control) and progressively larger ones as more force is needed — this is called the Size Principle.</li>
+        <li><strong>Rate coding</strong> — increasing the frequency (how often) of impulses to an active motor unit increases the force it produces. At low firing frequency, the muscle produces brief twitches. As frequency increases, twitches overlap and force builds ('summation'). At high frequency, the muscle reaches maximum continuous contraction ('tetanus').</li>
+      </ul>
+      <p>In areas requiring precise control (like the fingers), the body has many small motor units giving fine-grained force control. In areas requiring power (like the glutes), there are fewer but larger motor units. This is why finger technique and precise footwork are skills that take years to develop — they require sophisticated neural coordination of many small motor units.</p>
+
+      <h3 class="subsection-title">8.3 Muscle Spindles and the Stretch Reflex</h3>
+      <p>Muscle spindles are sensory receptors located within muscle fibres. Their job is to detect changes in muscle length and the speed of that change. This has direct implications for stretching and power training:</p>
+      <p>When a muscle is rapidly lengthened (stretched), the muscle spindles are activated and send an impulse to the spinal cord. The spinal cord immediately sends a return signal causing the stretched muscle to contract — this is the stretch reflex. Importantly, this reflex bypasses the brain entirely (it is a spinal cord reflex) because speed of response is critical. The faster the stretch, the stronger the reflex contraction.</p>
+      <p>The strength of the stretch reflex is directly proportional to the speed of stretch. This is why a fast eccentric load produces greater muscle tension than a slow one — the spindles fire more rapidly, stimulating a stronger motor response. This principle underlies plyometric training.</p>
+
+      <h3 class="subsection-title">8.4 The Stretch-Shortening Cycle</h3>
+      <p>The stretch-shortening cycle (SSC) is one of the most important mechanisms for generating explosive force in athletic movement. It occurs when a muscle is rapidly stretched (eccentric phase) immediately before it contracts concentrically. Three factors make this produce more force than a concentric contraction alone:</p>
+      <ol>
+        <li><strong>Loading the muscle spindle</strong> — the rapid stretch activates the spindle reflex, pre-loading the muscle with additional neural drive before the concentric contraction begins.</li>
+        <li><strong>Elastic energy storage</strong> — skeletal muscle (and tendons) have elastic properties. Like a stretched rubber band, a rapidly stretched muscle stores elastic energy that can be immediately released as additional force during the subsequent concentric phase.</li>
+        <li><strong>Optimal contraction length</strong> — a muscle generates its greatest force at approximately 1.2 times its resting length. Pre-stretching before a contraction places the muscle in this optimal position.</li>
+      </ol>
+      <p>In climbing: the SSC is most visible in dynamic moves (dynos and deadpoints). The brief downward dip before a dynamic upward move is not wasted movement — it is pre-stretching the relevant muscles to exploit the SSC and generate more upward force. Coaches can use this to teach climbers to generate power more efficiently on dynamic moves.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">SSC Coaching Application</p>
+        <p>When coaching dynamic moves, encourage athletes to perform a brief, controlled dip (countermovement) before the explosive phase. This preloads the muscle spindles and stores elastic energy, producing significantly more power than a static initiation. Athletes who begin dynos from a completely stationary position forgo this free force boost.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 9 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 9: Major Muscles of the Body</h2>
+      <p>The human body contains over 600 muscles. For fitness practice, understanding the primary movers (agonists) across each major joint is essential. The tables below group the most important muscles by region and note their primary function.</p>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Muscles Required For This Course</p>
+        <p>This course doesn't require you to know all the muscles, their origin, insertion and innervations. The <a href="https://corelearning.co.za/resources/muscle-finder.html" target="_blank" rel="noopener">Muscle Finder</a> app will help students find all muscles that may be relevant for specific movements and training for climbing. Make yourself familiar with the Muscle Finder and complete the quiz. The quiz is designed to help enhance your knowledge of relevant muscles.</p>
+      </div>
+
+      <p>This is a list of muscles to become familiar with to be a better informed climbing coach.</p>
+
+      <h3 class="subsection-title">9.1 Shoulder &amp; Chest</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table compact">
+          <tr><th>Muscle</th><th>Origin</th><th>Insertion</th><th>Action</th></tr>
+          <tr><td>Pectoralis major</td><td>Clavicle, sternum, ribs 1–6</td><td>Humerus (intertubercular groove)</td><td>Flexion, adduction, medial rotation of shoulder</td></tr>
+          <tr><td>Deltoid</td><td>Clavicle, acromion, scapular spine</td><td>Deltoid tuberosity of humerus</td><td>Abduction (mid fibres); flexion/extension (ant/post)</td></tr>
+          <tr><td>Rotator Cuff (4 muscles)</td><td>Various scapular surfaces</td><td>Greater/lesser tubercle of humerus</td><td>Stabilise glenohumeral joint; medial/lateral rotation</td></tr>
+          <tr><td>Trapezius</td><td>Occipital bone, C7-T12 spinous processes</td><td>Clavicle, acromion, scapular spine</td><td>Elevation, retraction, rotation of scapula</td></tr>
+          <tr><td>Serratus anterior</td><td>Ribs 1–8 (lateral surfaces)</td><td>Medial border of scapula</td><td>Protracts and rotates scapula; holds it against thorax</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">9.2 Upper Arm</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table compact">
+          <tr><th>Muscle</th><th>Origin</th><th>Insertion</th><th>Action</th></tr>
+          <tr><td>Biceps brachii</td><td>Coracoid process &amp; supraglenoid tubercle</td><td>Radial tuberosity</td><td>Elbow flexion; forearm supination</td></tr>
+          <tr><td>Brachialis</td><td>Anterior humerus (distal half)</td><td>Ulnar tuberosity</td><td>Elbow flexion (primary)</td></tr>
+          <tr><td>Triceps brachii</td><td>Infraglenoid tubercle &amp; posterior humerus</td><td>Olecranon of ulna</td><td>Elbow extension</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">9.3 Core &amp; Trunk</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table compact">
+          <tr><th>Muscle</th><th>Origin</th><th>Insertion</th><th>Action</th></tr>
+          <tr><td>Rectus abdominis</td><td>Pubic crest &amp; symphysis</td><td>Xiphoid process, ribs 5–7</td><td>Trunk flexion; compresses abdomen</td></tr>
+          <tr><td>External oblique</td><td>Ribs 5–12 (external surfaces)</td><td>Iliac crest, linea alba</td><td>Trunk rotation (contralateral), lateral flexion</td></tr>
+          <tr><td>Internal oblique</td><td>Thoracolumbar fascia, iliac crest</td><td>Ribs 9–12, linea alba</td><td>Trunk rotation (ipsilateral), lateral flexion</td></tr>
+          <tr><td>Transversus abdominis</td><td>Thoracolumbar fascia, iliac crest, ribs 7–12</td><td>Linea alba, pubic crest</td><td>Compresses abdomen; spinal stabilisation</td></tr>
+          <tr><td>Erector spinae (group)</td><td>Sacrum, iliac crest, ribs, vertebrae</td><td>Ribs, vertebrae, skull</td><td>Spinal extension and lateral flexion</td></tr>
+          <tr><td>Multifidus</td><td>Sacrum, ilium, vertebral spinous processes</td><td>Spinous processes 2–4 levels above</td><td>Deep spinal stabilisation; extension</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">9.4 Hip &amp; Gluteal Region</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table compact">
+          <tr><th>Muscle</th><th>Origin</th><th>Insertion</th><th>Action</th></tr>
+          <tr><td>Gluteus maximus</td><td>Ilium, sacrum, coccyx</td><td>Gluteal tuberosity of femur; IT band</td><td>Hip extension, lateral rotation</td></tr>
+          <tr><td>Gluteus medius</td><td>External ilium (between gluteal lines)</td><td>Greater trochanter of femur</td><td>Hip abduction; pelvic stabilisation</td></tr>
+          <tr><td>Gluteus minimus</td><td>External ilium (below medius)</td><td>Greater trochanter of femur</td><td>Hip abduction, medial rotation</td></tr>
+          <tr><td>Iliopsoas (iliacus + psoas)</td><td>Iliac fossa; T12-L5 vertebral bodies</td><td>Lesser trochanter of femur</td><td>Primary hip flexor</td></tr>
+          <tr><td>Hip adductors (group)</td><td>Pubis, ischium</td><td>Medial femur</td><td>Hip adduction; assist flexion/extension</td></tr>
+          <tr><td>Piriformis</td><td>Anterior sacrum</td><td>Greater trochanter</td><td>Lateral rotation of hip; abduction when hip flexed</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">9.5 Thigh</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table compact">
+          <tr><th>Muscle</th><th>Origin</th><th>Insertion</th><th>Action</th></tr>
+          <tr><td>Quadriceps (4 muscles)</td><td>AIIS, ilium, linea aspera (femur)</td><td>Tibial tuberosity (via patellar tendon)</td><td>Knee extension; rectus femoris also flexes hip</td></tr>
+          <tr><td>Hamstrings (3 muscles)</td><td>Ischial tuberosity; biceps also from femur</td><td>Fibula head; medial/lateral tibia</td><td>Knee flexion; hip extension</td></tr>
+          <tr><td>Sartorius</td><td>ASIS</td><td>Medial tibia (pes anserinus)</td><td>Hip flexion, abduction, lateral rotation; knee flexion</td></tr>
+          <tr><td>TFL / IT band</td><td>ASIS, iliac crest</td><td>Lateral tibia (Gerdy's tubercle)</td><td>Hip abduction, medial rotation; knee stabilisation</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">9.6 Lower Leg &amp; Foot</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table compact">
+          <tr><th>Muscle</th><th>Origin</th><th>Insertion</th><th>Action</th></tr>
+          <tr><td>Gastrocnemius</td><td>Medial/lateral femoral condyles</td><td>Calcaneus (via Achilles tendon)</td><td>Plantarflexion; knee flexion</td></tr>
+          <tr><td>Soleus</td><td>Posterior fibula and tibia</td><td>Calcaneus (via Achilles tendon)</td><td>Plantarflexion (primary; active in all knee positions)</td></tr>
+          <tr><td>Tibialis anterior</td><td>Lateral tibia</td><td>1st cuneiform, 1st metatarsal</td><td>Dorsiflexion; foot inversion</td></tr>
+          <tr><td>Peroneals (group)</td><td>Fibula</td><td>Metatarsals, calcaneus</td><td>Plantarflexion; foot eversion</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">9.7 Spinal Nerve Innervation</h3>
+      <p>Each skeletal muscle receives its motor signal via specific spinal nerve roots. Understanding innervation helps correlate muscle weakness with the likely level of a spinal injury or nerve compression:</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Nerve Root</th><th>Muscles Innervated</th></tr>
+          <tr><td>C3–C5</td><td>Diaphragm (phrenic nerve); trapezius (accessory nerve)</td></tr>
+          <tr><td>C5–C6</td><td>Deltoid, biceps brachii, brachialis, brachioradialis</td></tr>
+          <tr><td>C6–C7</td><td>Wrist extensors (radial nerve), pectoralis major</td></tr>
+          <tr><td>C7–C8</td><td>Triceps brachii, wrist flexors, finger extensors</td></tr>
+          <tr><td>C8–T1</td><td>Intrinsic hand muscles</td></tr>
+          <tr><td>T1–T12</td><td>Intercostals, erector spinae, abdominal muscles (by level)</td></tr>
+          <tr><td>L1–L3</td><td>Hip flexors (iliopsoas), hip adductors</td></tr>
+          <tr><td>L2–L4</td><td>Quadriceps femoris (femoral nerve)</td></tr>
+          <tr><td>L4–L5</td><td>Tibialis anterior, gluteus medius, hamstrings (in part)</td></tr>
+          <tr><td>L5–S2</td><td>Gastrocnemius, soleus, gluteus maximus, peroneals</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">9.8 The Kinetic Chain Concept</h3>
+      <p>The kinetic chain refers to the interconnected system of bones, joints, and muscles that work together to produce movement. In a Closed Kinetic Chain (CKC) movement, the distal segment (foot or hand) is fixed against resistance — for example, a squat or press-up. In an Open Kinetic Chain (OKC) movement, the distal segment moves freely — for example, a leg extension or bicep curl.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Term</th><th>Definition / Description</th></tr>
+          <tr><td>Closed Kinetic Chain (CKC)</td><td>Distal segment fixed. Examples: squat, deadlift, press-up, lunge. Multiple joints move simultaneously; generally more functional and sport-specific; greater joint stability due to co-contraction.</td></tr>
+          <tr><td>Open Kinetic Chain (OKC)</td><td>Distal segment free. Examples: leg extension, bicep curl, leg curl. Isolation of single joint/muscle group; useful in rehabilitation; less compressive load through joint.</td></tr>
+        </table>
+      </div>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Programming Implication</p>
+        <p>A well-balanced programme should include both CKC and OKC exercises. CKC movements typically form the foundation of strength and conditioning programmes due to their functional transfer, while OKC exercises are valuable for targeted muscle development and rehabilitation of specific weaknesses.</p>
+      </div>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Lesson 02 in Module 1 — proceed to the Lesson 02 quiz when ready.</p>
+      <a class="quiz-btn" href="https://forms.gle/NWd7nD592aSEBoDJ6" target="_blank" rel="noopener">Take the quiz →</a>
+      <p class="quiz-note">Once you have completed the quiz you'll get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next lesson will open.</p>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
