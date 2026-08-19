@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 01 · Lesson 03 — Nervous System & Physiology | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  /* ---------- Loading state ---------- */
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  /* ---------- Header ---------- */
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  /* ---------- Shell ---------- */
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  /* ---------- Lesson header ---------- */
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  /* ---------- Content card ---------- */
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 28px 0 12px; }
+  .subsection-title:first-child { margin-top: 0; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  /* ---------- Tables ---------- */
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
+
+  /* ---------- Callouts ---------- */
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+
+  /* ---------- Summary / glossary section ---------- */
+  .summary-block {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-top: 44px;
+  }
+  .summary-block h2 {
+    color: var(--white);
+    font-size: 22px;
+    margin: 0 0 4px;
+    border: none;
+    padding: 0;
+  }
+  .summary-block .summary-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    margin: 0 0 22px;
+  }
+  .summary-block h3 {
+    color: var(--white);
+    font-size: 15px;
+    margin: 26px 0 12px;
+  }
+  .glossary-wrap { border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
+  table.glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.glossary-table td {
+    padding: 9px 14px; vertical-align: top;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  table.glossary-table tr:last-child td { border-bottom: none; }
+  table.glossary-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  table.glossary-table td:first-child {
+    font-weight: 700; color: var(--terracotta); white-space: nowrap; width: 150px;
+  }
+  table.glossary-table td:last-child { color: rgba(255,255,255,0.82); }
+
+  .takeaway-list { margin: 0; padding-left: 20px; }
+  .takeaway-list li {
+    color: rgba(255,255,255,0.85);
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .takeaway-list li strong { color: var(--white); }
+
+  /* ---------- Quiz footer ---------- */
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+    .summary-block { padding: 24px 20px; }
+    table.glossary-table td:first-child { width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-01.html">← Back to Module 01</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 01 · Lesson 03</p>
+    <h1>Nervous System &amp; Physiology</h1>
+    <p class="lesson-sub">Foundations of Human Anatomy &amp; Physiology</p>
+  </div>
+
+  <div class="content-card">
+
+    <!-- SECTION 10 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 10: The Nervous System &amp; Motor Control</h2>
+      <p>The nervous system is the body's communication and control network. For coaches, understanding the nervous system explains how movement is controlled, why technique improves with practice, how fatigue limits performance, and why recovery between maximal sessions requires more than just muscle repair.</p>
+
+      <h3 class="subsection-title">10.1 Central and Peripheral Nervous Systems</h3>
+      <p>The nervous system is divided into two main parts:</p>
+      <ul>
+        <li><strong>Central Nervous System (CNS)</strong> — the brain and spinal cord. The brain processes information, plans movements, and sends commands. The spinal cord transmits signals between the brain and the rest of the body and mediates spinal reflexes (like the stretch reflex) without involving the brain.</li>
+        <li><strong>Peripheral Nervous System (PNS)</strong> — all nerves outside the brain and spinal cord. Includes sensory neurons (carrying information from the body to the CNS) and motor neurons (carrying commands from the CNS to the muscles).</li>
+      </ul>
+
+      <h3 class="subsection-title">10.2 Proprioception — The Body's Position Sense</h3>
+      <p>Proprioception is the body's ability to sense its own position and movement in space without visual input. It is mediated by receptors in muscles (muscle spindles), tendons (Golgi tendon organs), and joints (joint receptors) that continuously send positional data to the brain.</p>
+      <p>Proprioception is critical for efficient climbing technique — particularly footwork. Experienced climbers can place their feet precisely on small holds without looking, because their proprioceptive system has been trained through thousands of repetitions to sense foot position accurately. Beginners must look at every foothold because their proprioceptive maps for climbing positions have not yet been developed.</p>
+      <p>This is why technical volume — spending time on easy terrain with deliberate focus on movement quality — is irreplaceable for developing climbing skill. Proprioception cannot be significantly improved through supplementary gym exercises alone; it requires repetitive, varied movement practice on the wall.</p>
+
+      <h3 class="subsection-title">10.3 Neural Fatigue</h3>
+      <p>Neural fatigue is distinct from muscular fatigue. After maximal effort training — heavy hangboard sessions, campus board, or limit bouldering — the central nervous system requires recovery time separate from muscle tissue recovery. Signs of accumulated neural fatigue include:</p>
+      <ul>
+        <li>Performance decline despite feeling physically fresh</li>
+        <li>Reduced motivation and mental sharpness</li>
+        <li>Slower reaction times and coordination errors</li>
+        <li>Difficulty recruiting muscle to full capacity (reduced maximum force output)</li>
+      </ul>
+      <p>Full CNS recovery from a single maximal effort session takes approximately 48–72 hours. Programming consecutive high-intensity days without this recovery window leads to compounding neural fatigue, progressive performance decline, and elevated injury risk — particularly from coordination failures. This is one of the strongest arguments for structured rest days in a training plan.</p>
+
+      <h3 class="subsection-title">10.4 Motor Learning — How Technique Improves</h3>
+      <p>Motor learning is the process by which the nervous system acquires, refines, and stores movement patterns through practice and experience. Skill acquisition in climbing progresses through three stages:</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Stage</th><th>Characteristics</th><th>Coaching Approach</th></tr>
+          <tr><td>Cognitive (Beginner)</td><td>The athlete thinks consciously about every movement component; performance is inconsistent and error-prone; significant mental effort required</td><td>Use simple, clear verbal cues; frequent demonstration; build confidence. Keep instruction to one focus point at a time. Prioritise repetition on easy terrain.</td></tr>
+          <tr><td>Associative (Intermediate)</td><td>Movements become more consistent; errors are self-detected and self-corrected; cognitive load decreases</td><td>Introduce technical complexity; use video analysis; encourage self-assessment after each attempt. Vary practice conditions.</td></tr>
+          <tr><td>Autonomous (Advanced)</td><td>Most movements are automatic; athlete can focus on tactics and route reading while executing technique unconsciously</td><td>Target specific identified weaknesses; practice technique under fatigue; use high-variability training to develop adaptable motor programmes.</td></tr>
+        </table>
+      </div>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Variability of Practice</p>
+        <p>Research consistently shows that practising a skill across varied conditions (different hold types, angles, and movement styles) produces more durable and transferable learning than repeating the same sequence on the same problem. For climbing coaches, this means resisting the temptation to have athletes repeatedly lap the same routes — variety is the engine of technical development.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 11 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 11: Cardiovascular &amp; Respiratory Systems</h2>
+      <p>The cardiovascular and respiratory systems work together to deliver oxygen to working muscles and remove the carbon dioxide and waste products produced by exercise. While climbing is not a cardiovascular sport in the traditional sense, these systems directly determine how quickly a climber recovers between attempts and how long they can sustain effort before fatigue forces rest.</p>
+
+      <h3 class="subsection-title">11.1 The Cardiovascular System</h3>
+      <p>The cardiovascular system consists of the heart, blood vessels (arteries, veins, and capillaries), and blood. Its primary role is transport: delivering oxygen and nutrients to tissues and removing carbon dioxide and metabolic waste.</p>
+      <p>The heart is a four-chambered pump. The right side receives deoxygenated blood from the body and pumps it to the lungs (pulmonary circulation). The left side receives freshly oxygenated blood from the lungs and pumps it to the rest of the body (systemic circulation). Key cardiovascular variables relevant to training:</p>
+      <ul>
+        <li><strong>Heart rate (HR)</strong> — the number of beats per minute; increases with exercise intensity. Well trained athletes have lower resting heart rates due to increased stroke volume.</li>
+        <li><strong>Stroke volume (SV)</strong> — the volume of blood ejected per beat; increases with aerobic training as the heart muscle strengthens and the chambers enlarge.</li>
+        <li><strong>Cardiac output (Q)</strong> — HR × SV; the total blood pumped per minute. Rises from approximately 5 L/min at rest to 20–25 L/min during maximal exercise in trained athletes.</li>
+      </ul>
+      <p>For climbing coaches, the cardiovascular system is relevant for three key reasons:</p>
+      <ol>
+        <li><strong>Aerobic fitness determines recovery speed</strong> — a more efficient cardiovascular system delivers oxygen more quickly between attempts, allowing a climber to recover faster on a rest hold or between boulder problems.</li>
+        <li><strong>The occlusion effect</strong> — during sustained isometric grip contractions, the force compresses blood vessels in the forearm, restricting blood flow to working muscles. This accelerates the accumulation of metabolic by-products, creating the 'pump'. ARC training specifically develops capillary density in the forearms, improving the ability to deliver oxygen and clear waste even under partial occlusion.</li>
+        <li><strong>Monitoring training intensity</strong> — heart rate is a practical tool for prescribing and monitoring cardiovascular training intensity. Coaches can use simple zone-based prescriptions to ensure aerobic training sessions are genuinely aerobic (not crossing into anaerobic territory).</li>
+      </ol>
+
+      <h3 class="subsection-title">11.2 The Respiratory System</h3>
+      <p>The respiratory system exchanges gases between the body and the environment. Oxygen (O₂) from inhaled air passes through the lungs into the bloodstream; carbon dioxide (CO₂) produced by working muscles passes from the blood into the lungs to be exhaled. The primary structures are: nasal passages and mouth → trachea → bronchi → bronchioles → alveoli (the tiny air sacs where gas exchange occurs).</p>
+      <p>During exercise, both breathing rate and depth increase to meet the greater demand for oxygen. Resting breathing rate of 12–15 breaths/minute can rise to 40–60 during intense effort. Several climbing-specific coaching points arise from respiratory physiology:</p>
+      <ul>
+        <li><strong>Breath-holding during crux moves</strong> — many climbers instinctively hold their breath on hard moves. This rapidly elevates CO₂ and creates a strong urge to breathe, increasing perceived effort and reducing fine motor control. Coaches should actively cue rhythmic breathing.</li>
+        <li><strong>Exhalation on effort</strong> — exhaling during the most demanding phase of a move reduces intra-abdominal pressure, supports core stability, and helps the athlete stay calm and focused. This is the opposite of the Valsalva manoeuvre (forceful breath-holding) which, while it temporarily increases core stiffness, is unsustainable on a climbing route.</li>
+        <li><strong>Breathing at rest positions</strong> — coaching athletes to fully exhale and reset their breathing at every possible resting position is a technical skill that directly extends the time they can continue climbing.</li>
+      </ul>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Coaching Cue — Breathing</p>
+        <p>Teach climbers to exhale on the most demanding part of each move, and to make a deliberate 'breathing check' every time they reach a rest hold. The simple habit of three controlled breaths at each rest dramatically extends performance duration on sustained routes.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 12 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 12: The Three Energy Systems</h2>
+      <p>All physical activity requires energy in the form of adenosine triphosphate (ATP). The body cannot store large quantities of ATP, so it must continuously regenerate it using one of three metabolic pathways. All three systems operate simultaneously at all times — what changes is which system is contributing the most energy at any given moment, depending on the intensity and duration of effort.</p>
+
+      <h3 class="subsection-title">12.1 The ATP-PC System (Phosphocreatine System)</h3>
+      <p>The ATP-PC system is the fastest and most immediately available energy pathway. It uses phosphocreatine (PCr) stored directly in the muscle to rapidly regenerate ATP. No oxygen is required and no lactic acid is produced, making it clean and immediate — but very limited in duration.</p>
+      <ul>
+        <li><strong>Duration:</strong> 0–10 seconds at maximal effort</li>
+        <li><strong>Intensity:</strong> Very high to maximal</li>
+        <li><strong>Oxygen required:</strong> No</li>
+        <li><strong>By-products:</strong> None</li>
+        <li><strong>Recovery:</strong> PCr stores are fully replenished within 3–5 minutes of complete rest</li>
+        <li><strong>Climbing applications:</strong> A single hard dyno, a one-move deadpoint, a short campus board move, the opening power moves of a boulder problem</li>
+      </ul>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Training Implication — Rest Fully</p>
+        <p>To train the ATP-PC system effectively (developing maximal contact strength and power), athletes must rest fully between attempts — typically 3–5 minutes minimum. Many climbers rest for 1–2 minutes and wonder why their performance degrades across attempts. Incomplete PCr recovery means the glycolytic system is increasingly recruited, producing a different (less desirable) training stimulus.</p>
+      </div>
+
+      <h3 class="subsection-title">12.2 The Glycolytic System (Anaerobic / Lactic System)</h3>
+      <p>When effort is sustained beyond 10 seconds and intensity is still high, the body increasingly relies on glycolysis — the breakdown of glucose (from blood sugar or glycogen stored in muscle) to produce ATP. This process does not require oxygen and produces pyruvate as a by-product. When glycolysis is proceeding faster than the aerobic system can process pyruvate, hydrogen ions (H⁺) accumulate in the muscle.</p>
+      <ul>
+        <li><strong>Duration:</strong> 10–90 seconds at high intensity</li>
+        <li><strong>Intensity:</strong> High to very high</li>
+        <li><strong>Oxygen required:</strong> No</li>
+        <li><strong>By-products:</strong> Hydrogen ions (H⁺) — accumulation lowers muscle pH and causes the burning 'pump' sensation</li>
+        <li><strong>Recovery:</strong> 5–10 minutes for significant recovery; 20–30 minutes for more complete lactate clearance</li>
+        <li><strong>Climbing applications:</strong> A sustained hard boulder problem (10–30 moves); the pumpy crux of a sport route; a 4x4 boulder circuit; power endurance training session</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Common Misconception</p>
+        <p>Lactic acid itself does not cause the burning sensation or muscle failure — it is the accumulation of hydrogen ions (H⁺) that lowers pH and impairs muscular contraction. Lactate is actually a useful fuel source, transported to the heart, liver, and less active muscles for energy. Better-trained athletes clear hydrogen ions more efficiently and tolerate higher lactate levels — this is what 'lactate threshold training' actually develops.</p>
+      </div>
+
+      <h3 class="subsection-title">12.3 The Oxidative System (Aerobic System)</h3>
+      <p>For sustained, lower-intensity activity, the body uses oxygen to metabolise carbohydrates, fats, and (to a small extent) proteins through aerobic respiration. This system produces significantly more ATP per glucose molecule than glycolysis, but it responds more slowly and requires oxygen delivery from the cardiovascular system.</p>
+      <ul>
+        <li><strong>Duration:</strong> 90 seconds and beyond; indefinitely with adequate fuel and oxygen</li>
+        <li><strong>Intensity:</strong> Low to moderate</li>
+        <li><strong>Oxygen required:</strong> Yes</li>
+        <li><strong>By-products:</strong> Water and CO₂ — both easily removed (exhaled/sweated)</li>
+        <li><strong>Recovery:</strong> Ongoing during rest; the aerobic system actively aids recovery between bouts of higher-intensity effort</li>
+        <li><strong>Climbing applications:</strong> Long moderate routes; walking approaches to the crag; ARC (Aerobic Restoration and Capillarisation) training; easy laps for warm-up and technical practice; active recovery between sessions</li>
+      </ul>
+
+      <h3 class="subsection-title">12.4 Energy System Summary and Climbing Application</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Energy System</th><th>Climbing Activity</th><th>Best Training Method</th></tr>
+          <tr><td>ATP-PC (0–10 sec, maximal)</td><td>Single hard dyno, campus move, maximal crimp</td><td>Max hangs (7–10 sec), short hard boulder problems; 3–5 min full rest between attempts</td></tr>
+          <tr><td>Glycolytic (10–90 sec, high intensity)</td><td>Sustained hard bouldering, pumpy sport crux, power endurance efforts</td><td>4x4 circuits, linked boulder problems, short-rest intervals; 5–10 min recovery between sets</td></tr>
+          <tr><td>Oxidative (90 sec+, low-moderate)</td><td>Long moderate routes, ARC training, approach hiking, active recovery</td><td>ARC traversing (20–45 min), long easy routes, moderate intensity sustained effort</td></tr>
+        </table>
+      </div>
+
+      <p>In practice, no session uses a single energy system in isolation. A typical climbing session might include ATP-PC demands on hard boulder problems, glycolytic demands during linked attempts or power endurance circuits, and oxidative demands during warm-up, cool-down, and extended easy traversing. A well-designed training block progressively develops all three systems with appropriate emphasis based on the athlete's goals and competition calendar.</p>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Lesson 03 in Module 1 — proceed to the Lesson 03 quiz when ready.</p>
+      <a class="quiz-btn" href="https://forms.gle/csZDqgz66WZuHmDg7" target="_blank" rel="noopener">Take the quiz →</a>
+      <p class="quiz-note">Once you have completed the quiz you'll get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next lesson will open.</p>
+    </div>
+
+  </div>
+
+  <!-- ================= MODULE 01 SUMMARY ================= -->
+  <div class="summary-block">
+    <h2>Summary of Module 01</h2>
+    <p class="summary-sub">A quick reference before moving on</p>
+
+    <h3>Key Terms &amp; Definitions</h3>
+    <div class="glossary-wrap">
+      <table class="glossary-table">
+        <tr><td>Anatomical position</td><td>The standard reference position: standing upright, arms at sides, palms facing forward, feet slightly apart and toes forward. All anatomical descriptions are made relative to this position.</td></tr>
+        <tr><td>Axial skeleton</td><td>The central bones of the body — skull, vertebral column, and bony thorax. Primary function: protect the CNS and vital organs.</td></tr>
+        <tr><td>Appendicular skeleton</td><td>The bones of the limbs and shoulder and pelvic girdles. Primary function: enable movement through joints.</td></tr>
+        <tr><td>Synovial joint</td><td>The most common and most mobile joint type; characterised by a fluid-filled joint capsule. Examples: shoulder, elbow, hip, knee, finger joints.</td></tr>
+        <tr><td>Tendon</td><td>Connective tissue attaching muscle to bone; transmits the force of muscular contraction to the skeleton. Dense collagen tissue with poor blood supply — adapts slowly to load.</td></tr>
+        <tr><td>Ligament</td><td>Connective tissue connecting bone to bone; provides joint stability and limits excessive range of motion. Sprains involve overstretching or tearing of ligaments.</td></tr>
+        <tr><td>A2 pulley</td><td>The annular (ring-shaped) pulley on the proximal phalanx; the most commonly injured structure in climbing. Loaded maximally by full crimp grip position.</td></tr>
+        <tr><td>Agonist</td><td>The prime mover in a movement — the muscle providing the major force. Can contract concentrically or eccentrically.</td></tr>
+        <tr><td>Antagonist</td><td>The muscle opposing the agonist; typically relaxes during the movement but can contract to decelerate or protect the joint. Under-development of antagonists is a primary cause of climbing injury.</td></tr>
+        <tr><td>Concentric contraction</td><td>Muscle contraction in which the muscle shortens under load — the overcoming phase of movement (e.g. pulling up in a pull-up).</td></tr>
+        <tr><td>Eccentric contraction</td><td>Muscle contraction in which the muscle lengthens under load — the resisting phase (e.g. lowering in a pull-up). Produces more force than concentric; causes more muscle damage; the primary stimulus for tendon adaptation.</td></tr>
+        <tr><td>Isometric contraction</td><td>Muscle contraction where length does not change — force is produced with no movement (e.g. holding a lock-off). Dominant contraction type in climbing; causes the occlusion effect.</td></tr>
+        <tr><td>Sliding filament theory</td><td>The explanation for how muscles contract: myosin 'heads' bind to actin filaments and pull them toward the sarcomere centre; driven by ATP; regulated by calcium.</td></tr>
+        <tr><td>Motor unit</td><td>A motor neuron and all the muscle fibres it innervates. The basic functional unit of muscle contraction. All fibres in a motor unit contract simultaneously.</td></tr>
+        <tr><td>Stretch reflex</td><td>A spinal cord reflex triggered by rapid muscle stretch; causes immediate contraction to resist the stretch. Protective mechanism and foundation of the stretch-shortening cycle.</td></tr>
+        <tr><td>Stretch-shortening cycle (SSC)</td><td>A mechanism by which rapid pre-stretching of a muscle before contraction generates more force than concentric contraction alone, through spindle loading, elastic energy storage, and optimal length positioning.</td></tr>
+        <tr><td>ATP</td><td>Adenosine triphosphate — the body's universal energy currency; required for muscle contraction, calcium pumping, and all biological processes.</td></tr>
+        <tr><td>Phosphocreatine (PCr)</td><td>A high-energy compound in muscle that rapidly regenerates ATP during maximal short efforts (0–10 seconds). Fully replenished in 3–5 minutes of rest.</td></tr>
+        <tr><td>Occlusion effect</td><td>The restriction of blood flow to working muscles during sustained isometric contraction; the primary physiological driver of forearm pump in climbing. Addressed through ARC training to increase capillary density.</td></tr>
+        <tr><td>ARC training</td><td>Aerobic Restoration and Capillarisation — sustained 20–45 minute low-intensity continuous climbing at a level that generates a mild pump without acute fatigue. Develops capillary density and aerobic efficiency in the forearms.</td></tr>
+        <tr><td>Proprioception</td><td>The body's ability to sense position and movement in space without visual input; mediated by muscle spindles, Golgi tendon organs, and joint receptors. Critical for efficient climbing footwork.</td></tr>
+        <tr><td>Neural fatigue</td><td>Fatigue of the central nervous system after intense or high volume maximal effort training; requires 48–72 hours to recover. Must be built into training programme design.</td></tr>
+        <tr><td>Motor learning</td><td>The process by which the nervous system acquires, refines, and stores movement patterns through practice. Progresses through cognitive, associative, and autonomous stages.</td></tr>
+        <tr><td>Type I fibres</td><td>Slow-twitch muscle fibres; fatigue-resistant, aerobically fuelled, suited to sustained lower-intensity effort.</td></tr>
+        <tr><td>Type IIb fibres</td><td>Fast-twitch power fibres; generate very high force rapidly but fatigue quickly; rely on anaerobic energy; recruited for maximal effort moves.</td></tr>
+      </table>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li><strong>The musculoskeletal system</strong> — bones provide structure, joints permit movement (synovial joints are most relevant), and tendons transmit muscle force to bone. The A2 finger pulley is the most injury-prone structure in climbing.</li>
+      <li><strong>Anatomical terminology and planes of movement</strong> — a shared language allows precise communication with athletes and health professionals. Climbing is a multi-planar activity requiring movement in all three planes.</li>
+      <li><strong>Muscle roles</strong> — during any movement, muscles simultaneously act as agonists, antagonists, synergists, and fixators. Chronic antagonist undertraining is the leading cause of overuse injury in climbers.</li>
+      <li><strong>Muscle contraction types</strong> — concentric (shortening), eccentric (lengthening under load), and isometric (static hold). Climbing is predominantly isometric, which explains the occlusion effect and forearm pump.</li>
+      <li><strong>Muscle fibre types</strong> — Type I (endurance), Type IIa (intermediate), Type IIb (power) each have distinct characteristics. Training should target the appropriate fibre types for the athlete's goals and weaknesses.</li>
+      <li><strong>Muscle contraction physiology</strong> — the sliding filament theory (actin/myosin interaction powered by ATP and triggered by calcium), motor unit recruitment, rate coding, and the stretch-shortening cycle all underpin how muscles generate force.</li>
+      <li><strong>The cardiovascular and respiratory systems</strong> deliver oxygen and remove waste. Better aerobic fitness means faster recovery between attempts. The occlusion effect explains why forearm endurance is a unique physiological challenge in climbing.</li>
+      <li><strong>The nervous system</strong> controls all movement through motor units and the proprioceptive system. Neural fatigue requires 48–72 hours of recovery after maximal training. Motor learning progresses from conscious to automatic through structured practice.</li>
+      <li><strong>The three energy systems</strong> — ATP-PC (0–10 sec, maximal effort), Glycolytic (10–90 sec, high intensity), and Oxidative (90 sec+, sustained effort) — all contribute to a climbing session. Effective programming develops all three with appropriate emphasis.</li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
