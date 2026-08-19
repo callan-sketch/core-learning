@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 04 — Principles of Exercise Programming | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .why-box {
+    background: var(--teal-soft);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .why-box p { color: #205c5d; margin: 0; font-size: 14px; }
+  .why-box .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #205c5d; margin: 0 0 8px; }
+
+  .objectives-list { margin: 0; padding-left: 22px; }
+  .objectives-list li { font-size: 14.5px; margin-bottom: 6px; }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 24px 0 10px; }
+  .subsection-title:first-child { margin-top: 0; }
+  .sub-label { font-size: 14px; font-weight: 700; color: var(--navy); margin: 18px 0 6px; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); }
+
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+  .fig-pair { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin: 20px 0; }
+  .fig-pair .fig-item { flex: 1; min-width: 200px; text-align: center; }
+  .fig-pair .fig-item img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+  .callout a { font-weight: 600; text-decoration: underline; }
+
+  .resource-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: 999px;
+    background: var(--cream); border: 1px solid var(--line);
+    font-size: 13.5px; font-weight: 600; color: var(--navy);
+    text-decoration: none; margin: 4px 0 4px;
+    transition: background 0.12s ease;
+  }
+  .resource-btn:hover { background: var(--teal-soft); }
+
+  .summary-block {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-top: 44px;
+  }
+  .summary-block h2 { color: var(--white); font-size: 22px; margin: 0 0 4px; border: none; padding: 0; }
+  .summary-block .summary-sub { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 22px; }
+  .summary-block h3 { color: var(--white); font-size: 15px; margin: 26px 0 12px; }
+  .takeaway-list { margin: 0; padding-left: 20px; }
+  .takeaway-list li { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.6; margin-bottom: 10px; }
+  .looking-ahead {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+  .looking-ahead .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta); margin: 0 0 8px; }
+  .looking-ahead p { color: rgba(255,255,255,0.85); margin: 0; font-size: 13.5px; }
+
+  .glossary-wrap { border-radius: 10px; overflow: hidden; margin-bottom: 8px; background: rgba(255,255,255,0.04); }
+  table.glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.glossary-table td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  table.glossary-table tr:last-child td { border-bottom: none; }
+  table.glossary-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  table.glossary-table td:first-child { font-weight: 700; color: var(--terracotta); white-space: nowrap; width: 150px; }
+  table.glossary-table td:last-child { color: rgba(255,255,255,0.82); }
+
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+  .quiz-pending {
+    display: inline-block; padding: 13px 28px; border-radius: 999px;
+    background: var(--line); color: var(--ink-mute);
+    font-size: 14.5px; font-weight: 600;
+  }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+    .summary-block { padding: 24px 20px; }
+    table.glossary-table td:first-child { width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-04.html">← Back to Module 04</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 04 · 04 of 07</p>
+    <h1>Principles of Exercise Programming</h1>
+    <p class="lesson-sub">Written Guide + Quiz</p>
+  </div>
+
+  <div class="content-card">
+
+    <div class="why-box">
+      <p class="label">Why It Matters</p>
+      <p>Programme design is the core technical skill of any coach. A well-constructed training programme turns athletic goals into structured, progressive, and recoverable action. This module provides the theoretical tools — FITT-VP, periodisation, and recovery principles — that will underpin every training plan you write for your climbing athletes.</p>
+    </div>
+
+    <h2 class="section-title">Learning Objectives</h2>
+    <p>By the end of this module, you will be able to:</p>
+    <ul class="objectives-list">
+      <li>Apply the FITT-VP principle to design appropriate training stimuli for different goals</li>
+      <li>Distinguish between linear, undulating, and block periodisation models and select appropriately</li>
+      <li>Design resistance training programmes with appropriate variables for climbing-relevant goals</li>
+      <li>Prescribe cardiovascular training for climbing endurance using appropriate methods</li>
+      <li>Apply evidence-based guidelines for the rate of progression in load, volume, and frequency</li>
+      <li>Structure flexibility and mobility work to address climbing-specific demands</li>
+      <li>Build recovery and regeneration strategies into training programmes</li>
+    </ul>
+
+    <!-- SECTION 1 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 1: The FITT-VP Principle</h2>
+      <p>The FITT-VP principle is the foundational framework for structuring any exercise prescription. It provides six levers that a coach can adjust to create the appropriate training stimulus for a given client, goal, and phase of training. Mastery of FITT-VP is essential before attempting periodisation.</p>
+
+      <h3 class="subsection-title">1.1 Breaking Down FITT-VP</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Variable</th><th>Definition &amp; Key Considerations</th></tr>
+          <tr><td>F — Frequency</td><td>How often training occurs. Measured in sessions per week. Too low = insufficient stimulus; too high = inadequate recovery. Consider: training history, volume per session, lifestyle, and current fitness level.</td></tr>
+          <tr><td>I — Intensity</td><td>How hard the training is. Measured differently by type: % 1RM for strength, RPE or % HRmax for cardio, difficulty grade for climbing. Intensity is the most powerful driver of adaptation but also the highest injury risk.</td></tr>
+          <tr><td>T — Time (Duration)</td><td>How long each session or bout lasts. Inversely related to intensity — maximal efforts cannot be sustained long; low-intensity work can be extended. Includes warm-up and cool-down.</td></tr>
+          <tr><td>T — Type (Mode)</td><td>The form of exercise. For climbing coaches: on-wall climbing, hangboard, campus board, resistance training, cardio, mobility work. Each stimulus produces specific adaptations (specificity principle).</td></tr>
+          <tr><td>V — Volume</td><td>The total work performed. In resistance training: sets × reps × load. In climbing: total footage climbed, number of problems, duration. Volume is the primary driver of hypertrophy and endurance adaptation.</td></tr>
+          <tr><td>P — Progression</td><td>How the training stimulus changes over time to continue driving adaptation. The body adapts to a given load — progression ensures continued challenge. Methods: increase load, reps, sets, reduce rest, increase difficulty.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">1.2 The Principle of Progressive Overload</h3>
+      <p>The body adapts to training stimuli only when that stimulus exceeds its current capacity. Once it has adapted, the same stimulus no longer produces further gains — it merely maintains the current level of fitness. Progressive overload is the systematic application of increasing stress to drive ongoing adaptation.</p>
+      <p><strong>Progression methods for climbers:</strong></p>
+      <ul>
+        <li>Increase difficulty — climb harder grades or more demanding boulder problems</li>
+        <li>Increase volume — more sessions per week, longer sessions, more routes or problems per session</li>
+        <li>Increase load — add weight to hangboard or pull-up exercises</li>
+        <li>Reduce rest — decrease the recovery time between attempts or sets</li>
+        <li>Increase density — more total climbing within the same training window</li>
+      </ul>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Critical Principle</p>
+        <p>Progression must always be done gradually and must be accompanied by adequate recovery. Increasing load too quickly and without recovery is the recipe for overtraining and injury. The Fitness-Fatigue model tells us that performance = fitness − fatigue. Great programming maximises fitness accumulation while managing fatigue.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 2: Rate of Progression</h2>
+      <p>One of the most common programming errors — at all experience levels — is failing to define how quickly load, volume, or frequency should increase over time. Without clear progression guidelines, athletes either stagnate (too little increase) or break down (too much, too soon). This section provides practical benchmarks grounded in the sports science literature.</p>
+
+      <h3 class="subsection-title">2.1 The 10% Rule — A Starting Point</h3>
+      <p>A widely cited guideline is to increase total training load (volume, intensity, or frequency) by no more than 10% per week. While not a universal law, the 10% rule provides a useful conservative ceiling for planning purposes — particularly for newer athletes or when introducing a new training quality.</p>
+      <p><strong>Important nuances:</strong></p>
+      <ul>
+        <li>The 10% rule applies to the total load change, not each variable in isolation. Simultaneously increasing frequency, volume, and intensity violates the guideline even if each variable increases by less than 10%.</li>
+        <li>More experienced athletes can tolerate slightly higher relative increases — the body's load tolerance grows with training age.</li>
+        <li>Tendons, ligaments, and pulleys adapt more slowly than muscle tissue. In climbing, finger tendons are particularly vulnerable — their progression rate should be the limiting variable, not muscular fatigue.</li>
+      </ul>
+
+      <h3 class="subsection-title">2.2 Progression by Training Quality</h3>
+      <p>Different physical qualities have different optimal progression rates. The table below provides practical benchmarks for climbing athletes.</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Training Quality</th><th>Recommended Progression Rate</th><th>Practical Guidance</th></tr>
+          <tr><td>Strength (e.g. max hangs, weighted pull-ups)</td><td>Increase load by 2–5% or add 1–2 reps per session/week once target reps are achieved cleanly</td><td>Use a simple 'double progression': hit the top of the rep range for all sets before adding load. E.g. target 3×5 — once you hit 3×5 cleanly, add 2.5–5% load next session.</td></tr>
+          <tr><td>Hypertrophy / Antagonist Work</td><td>Add 1 set or increase load by 5% every 1–2 weeks</td><td>Volume is the primary driver of hypertrophy. Prioritise adding sets across the mesocycle before increasing load.</td></tr>
+          <tr><td>Power Endurance (e.g. 4×4 sets)</td><td>Increase problem difficulty by one grade, or reduce rest by 15–30 sec, every 1–2 weeks</td><td>Do not increase both difficulty and reduce rest simultaneously. Alternate manipulation.</td></tr>
+          <tr><td>Aerobic Base / ARC Training</td><td>Increase session duration by 5–10 minutes per week, or add one additional session per fortnight</td><td>Keep intensity stable (Zone 2) while building duration. Adding intensity too early defeats the aerobic base purpose.</td></tr>
+          <tr><td>Climbing Volume (total routes/problems)</td><td>Add no more than one session per week, or increase session volume by 10–15% per week</td><td>Introduce a new session at low intensity to limit cumulative stress. Watch for grip fatigue across sessions.</td></tr>
+          <tr><td>Flexibility / Mobility</td><td>Progress stretching duration by 5–10 sec or add 1–2 reps per week</td><td>Flexibility gains are slow — consistency over months matters more than weekly increments.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">2.3 Deload and Reset Cycles</h3>
+      <p>Progression cannot continue indefinitely. Every 3–6 weeks (depending on athlete experience and accumulated fatigue), a planned deload is required to allow recovery and enable supercompensation. Following a deload, athletes typically return to training at approximately 70–80% of their pre-deload volume before rebuilding.</p>
+      <p><strong>Post-deload re-progression guidelines:</strong></p>
+      <ul>
+        <li>Week 1 after deload: return to 70–80% of pre-deload volume at familiar intensity</li>
+        <li>Week 2: restore to pre-deload levels</li>
+        <li>Week 3 onwards: apply fresh progression from the new baseline</li>
+      </ul>
+
+      <h3 class="subsection-title">2.4 Progression for Beginners vs. Advanced Athletes</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Experience Level</th><th>Expected Strength Progression</th><th>Volume Progression</th><th>Frequency Progression</th></tr>
+          <tr><td>Beginner (0–1 year)</td><td>Gains possible every session (linear progression)</td><td>Add sets/reps weekly</td><td>1–2 sessions per week to start; add one session per month once adapted</td></tr>
+          <tr><td>Intermediate (1–3 years)</td><td>Gains every 1–2 weeks with appropriate planning</td><td>Add volume every mesocycle (3–6 weeks)</td><td>3–4 sessions; increase frequency cautiously between mesocycles</td></tr>
+          <tr><td>Advanced (3+ years)</td><td>Gains require full mesocycles of focused work</td><td>Volume increases require deload periods to absorb</td><td>4–6 sessions; manipulate density before adding frequency</td></tr>
+        </table>
+      </div>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Key Coaching Principle</p>
+        <p>Never progress load and volume simultaneously. Choose one lever per training block. This makes it easier to identify what is driving adaptation (or causing breakdown) and reduces the risk of overloading the athlete's recovery capacity.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 3: Periodisation</h2>
+      <p>Periodisation is the systematic planning of training to achieve peak performance at specific times while minimising injury risk and avoiding overtraining. It organises training into structured time periods — macrocycles, mesocycles, and microcycles — with different training emphases across phases.</p>
+
+      <h3 class="subsection-title">3.1 Training Cycles</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Cycle</th><th>Duration &amp; Description</th></tr>
+          <tr><td>Macrocycle</td><td>The entire training plan — typically one season or one year. Encompasses all phases from general preparation through to competition and transition.</td></tr>
+          <tr><td>Mesocycle</td><td>A block within the macrocycle — typically 3–6 weeks. Each mesocycle has a specific training emphasis (e.g. strength, power endurance, peak performance).</td></tr>
+          <tr><td>Microcycle</td><td>A single training week. Contains the specific sessions, volumes, intensities, and recovery days that fulfil the mesocycle's objectives.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">3.2 Linear Periodisation</h3>
+      <p>Linear (or classic) periodisation moves progressively from high-volume, low-intensity training toward lower-volume, higher-intensity training as the athlete approaches a competition or performance target. It is the simplest model and well-suited to beginners.</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Phase</th><th>Focus &amp; Application</th></tr>
+          <tr><td>Hypertrophy / Base (4–6 weeks)</td><td>High volume, moderate intensity. Build work capacity, strengthen connective tissue, address weaknesses. Climbing: ARC training, volume climbing, antagonist hypertrophy.</td></tr>
+          <tr><td>Strength (4–6 weeks)</td><td>Moderate volume, higher intensity. Build maximal strength. Climbing: hangboard max hangs, weighted pull-ups, deadlifts.</td></tr>
+          <tr><td>Power / Power Endurance (3–4 weeks)</td><td>Lower volume, high intensity. Convert strength to power and endurance. Climbing: campus board, 4×4 boulder sets, limit bouldering.</td></tr>
+          <tr><td>Peak / Specific (2–3 weeks)</td><td>Low volume, high specificity. Sharpen performance. Climbing: project attempts, competition simulation.</td></tr>
+          <tr><td>Taper / Recovery (1–2 weeks)</td><td>Significantly reduced volume. Allow accumulated fatigue to dissipate while retaining fitness. Light climbing, mobility, rest.</td></tr>
+        </table>
+      </div>
+      <p><strong>Typical volume and intensity changes across a linear macrocycle:</strong></p>
+      <ul>
+        <li>Volume peaks in the base phase and decreases by approximately 10–20% per phase</li>
+        <li>Intensity increases incrementally — do not jump directly from base-phase loads to power-phase loads without a strength bridge</li>
+        <li>The taper phase reduces volume by 40–60% while maintaining intensity — this preserves neuromuscular fitness while clearing fatigue</li>
+      </ul>
+
+      <h3 class="subsection-title">3.3 Undulating Periodisation (DUP)</h3>
+      <p>Daily Undulating Periodisation (DUP) varies training intensity and volume across different sessions within the same week. Rather than spending 4–6 weeks at a single intensity, the athlete trains different qualities simultaneously. This keeps training varied, reduces accommodation, and can be more engaging for intermediate athletes.</p>
+      <p><strong>Example weekly structure for a climber using DUP:</strong></p>
+      <ul>
+        <li>Monday — Strength focus: max hangs, weighted pull-ups (high intensity, low volume)</li>
+        <li>Wednesday — Power Endurance focus: 4×4 boulder sets (moderate-high intensity, moderate volume)</li>
+        <li>Friday — Endurance focus: ARC training, volume climbing (low intensity, high volume)</li>
+      </ul>
+      <p>DUP progression works differently to linear models — rather than changing phases, the coach progressively increases the load or volume within each session type across the weeks of the mesocycle. For example, max hang loads increase week to week, while 4×4 problem difficulty gradually steps up.</p>
+
+      <h3 class="subsection-title">3.4 Block Periodisation</h3>
+      <p>Block periodisation organises training into concentrated blocks (typically 3–4 weeks) where each block has a single dominant training quality. Each block builds sequentially on the last. This model suits intermediate to advanced athletes and is commonly used in elite climbing preparation.</p>
+      <ul>
+        <li>Accumulation block — high volume, developing general fitness and work capacity</li>
+        <li>Transmutation block — convert accumulated base fitness into sport-specific strength and power</li>
+        <li>Realisation block — express performance at competition or project redpoint</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Which Model to Use?</p>
+        <p>For beginners: linear periodisation — simple, effective, and easy to follow. For intermediates: DUP or block periodisation — more variety and better accommodation of training experience. For advanced/elite climbers: block periodisation with individualised structure based on competition calendar and specific weaknesses.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 4: Resistance Training Variables</h2>
+      <p>Resistance training is a cornerstone of climbing-specific conditioning. Whether the goal is finger strength, pulling power, or injury prevention through antagonist work, coaches must understand how to manipulate training variables to produce the intended adaptation.</p>
+
+      <h3 class="subsection-title">4.1 Repetition Ranges and Adaptations</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Rep Range</th><th>Primary Adaptation</th><th>Climbing Application</th></tr>
+          <tr><td>1–5 reps (≥85% 1RM)</td><td>Maximum strength (neural + structural)</td><td>Weighted pull-ups, heavy deadlifts for posterior chain</td></tr>
+          <tr><td>6–12 reps (67–85% 1RM)</td><td>Hypertrophy (muscle size increase)</td><td>Antagonist building phase — pushes, rows, shoulder work</td></tr>
+          <tr><td>13–20 reps (50–67% 1RM)</td><td>Muscular endurance</td><td>High-rep rows, pushes for endurance phase</td></tr>
+          <tr><td>&gt;20 reps (&lt;50% 1RM)</td><td>Local muscular endurance / technique</td><td>Body weight antagonist circuits, mobility under load</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">4.2 Key Resistance Training Variables</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Variable</th><th>Guidance for Climbing Coaches</th></tr>
+          <tr><td>Sets</td><td>2–3 sets for beginners; 3–5 for intermediates/advanced. More sets increase volume and hypertrophic stimulus but require more recovery time.</td></tr>
+          <tr><td>Rest Periods</td><td>Strength goals: 3–5 min (full PCr recovery). Hypertrophy: 60–90 sec. Endurance: 30–45 sec. Shorter rest increases metabolic stress; longer rest allows greater force production.</td></tr>
+          <tr><td>Tempo</td><td>Eccentric-Pause-Concentric-Pause. E.g. 3-1-2-0 (3s lower, 1s pause, 2s lift). Slow eccentrics increase time under tension and are valuable for tendon health in finger training.</td></tr>
+          <tr><td>Exercise Order</td><td>Technically demanding or heavy compound movements first (e.g. deadlifts before rows). Assistance work and antagonists after primary movements. Skill work before fatigue.</td></tr>
+          <tr><td>Frequency</td><td>Most qualities can be trained 2–3× per week with adequate recovery. Finger strength is a notable exception — tendons recover more slowly than muscle; 48h minimum between high-intensity sessions.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">4.3 Programming Antagonist Work</h3>
+      <p>Climbers develop pronounced pulling-dominant musculature, creating imbalances that predispose the shoulder, elbow, and wrist to injury. Antagonist training — focusing on pushing muscles and external rotators — should be included in every climbing training programme.</p>
+      <p><strong>Priority antagonist exercises:</strong></p>
+
+      <p>Horizontal push — press-ups, dumbbell bench press (2–3× per week, 3×10–15 reps)</p>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-04/push-up-bench-press.png" alt="Push-up and dumbbell bench press exercise technique diagram">
+      </div>
+
+      <p>Vertical push — dumbbell overhead press, band push-downs for triceps</p>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-04/overhead-press-tricep-pushdown.png" alt="Overhead dumbbell press and banded tricep pushdown exercise technique diagram">
+      </div>
+
+      <p>Shoulder external rotation — band pull-aparts, face pulls (daily or near-daily at low intensity)</p>
+      <div class="fig-pair">
+        <div class="fig-item"><img src="../images/lessons/module-04/band-pull-apart.png" alt="Resistance band pull apart exercise diagram"></div>
+        <div class="fig-item"><img src="../images/lessons/module-04/band-face-pull.png" alt="Resistance band face pull exercise diagram"></div>
+      </div>
+
+      <p>Wrist extensors — light dumbbell wrist extensions, finger extension work with rubber band</p>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-04/wrist-finger-extensions.png" alt="Wrist extension with dumbbells and finger extension with elastic bands exercise diagram">
+      </div>
+
+      <p>Antagonist volume is typically kept at 30–40% of total resistance training volume. These muscles are not trained to failure — the goal is balance and injury prevention, not hypertrophy.</p>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 5: Cardiovascular Training Prescription</h2>
+      <p>Although climbing is not a primarily aerobic sport, the oxidative system contributes to recovery between boulder attempts, sustains longer routes, and supports general health and resilience. Cardiovascular training prescription follows different rules to resistance training and can be structured using heart rate zones.</p>
+
+      <h3 class="subsection-title">5.1 Heart Rate Training Zones</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Zone</th><th>% HRmax</th><th>Description &amp; Benefit</th></tr>
+          <tr><td>Zone 1 — Recovery</td><td>50–60%</td><td>Very easy; promotes blood flow and active recovery. Ideal for rest days and cool-downs.</td></tr>
+          <tr><td>Zone 2 — Aerobic Base</td><td>60–70%</td><td>Conversational pace; develops aerobic base and fat oxidation. The foundation of cardiovascular fitness.</td></tr>
+          <tr><td>Zone 3 — Aerobic Threshold</td><td>70–80%</td><td>Moderate effort; sustainable but not comfortable. Builds aerobic capacity.</td></tr>
+          <tr><td>Zone 4 — Lactate Threshold</td><td>80–90%</td><td>Challenging effort; breathing becomes laboured. Improves the ability to sustain high-intensity efforts.</td></tr>
+          <tr><td>Zone 5 — Maximal</td><td>90–100%</td><td>Near-maximal; short intervals only. Develops VO₂ max and anaerobic capacity.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.2 Maximum Heart Rate Estimation</h3>
+      <p>HRmax = 220 − Age (Karvonen formula — an estimate; ±10–12 bpm individual variation)</p>
+      <p>For a more accurate HRmax, use a graded maximal exercise test (requires medical supervision for moderate-high risk individuals). The heart rate reserve method provides a more individualised zone calculation:</p>
+      <p>Target HR = ((HRmax − HRrest) × % intensity) + HRrest</p>
+
+      <h3 class="subsection-title">5.3 Cardiovascular Programming for Climbers</h3>
+      <p>Zone 2 aerobic base work is consistently underprogrammed in climbers. Many athletes spend too much time in Zone 3–4, which is hard enough to accumulate fatigue but not intense enough to drive high-end aerobic adaptations. A well-structured cardiovascular programme for a climber might look like:</p>
+      <ul>
+        <li>2× per week Zone 2 sessions (30–45 minutes) — cycling, hiking, easy rowing</li>
+        <li>1× per week Zone 4 interval session (e.g. 4–6 × 4-min intervals with 3-min recovery) during higher-intensity mesocycles</li>
+        <li>Zone 1 active recovery on rest days (15–20 minutes easy movement)</li>
+      </ul>
+      <p>Cardiovascular volume should increase gradually — add no more than 10% total cardio duration per week, and avoid introducing high-intensity cardio during climbing-intensive mesocycles to limit cumulative fatigue.</p>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 6: Flexibility &amp; Mobility Programming</h2>
+      <p>Flexibility and mobility work is often neglected in training programmes but is critical for climbing performance, injury prevention, and longevity. Coaches must distinguish between the types of stretching and when each is appropriate.</p>
+
+      <h3 class="subsection-title">6.1 Types of Stretching</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Type</th><th>Description &amp; Application</th></tr>
+          <tr><td>Static Stretching</td><td>Holding a stretch position for 20–60 seconds. Best performed post-session or on recovery days. Effective for improving flexibility over time but transiently reduces power output — avoid before performance.</td></tr>
+          <tr><td>Dynamic Stretching</td><td>Controlled movements that take joints through their full range. Ideal as part of a warm-up — improves mobility, raises tissue temperature, and activates neuromuscular patterns.</td></tr>
+          <tr><td>PNF Stretching</td><td>Contract-relax technique: contract the target muscle against resistance, then stretch it. Produces the greatest flexibility gains; requires a partner or coach. Best in a dedicated mobility session.</td></tr>
+          <tr><td>Active Isolated Stretching</td><td>Hold each stretch for 1–2 seconds and repeat 10–12 times. Maintains neural activation while improving range of motion. Effective warm-up addition.</td></tr>
+          <tr><td>Foam Rolling (SMR)</td><td>Apply pressure to soft tissue using a foam roller or ball. Reduces tissue density and improves mobility short-term. Best used before stretching or as part of warm-up.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">6.2 High-Priority Mobility Work for Climbers</h3>
+      <ul>
+        <li>Hip flexion and external rotation — frog sit, pigeon pose, deep squat holds</li>
+        <li>Thoracic extension and rotation — foam roller extensions, seated trunk rotations</li>
+        <li>Shoulder external rotation and flexion — band-assisted stretches, doorway stretches, overhead mobility work</li>
+        <li>Wrist and finger extensors — important antagonist stretches often neglected by climbers</li>
+        <li>Ankle dorsiflexion — calf stretching (gastrocnemius and soleus separately), lunge mobility drills</li>
+      </ul>
+
+      <h3 class="subsection-title">6.3 Structuring Mobility Sessions</h3>
+      <p>Mobility work should not be an afterthought. For athletes with significant restrictions, a dedicated 20–30 minute mobility session 2–3× per week is far more effective than 5 minutes of rushed stretching post-climb.</p>
+      <p><strong>A practical mobility session structure:</strong></p>
+      <ul>
+        <li>5 minutes foam rolling — target hips, thoracic spine, calves</li>
+        <li>10 minutes dynamic or active isolated stretching — hip circles, thoracic rotations, shoulder circles</li>
+        <li>10–15 minutes PNF or static stretching — focus on the athlete's two or three most restricted areas</li>
+      </ul>
+      <p>Flexibility gains are slow and require months of consistent work. Set realistic expectations with athletes — meaningful hip or shoulder mobility improvements typically take 8–12 weeks of consistent daily stretching to become evident.</p>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 7: Recovery &amp; Regeneration</h2>
+      <p>Recovery is not the absence of training — it is an active, programmed component of a well-designed plan. Without adequate recovery, training stress accumulates into fatigue, performance declines, and injury risk rises. Understanding the different types and timescales of recovery is essential for intelligent programming.</p>
+
+      <h3 class="subsection-title">7.1 Types of Recovery</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Recovery Type</th><th>Timescale &amp; Description</th></tr>
+          <tr><td>Immediate (within session)</td><td>Recovery between sets and attempts. Length depends on energy system being trained (30 sec to 5 min). Allows partial restoration of PCr and clearance of hydrogen ions.</td></tr>
+          <tr><td>Short-term (24–72 hours)</td><td>Recovery between training sessions. Muscle protein synthesis peaks at 24–48h post-session. Key adaptations occur during this window — do not train the same system to failure before this process is complete.</td></tr>
+          <tr><td>Planned overreaching</td><td>A short period (1–2 weeks) of higher-than-normal volume or intensity, deliberately inducing accumulated fatigue. Must be followed by a deload week — the supercompensation effect occurs during recovery.</td></tr>
+          <tr><td>Deload week</td><td>A programmed week of significantly reduced volume (typically 40–60% of normal) at the end of a mesocycle. Allows cumulative fatigue to dissipate while fitness is retained.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">7.2 Recovery Modalities</h3>
+      <ul>
+        <li>Sleep — the single most important recovery tool. 8–9 hours for training athletes. Growth hormone release, tissue repair, and neural consolidation all occur primarily during sleep.</li>
+        <li>Nutrition — adequate protein (1.6–2.0 g/kg/day), carbohydrate replenishment post-session, and overall caloric sufficiency drive recovery. Discussed in detail in Module 6.</li>
+        <li>Active recovery — light movement (Zone 1 cardio, easy climbing, walking) promotes blood flow and metabolite clearance without adding meaningful fatigue.</li>
+        <li>Cold water immersion / contrast therapy — reduces perception of muscle soreness and may improve short-term recovery. Evidence for long-term adaptation effects is mixed.</li>
+        <li>Mobility and soft tissue work — foam rolling, stretching, and massage support tissue quality and range of motion; reduce the psychological experience of fatigue.</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Monitoring Recovery</p>
+        <p>Track athlete readiness daily using simple tools: resting heart rate, sleep quality rating (1–5), mood/motivation (1–5), perceived muscle soreness (1–5). A composite score trending downward over 3–5 days signals accumulated fatigue and may warrant a training reduction or unplanned rest day.</p>
+        <p style="margin-top: 10px;">The Recovery Index App is available to students at the following website:</p>
+      </div>
+      <a class="resource-btn" href="https://callan-sketch.github.io/climbing-recovery/" target="_blank" rel="noopener">📊 Recovery Index App</a>
+
+      <h3 class="subsection-title">7.3 The Supercompensation Window</h3>
+      <p>Supercompensation is the theoretical basis for all training adaptation. Following a training stimulus, fitness temporarily decreases as the body recovers. With adequate recovery, fitness rebounds above the previous baseline before declining back if no further stimulus is applied.</p>
+      <p><strong>Practical implications for programming:</strong></p>
+      <ul>
+        <li>Training the same system too soon (before supercompensation) leads to accumulated fatigue and eventual overtraining</li>
+        <li>Training too late (after the supercompensation window has passed) results in only maintenance, not improvement</li>
+        <li>For most climbing-relevant qualities, the supercompensation window sits approximately 48–96 hours after a stimulus — this supports a 2–3× per week training frequency for each quality</li>
+        <li>The deload-supercompensation cycle is the reason planned overreaching followed by a deload can produce rapid performance jumps</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-04/supercompensation-diagram.png" alt="Diagram of the supercompensation cycle: training stress, fatigue dip, recovery, supercompensation peak, and return to training">
+      </div>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Module 04 — proceed to the Module 04 quiz when ready.</p>
+      <!-- QUIZ LINK NEEDED: no quiz link was found in the source document for this module.
+           Replace the span below with:
+           <a class="quiz-btn" href="QUIZ_URL_HERE" target="_blank" rel="noopener">Take the quiz →</a> -->
+      <span class="quiz-pending">Quiz link coming soon</span>
+      <p class="quiz-note">Once you have completed the quiz you will get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next module will unlock.</p>
+    </div>
+
+  </div>
+
+  <!-- ================= MODULE 04 SUMMARY ================= -->
+  <div class="summary-block">
+    <h2>Module Summary</h2>
+    <p class="summary-sub">Module 4 has provided the theoretical toolkit for designing structured training programmes. Key takeaways:</p>
+
+    <h3>Key Terms &amp; Definitions</h3>
+    <div class="glossary-wrap">
+      <table class="glossary-table">
+        <tr><td>FITT-VP</td><td>Frequency, Intensity, Time, Type, Volume, Progression — the six variables of exercise prescription.</td></tr>
+        <tr><td>Progressive Overload</td><td>The systematic increase of training stress over time to drive continued physiological adaptation.</td></tr>
+        <tr><td>10% Rule</td><td>A guideline recommending total training load increases no more than 10% per week to limit injury risk and overtraining.</td></tr>
+        <tr><td>Double Progression</td><td>A strength progression method: first increase reps within a set range, then increase load once the top of that range is reached consistently.</td></tr>
+        <tr><td>Periodisation</td><td>The planned variation of training volume and intensity across time to optimise performance and manage fatigue.</td></tr>
+        <tr><td>Macrocycle</td><td>The longest training planning unit — typically a full year or season.</td></tr>
+        <tr><td>Mesocycle</td><td>A block of training within the macrocycle, typically 3–6 weeks, with a defined training emphasis.</td></tr>
+        <tr><td>Microcycle</td><td>A single training week containing the specific sessions of a mesocycle.</td></tr>
+        <tr><td>Linear Periodisation</td><td>A model progressing from high-volume/low-intensity to low-volume/high-intensity across phases; best suited to beginners.</td></tr>
+        <tr><td>DUP</td><td>Daily Undulating Periodisation — a model varying intensity and volume across different sessions within the same training week.</td></tr>
+        <tr><td>Block Periodisation</td><td>Concentrated training blocks focused on one dominant quality at a time, sequenced to build progressively toward competition.</td></tr>
+        <tr><td>Deload Week</td><td>A planned reduction in training volume (typically 40–60%) at the end of a mesocycle to allow recovery and supercompensation.</td></tr>
+        <tr><td>Supercompensation</td><td>The phenomenon by which fitness rises above baseline following a period of stress and adequate recovery — the theoretical basis for training adaptation.</td></tr>
+        <tr><td>1RM</td><td>One Repetition Maximum — the maximum load an individual can lift for a single complete repetition with correct technique.</td></tr>
+        <tr><td>HRmax</td><td>Maximum heart rate — the highest heart rate achieved during maximal exercise; used to define training zones.</td></tr>
+        <tr><td>RPE</td><td>Rate of Perceived Exertion — a subjective scale (typically 1–10 or 6–20 Borg scale) that quantifies perceived effort during exercise.</td></tr>
+      </table>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>FITT-VP (Frequency, Intensity, Time, Type, Volume, Progression) provides six variables to manipulate when designing and evolving a training programme</li>
+      <li>Progressive overload is non-negotiable — the training stimulus must continue to grow to drive adaptation</li>
+      <li>Rate of progression should be conservative: no more than 10% total load increase per week; use double progression for strength and phase-by-phase volume additions for hypertrophy</li>
+      <li>Never increase load and volume simultaneously — manipulate one variable per block</li>
+      <li>Tendons adapt more slowly than muscle; finger tendon progression must be the rate-limiting variable in climbing training</li>
+      <li>Periodisation organises training over time; linear models suit beginners, undulating and block models suit more experienced athletes</li>
+      <li>Resistance training variables — rep range, sets, rest, tempo, and frequency — must be aligned with the specific adaptation goal</li>
+      <li>Cardiovascular training uses heart rate zones to target different physiological adaptations; Zone 2 aerobic base work is often under-programmed in climbers</li>
+      <li>Flexibility and mobility work should be active and consistent; meaningful improvements require 8–12 weeks of regular practice</li>
+      <li>Recovery — including sleep, nutrition, active recovery, and planned deloads — is not optional; it is where adaptation actually occurs</li>
+    </ul>
+
+    <div class="looking-ahead">
+      <p class="label">Looking Ahead</p>
+      <p>In Module 5 — Exercise Technique &amp; Instruction — we apply programming principles to the coaching floor: how to teach exercises effectively, cue corrections, and safely introduce new training stimuli to clients.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
