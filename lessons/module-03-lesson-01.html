@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 03 — Client Assessment &amp; Health Screening | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .why-box {
+    background: var(--teal-soft);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .why-box p { color: #205c5d; margin: 0; font-size: 14px; }
+  .why-box .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #205c5d; margin: 0 0 8px; }
+
+  .objectives-list { margin: 0 0 0; padding-left: 22px; }
+  .objectives-list li { font-size: 14.5px; margin-bottom: 6px; }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 24px 0 10px; }
+  .subsection-title:first-child { margin-top: 0; }
+  .sub-label { font-size: 14px; font-weight: 700; color: var(--navy); margin: 18px 0 6px; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); }
+
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+
+  .test-image-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 20px 0; }
+  .test-image-item { text-align: center; }
+  .test-image-item img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .test-image-item .cap { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-top: 8px; }
+  @media (max-width: 560px) { .test-image-grid { grid-template-columns: 1fr; } }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+
+  .resource-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: 999px;
+    background: var(--cream); border: 1px solid var(--line);
+    font-size: 13.5px; font-weight: 600; color: var(--navy);
+    text-decoration: none; margin: 4px 0 18px;
+    transition: background 0.12s ease;
+  }
+  .resource-btn:hover { background: var(--teal-soft); }
+
+  .summary-block {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-top: 44px;
+  }
+  .summary-block h2 { color: var(--white); font-size: 22px; margin: 0 0 4px; border: none; padding: 0; }
+  .summary-block .summary-sub { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 22px; }
+  .summary-block h3 { color: var(--white); font-size: 15px; margin: 26px 0 12px; }
+  .takeaway-list { margin: 0; padding-left: 20px; }
+  .takeaway-list li { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.6; margin-bottom: 10px; }
+  .looking-ahead {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+  .looking-ahead .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta); margin: 0 0 8px; }
+  .looking-ahead p { color: rgba(255,255,255,0.85); margin: 0; font-size: 13.5px; }
+
+  .glossary-wrap { border-radius: 10px; overflow: hidden; margin-bottom: 8px; background: rgba(255,255,255,0.04); }
+  table.glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.glossary-table td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  table.glossary-table tr:last-child td { border-bottom: none; }
+  table.glossary-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  table.glossary-table td:first-child { font-weight: 700; color: var(--terracotta); white-space: nowrap; width: 150px; }
+  table.glossary-table td:last-child { color: rgba(255,255,255,0.82); }
+
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+    .summary-block { padding: 24px 20px; }
+    table.glossary-table td:first-child { width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-03.html">← Back to Module 03</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 03 · 03 of 07</p>
+    <h1>Client Assessment &amp; Health Screening</h1>
+    <p class="lesson-sub">Written Guide + Quiz</p>
+  </div>
+
+  <div class="content-card">
+
+    <div class="why-box">
+      <p class="label">Why It Matters</p>
+      <p>Before designing any training programme, a climbing coach must understand the individual in front of them. Health screening protects both the client and the coach legally, while fitness assessment provides the objective baseline needed to design effective, personalised programmes and measure progress over time.</p>
+    </div>
+
+    <h2 class="section-title">Learning Objectives</h2>
+    <p>By the end of this module, you will be able to:</p>
+    <ul class="objectives-list">
+      <li>Administer and interpret a PAR-Q+ pre-participation health screening questionnaire</li>
+      <li>Stratify cardiovascular risk and identify when medical referral is required</li>
+      <li>Accurately measure resting and exercise vital signs</li>
+      <li>Select and administer appropriate body composition assessment methods</li>
+      <li>Conduct a battery of fitness tests for climbing-relevant physical qualities</li>
+      <li>Use the SMART framework to set meaningful, achievable goals with clients</li>
+    </ul>
+
+    <!-- SECTION 1 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 1: Pre-Participation Health Screening</h2>
+      <p>Health screening before beginning any exercise programme is both an ethical duty and a legal necessity. It identifies contraindications to exercise, flags medical conditions requiring modification of training, and provides documentation of due diligence.</p>
+
+      <h3 class="subsection-title">1.1 The PAR-Q+ (Physical Activity Readiness Questionnaire)</h3>
+      <p>The PAR-Q+ is the globally recognised standard for pre-participation screening. It is a two-stage questionnaire designed to identify individuals who require medical clearance before starting vigorous exercise. The updated PAR-Q+ (2020) replaced earlier versions and includes a detailed follow-up section for those who answer 'yes' to initial questions.</p>
+      <p>The screening process:</p>
+      <ol>
+        <li>The client completes the seven general health questions</li>
+        <li>If ALL answers are NO — the client may begin moderate to vigorous exercise without medical clearance</li>
+        <li>If ONE or more answers are YES — the client proceeds to a follow-up section for their specific condition(s)</li>
+        <li>Based on follow-up responses, the client is either cleared to train with modifications, or referred to a physician before proceeding</li>
+      </ol>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Scope of Practice</p>
+        <p>As a coach (not a medical professional), you must never attempt to diagnose conditions or override a medical referral recommendation. If the PAR-Q+ indicates a physician referral, you must wait for written medical clearance before proceeding. Document everything.</p>
+      </div>
+
+      <p>The PAR-Q+ form and assessment is available to all students on this program in the following website. Once completed the result of the screening will automatically be emailed to the coach and the client.</p>
+      <a class="resource-btn" href="https://corelearning.co.za/resources/par-q.html" target="_blank" rel="noopener">📋 PAR-Q+ Screening Tool</a>
+
+      <h3 class="subsection-title">1.2 Additional Intake Information</h3>
+      <p>Beyond the PAR-Q+, a thorough initial consultation should gather:</p>
+      <ul>
+        <li>Medical history — surgeries, medications, allergies, previous injuries (especially climbing-related)</li>
+        <li>Current activity levels and climbing history — years climbing, grades, disciplines, training frequency</li>
+        <li>Training history — previous gym experience, any structured programming</li>
+        <li>Lifestyle factors — sleep quality, stress levels, occupation (sedentary vs. physical), nutrition habits</li>
+        <li>Goals — short and long term (discussed in Section 6 on goal setting)</li>
+        <li>Injury history — any recurring or current injuries; note location, mechanism, and management</li>
+      </ul>
+      <p>The Sample General Medical Questionnaire is available to members of this site via the following link:</p>
+      <a class="resource-btn" href="https://corelearning.co.za/resources/athlete-medical-questionnaire.html" target="_blank" rel="noopener">📋 Athlete Medical Questionnaire</a>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 2: Cardiovascular Risk Stratification</h2>
+      <p>Risk stratification classifies individuals according to their likelihood of experiencing an adverse cardiac event during exercise. This determines the level of supervision and the appropriateness of high-intensity exercise prescription.</p>
+
+      <h3 class="subsection-title">2.1 Risk Categories</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Risk Level</th><th>Profile</th><th>Recommendation</th></tr>
+          <tr><td>Low Risk</td><td>No signs or symptoms of cardiovascular, metabolic, or renal disease; meets physical activity guidelines</td><td>May begin moderate and vigorous exercise without restriction</td></tr>
+          <tr><td>Moderate Risk</td><td>One or more cardiovascular risk factors (hypertension, dyslipidaemia, family history, smoking, sedentary lifestyle, obesity)</td><td>Light to moderate exercise acceptable; physician consultation recommended before vigorous exercise</td></tr>
+          <tr><td>High Risk</td><td>Known cardiovascular, metabolic (type 1 or 2 diabetes), or renal disease; or signs/symptoms (chest pain, dyspnoea, syncope)</td><td>Medical clearance required before any structured exercise programme</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">2.2 Key Cardiovascular Risk Factors</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Risk Factor</th><th>Threshold / Definition</th></tr>
+          <tr><td>Age</td><td>Men ≥45 years; Women ≥55 years</td></tr>
+          <tr><td>Family history</td><td>First-degree relative with MI or sudden death before age 55 (male) or 65 (female)</td></tr>
+          <tr><td>Smoking</td><td>Current smoker or quit within the past 6 months</td></tr>
+          <tr><td>Sedentary lifestyle</td><td>Not meeting 150 minutes of moderate-intensity or 75 minutes of vigorous activity per week</td></tr>
+          <tr><td>Obesity</td><td>BMI ≥30 kg/m² or waist circumference &gt;102 cm (men) / &gt;88 cm (women)</td></tr>
+          <tr><td>Hypertension</td><td>Resting BP ≥130/80 mmHg on two separate occasions, or on antihypertensive medication</td></tr>
+          <tr><td>Dyslipidaemia</td><td>LDL (Low Density Lipoprotein) ≥130 mg/dL (Males and females), HDL (High Density Lipoprotein) &lt;40 mg/dL (males) or &lt;50 mg/dL (females).</td></tr>
+          <tr><td>Prediabetes</td><td>Fasting blood glucose 100–125 mg/dL or HbA1c 5.7–6.4%</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 3: Vital Signs Measurement</h2>
+      <p>Resting vital signs provide important baseline physiological data and can flag health concerns before exercise begins. Coaches should be able to measure and interpret the following accurately.</p>
+
+      <h3 class="subsection-title">3.1 Resting Heart Rate (RHR)</h3>
+      <p>Resting heart rate is best measured first thing in the morning, before the client rises. For a session measurement, allow 5 minutes of quiet seated rest before taking a 60-second radial (wrist) or carotid (neck) pulse count. Normal range is 60–100 bpm; well-trained athletes may be 40–60 bpm.</p>
+      <p>Consistently elevated RHR (above baseline by 7–10 bpm) may indicate overtraining, dehydration, illness, or elevated stress — a useful monitoring tool across a training block.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-03/radial-pulse.png" alt="Diagram showing how to take a radial pulse at the wrist">
+      </div>
+
+      <h3 class="subsection-title">3.2 Blood Pressure (BP)</h3>
+      <p>Blood pressure is measured using a sphygmomanometer (manual or automated).</p>
+      <p>The client should be seated and rested for at least 5 minutes. Two readings should be taken 2 minutes apart and averaged.</p>
+      <p>The Systolic measurement is the amount of pressure in the arteries when the heart is contracting and the Diastolic measurement is the amount of pressure in the arteries when the heart is relaxing.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-03/blood-pressure-measurement.png" alt="Photo of blood pressure being measured with a sphygmomanometer">
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Classification</th><th>Systolic (mmHg) / Diastolic (mmHg)</th></tr>
+          <tr><td>Normal</td><td>&lt; 120 / &lt; 80</td></tr>
+          <tr><td>Elevated</td><td>120–129 / &lt; 80</td></tr>
+          <tr><td>High (Stage 1 Hypertension)</td><td>130–139 / 80–89</td></tr>
+          <tr><td>High (Stage 2 Hypertension)</td><td>≥ 140 / ≥ 90</td></tr>
+          <tr><td>Hypertensive Crisis (refer immediately)</td><td>&gt; 180 / &gt; 120</td></tr>
+          <tr><td>Hypotension (low BP)</td><td>&lt; 90 / &lt; 60</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">3.3 Respiratory Rate</h3>
+      <p>Count the number of full breath cycles (inhale + exhale) in 30 seconds and multiply by two. Normal resting range is 12–20 breaths/min. An elevated rate may indicate respiratory distress, anxiety, or cardiovascular compromise.</p>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 4: Body Composition Assessment</h2>
+      <p>Body composition refers to the proportion of fat mass versus fat-free mass (muscle, bone, organs, water) in the body. For climbing coaches, body composition is relevant because the power-to-weight ratio significantly affects performance on steep terrain. However, coaches must approach this topic with care — disordered eating and weight-cutting behaviours are documented risks in the climbing community.</p>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Ethical Warning</p>
+        <p>Never prescribe weight loss goals without careful consideration of the athlete's relationship with food and body image. If a client displays signs of disordered eating, restrict body composition discussion and refer to an appropriate professional. Performance and health should always be framed as the goal, not aesthetics or weight.</p>
+      </div>
+
+      <h3 class="subsection-title">4.1 Methods of Body Composition Assessment</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Method</th><th>Description, Accuracy &amp; Practical Use</th></tr>
+          <tr><td>BMI (Body Mass Index)</td><td>Weight (kg) / Height² (m²). Simple but inaccurate — does not distinguish muscle from fat. Use only as a population-level screening tool, not individual assessment.</td></tr>
+          <tr><td>Skinfold Calipers</td><td>Measures subcutaneous fat at standard sites (e.g. Jackson-Pollock 3- or 7-site protocols). Requires trained technique. Practical, low cost, but operator-dependent.</td></tr>
+          <tr><td>Bioelectrical Impedance Analysis (BIA)</td><td>Sends a weak electrical current through the body; fat impedes flow more than muscle. Easy to administer but sensitive to hydration status. Useful for tracking trends.</td></tr>
+          <tr><td>DEXA (Dual-Energy X-ray Absorptiometry)</td><td>Gold standard — accurately measures fat, lean mass, and bone density. Not typically available to coaches; used in research and clinical settings.</td></tr>
+          <tr><td>Circumference Measurements</td><td>Waist, hip, chest, arm, thigh measurements. Quick, no equipment required beyond a tape. Tracks localised changes over time; useful for body composition monitoring in the field.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 5: Fitness Testing for Climbing</h2>
+      <p>Fitness testing provides objective data that guides programme design and measures progress. For climbing coaches, tests should be selected to assess the physical qualities most relevant to climbing performance. Results should always be interpreted in the context of the individual's goals, history, and climbing level.</p>
+      <p>The participants on this course are given access to the Core Learning Advanced Climbing Assessment. Once completed by athletes, they and the coach will receive a copy of the report and how it compares to averages established over testing of all athletes to date.</p>
+      <a class="resource-btn" href="https://corelearning.co.za/resources/advanced-climbing-assessment.html" target="_blank" rel="noopener">📊 Advanced Climbing Assessment</a>
+      <p>The tests within the Core Learn assessment are discussed below.</p>
+
+      <h3 class="subsection-title">5.1 Physical Characteristics</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>Height</td><td>Measured barefoot with back to a wall (cm).</td></tr>
+          <tr><td>Weight</td><td>Measured barefoot standing with both legs on a scale (kg).</td></tr>
+          <tr><td>Arm Reach (Wingspan)</td><td>From finger tip to finger tip reaching out sideways whilst facing the wall.</td></tr>
+          <tr><td>Max Vertical Reach</td><td>Standing barefoot, reaching up as high as possible with the right hand. Measured from ground to fingertips. This mark is later used for measuring max jump height.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.2 Strength Tests</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>Maximum Rep Pull-up Test</td><td>Max number of bar pull ups (arms shoulder width apart; feet always facing forward; no kipping or leg movement allowed; must obtain lock off and chin over bar)</td></tr>
+          <tr><td>Two Repetition Max Pull Up test</td><td>Complete 2 pull-ups using the maximum weight you can. Add weight to your body using a harness or sling. It may take several sets to find a max weight. Two pull-ups must be completed from nearly straight arms to chin at bar in a controlled manner, without any movement in the lower body. Hands should be at around shoulder width with palms facing away.</td></tr>
+          <tr><td>Max Number Push Ups</td><td>Number of push ups in a minute (fingers facing forwards; elbows stay at sides; at the bottom make sure the chest touches the ground before pushing up again)</td></tr>
+          <tr><td>Max jump for height</td><td>Standing jump for height (cm). Difference measured from finger tips on max reach standing to jumping.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.3 Core Strength Tests</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>Hanging L-sit</td><td>Engage shoulders, lift legs as straight as flexibility allows to perpendicular with body. Hold as long as possible. If legs drop past 45 degrees athletes have 1 chance to correct. If they drop again, time is taken. (seconds)</td></tr>
+          <tr><td>Hollow Body Hold</td><td>Lying on the ground. Extend arms so shoulders are raised off the floor and then straighten and lift legs into a low dish position. Do not allow the lower back to rise off the floor whilst in this position. Raise the arms straight so biceps touch ears. Record how long the athlete can hold this position with good form throughout. If they reach 120 seconds, stop the test and record a score of 120 seconds.</td></tr>
+          <tr><td>Front Extended Plank</td><td>From a press up position, walk your hands as far forwards as possible. Maintain a flat back by tensing core and glutes, and be sure not to let the lower back sag. Hold this position for as long as possible. If athlete reaches 240 seconds stop and record 240 seconds (seconds)</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.4 Finger Strength Tests</h3>
+
+      <p class="sub-label">Option 1: Tindeq Testing</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>Peak Force</td><td>You pull as hard as you can on a hold for a few seconds. The Tindeq device records the maximum force you produce. It measures your maximum finger/grip strength.</td></tr>
+          <tr><td>Rate of Force Generation</td><td>You pull explosively and the app measures how quickly you generate force — either over the time taken to go from 20–80% of max force, or over a fixed window (e.g. 100–300 ms). It captures <em>contact strength</em> — how fast you can grip.</td></tr>
+          <tr><td>Critical Force</td><td>Requires testing all three energy systems — essentially you perform multiple all-out efforts of different durations, and the app calculates the force level you could theoretically sustain indefinitely. It's expressed as a percentage of peak force and gives a much more meaningful picture of your aerobic finger capacity than a simple endurance hold.</td></tr>
+        </table>
+      </div>
+
+      <p class="sub-label">Option 2: Edges with Weight</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>Max weighted hang</td><td>The aim of this test is to find the maximum total load the athlete can hang with 2 arms for 7 seconds using either a strict half crimp or an open hand grip (whichever is the preferred position) on a 20mm edge.</td></tr>
+          <tr><td>Loaded Repeaters</td><td>Use 80% of their max hang weight (80% of body weight plus added weight) achieved in the two arm weighted hang from a 20mm edge. Hang for 7 seconds followed by 3 seconds of rest, repeated to failure. Record total time tested till failure including resting time (sec)</td></tr>
+        </table>
+      </div>
+
+      <p class="sub-label">Option 3: Edges unweighted</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>20mm hangs</td><td>Test how long the athlete can hang their body weight with arms straight from the 20mm edges on the beast maker or similar. Keeping shoulders engaged.</td></tr>
+          <tr><td>Repeaters</td><td>On the 20mm edges; Hang for 7 seconds with both arms, scapulars engaged; 3 seconds rest; repeat till failure (total seconds till failure)</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.5 Other Finger and Upper Limb Strength Tests</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>90 degree Lock off</td><td>Length of time hanging with both arms at 90 degrees elbow flexion from a jug. Timed till unable to maintain 90 degrees elbow flexion. Allowed 1 warning to return to 90 degrees (seconds)</td></tr>
+          <tr><td>One arm hang</td><td>One arm hangs from a slot (2 pad) on a beast maker or similar, shoulders engaged, for time (test both sides separately) (seconds)</td></tr>
+          <tr><td>Power</td><td>Power - From matching on a jug on a slightly overhanging wall - campus with one arm at a time as high as possible, just to touch. Distance from jug to fingertip reach (cm).</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.6 Movement Screens</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>Cossak Squat</td><td>Side to be tested - knee bends, other knee stays straight and that foot MUST stay flat on ground. Measure range of knee bend</td></tr>
+          <tr><td>Box step up</td><td>Box step up against wall. From a position facing the wall and where both toes are touching the wall (both the foot on the ground and the foot on the box), step up with control till standing upright. 3 attempts maximum. Document height of box (20, 24, 30 inch). Repeat both sides.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.7 Flexibility and Mobility Tests</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Test</th><th>What It Measures &amp; Protocol</th></tr>
+          <tr><td>Sit-and-Reach</td><td>Posterior chain flexibility (hamstrings, lower back) — client sits with legs straight and reaches forward along a measuring box. Record furthest reach maintained for 2 seconds.</td></tr>
+          <tr><td>Hip Internal &amp; External Rotation Screen</td><td>Hip mobility for climbing — prone with knee bent (90 degrees); allow knee to fall outward (IR) or inward (ER); measure angle from vertical. Normal IR &gt;=40; Normal ER &gt;=45 degrees.</td></tr>
+          <tr><td>Shoulder Flexion Screen</td><td>Overhead reach mobility — lying supine, arms raised overhead; note if lower back arches (indicating limited shoulder/thoracic mobility).</td></tr>
+          <tr><td>Ankle Dorsiflexion Screen</td><td>Ankle mobility for slab climbing — kneeling lunge test; measure distance from big toe to wall while heel remains flat. &lt;10 cm indicates restriction.</td></tr>
+        </table>
+      </div>
+
+      <div class="test-image-grid">
+        <div class="test-image-item">
+          <img src="../images/lessons/module-03/mobility-tests-stack.png" alt="Photos demonstrating sit-and-reach and related mobility test positions">
+          <p class="cap">Sit-and-Reach &amp; related test positions</p>
+        </div>
+        <div class="test-image-item">
+          <img src="../images/lessons/module-03/hip-rotation-test.png" alt="Diagram of hip internal and external rotation range of motion">
+          <p class="cap">Hip Internal &amp; External Rotation Screen</p>
+        </div>
+        <div class="test-image-item">
+          <img src="../images/lessons/module-03/shoulder-flexion-test.png" alt="Photo demonstrating the shoulder flexion mobility test">
+          <p class="cap">Shoulder Flexion Screen</p>
+        </div>
+        <div class="test-image-item">
+          <img src="../images/lessons/module-03/ankle-dorsiflexion-test.png" alt="Photo demonstrating the ankle dorsiflexion kneeling lunge test">
+          <p class="cap">Ankle Dorsiflexion Screen</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 6: Goal Setting — The SMART Framework</h2>
+      <p>Goal setting is one of the most powerful tools a coach has. Clear, well-structured goals align the athlete's motivation with the training process and provide objective benchmarks for evaluating progress. The SMART framework provides a practical structure for setting high-quality goals.</p>
+
+      <h3 class="subsection-title">6.1 The SMART Criteria</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>SMART Letter</th><th>Definition &amp; Climbing Example</th></tr>
+          <tr><td>S — Specific</td><td>The goal should clearly define what is to be achieved, for whom, and how. NOT: 'I want to get stronger.' YES: 'I want to be able to complete 10 full pull-ups with controlled tempo.'</td></tr>
+          <tr><td>M — Measurable</td><td>There must be a way to objectively measure progress and know when the goal has been achieved. Include quantifiable indicators — grade, weight, reps, time, distance.</td></tr>
+          <tr><td>A — Achievable</td><td>The goal should be challenging but realistic given the athlete's current level, time available, and life commitments. Unachievable goals destroy motivation.</td></tr>
+          <tr><td>R — Relevant</td><td>The goal must matter to the athlete and align with their broader climbing objectives. A goal that the coach sets but the athlete doesn't care about will not drive effort.</td></tr>
+          <tr><td>T — Time-bound</td><td>There should be a clearly defined endpoint or review point. This creates urgency and allows periodic reassessment.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">6.2 Outcome, Performance, and Process Goals</h3>
+      <p>SMART goals can operate at three levels, and effective coaching uses all three simultaneously:</p>
+      <ul>
+        <li>Outcome goals — the ultimate result (e.g. 'Redpoint a 7a by the end of the year'). Motivating but dependent on factors outside the athlete's control.</li>
+        <li>Performance goals — measurable benchmarks en route to the outcome (e.g. 'Improve dead hang from 15s to 30s on a 20mm edge within 8 weeks'). Entirely athlete-controlled.</li>
+        <li>Process goals — the daily habits and behaviours (e.g. 'Complete antagonist training twice per week'). Most directly within the athlete's control.</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Tip</p>
+        <p>When a client is discouraged by a lack of outcome progress (e.g. unable to climb a specific route), redirect focus to performance and process goals. Progress in these areas will eventually lead to outcome success, and maintaining motivation through the process is the coach's most important job.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 7: Relative Energy Deficiency in Sports (RED-S) Screening for World Climbing</h2>
+
+      <h3 class="subsection-title">7.1 Relative Energy Deficiency in Sport (RED-S) and Competition Climbing</h3>
+      <p>RED-S occurs when an athlete's caloric intake does not meet the energy demands of both daily life and training.</p>
+      <p>This mismatch can impair reproductive health, bone health, immunity, metabolism, cardiovascular health, and psychological wellbeing.</p>
+      <p>In climbing, the perceived performance advantage of being lighter has historically contributed to a culture where undereating can go unnoticed or even be quietly encouraged.</p>
+      <p>As a coach, your role is not to diagnose RED-S, but to recognise warning signs — persistent fatigue, frequent illness or injury, mood changes, and disordered eating behaviours — and to create an environment where healthy fuelling is the norm.</p>
+      <p>The International Olympic Committee (IOC) has noted that RED-S often goes unrecognised by athletes and coaches alike, and may be unintentionally worsened by sports culture and the perceived short-term gains from restricting calorie intake.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-03/reds-infographic.png" alt="Infographic showing the body systems and functions affected by Relative Energy Deficiency in Sport (RED-S)">
+      </div>
+
+      <p class="sub-label">World Climbing's Screening Policy</p>
+      <p>World Climbing became the first International Federation to introduce comprehensive RED-S regulations, implementing a screening policy ahead of the 2024 season.</p>
+      <ul>
+        <li>Athletes must complete health questionnaires pre-annual registration with World Climbing,</li>
+        <li>National Federations must issue a health certificate or request further testing before granting clearance, and</li>
+        <li>World Climbing conducts random and focused in-competition testing throughout the season.</li>
+      </ul>
+      <p>For coaches with athletes competing at national or international level, understanding the policy is vital — screening exists to protect athlete health, not to penalise.</p>
+      <p>The first level of screening that World Climbing requires National Federations to conduct on competing athletes is a combination of basic measurements and questionnaires. These screenings and the results are available to coaches of this course via the "RED-S screening resource" (link below). Even if a coaches athletes are not competitive, an awareness of RED-S warning signs and use of the screening tool can be a helpful indicator of concerns.</p>
+      <a class="resource-btn" href="https://corelearning.co.za/resources/reds-questionnaire.html" target="_blank" rel="noopener">📋 RED-S Screening Tool</a>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Module 03 — proceed to the Module 03 quiz when ready.</p>
+      <a class="quiz-btn" href="https://forms.gle/C4NrcVb2JNMLymW1A" target="_blank" rel="noopener">Take the quiz →</a>
+      <p class="quiz-note">Once you have completed the quiz you will get a reply email telling whether you passed or failed (required pass mark is 80%). If you failed you will need to repeat the quiz. If you pass, the next module will unlock.</p>
+    </div>
+
+  </div>
+
+  <!-- ================= MODULE 03 SUMMARY ================= -->
+  <div class="summary-block">
+    <h2>Module Summary</h2>
+    <p class="summary-sub">This module established the essential process of getting to know a client before designing any programme. Key points:</p>
+
+    <h3>Key Terms &amp; Definitions</h3>
+    <div class="glossary-wrap">
+      <table class="glossary-table">
+        <tr><td>PAR-Q+</td><td>Physical Activity Readiness Questionnaire — a standardised pre-participation screening tool that identifies individuals who require medical clearance before exercising.</td></tr>
+        <tr><td>Risk Stratification</td><td>The process of classifying individuals into low, moderate, or high cardiovascular risk categories to guide safe exercise prescription.</td></tr>
+        <tr><td>Resting Heart Rate</td><td>The number of heartbeats per minute when the body is completely at rest; a useful marker of cardiovascular fitness and recovery status.</td></tr>
+        <tr><td>Systolic Blood Pressure</td><td>The peak pressure in the arteries when the heart contracts; the upper number in a blood pressure reading.</td></tr>
+        <tr><td>Diastolic Blood Pressure</td><td>The pressure in the arteries between heartbeats (at rest); the lower number in a blood pressure reading.</td></tr>
+        <tr><td>BMI</td><td>Body Mass Index — weight divided by height squared; a rough population-level screening tool with limited individual accuracy.</td></tr>
+        <tr><td>DEXA</td><td>Dual-Energy X-ray Absorptiometry — the gold standard for measuring fat mass, lean mass, and bone density.</td></tr>
+        <tr><td>BIA</td><td>Bioelectrical Impedance Analysis — estimates body composition by measuring resistance to a small electrical current; sensitive to hydration levels.</td></tr>
+        <tr><td>Dead Hang Test</td><td>A field test of finger strength in climbers; performed on a standardised edge depth for maximum duration.</td></tr>
+        <tr><td>SMART Goals</td><td>A goal-setting framework: Specific, Measurable, Achievable, Relevant, Time-bound.</td></tr>
+        <tr><td>Outcome Goal</td><td>A goal focused on the end result (e.g. completing a specific climbing grade); influenced by factors partially outside the athlete's control.</td></tr>
+        <tr><td>Process Goal</td><td>A goal focused on daily habits and behaviours (e.g. completing all training sessions); entirely within the athlete's control.</td></tr>
+        <tr><td>Scope of Practice</td><td>The defined boundaries of a coach's professional competence; coaches must not diagnose, prescribe medical treatment, or act outside their qualification level.</td></tr>
+      </table>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>The PAR-Q+ is the minimum standard for pre-participation health screening and determines whether medical clearance is needed before training begins</li>
+      <li>Cardiovascular risk stratification classifies clients by risk level and guides the intensity of initial exercise prescription</li>
+      <li>Resting vital signs — heart rate, blood pressure, and respiratory rate — provide a physiological baseline and flag potential health concerns</li>
+      <li>Body composition can be assessed using multiple methods; coaches must approach this topic ethically and avoid fuelling disordered eating behaviours</li>
+      <li>Fitness testing for climbers should assess strength, finger strength, cardiovascular endurance, and mobility — providing data to design and evaluate programmes</li>
+      <li>The SMART framework — combined with outcome, performance, and process goal levels — creates clear, motivating targets that drive athlete engagement</li>
+    </ul>
+
+    <div class="looking-ahead">
+      <p class="label">Looking Ahead</p>
+      <p>In Module 4 — Principles of Exercise Programming — we will use assessment data to build training programmes using the FITT-VP principle, basic periodisation models, and structured recovery strategies.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
