@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 05 — Exercise Technique & Instruction | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .why-box {
+    background: var(--teal-soft);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .why-box p { color: #205c5d; margin: 0; font-size: 14px; }
+  .why-box .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #205c5d; margin: 0 0 8px; }
+
+  .objectives-list { margin: 0; padding-left: 22px; }
+  .objectives-list li { font-size: 14.5px; margin-bottom: 6px; }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 24px 0 10px; }
+  .subsection-title:first-child { margin-top: 0; }
+  .sub-label { font-size: 14px; font-weight: 700; color: var(--navy); margin: 18px 0 6px; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); }
+
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+
+  .img-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+  .img-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .img-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .img-grid-item { text-align: center; }
+  .img-grid-item img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); aspect-ratio: 1; object-fit: cover; }
+  .img-grid-item .cap { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-top: 8px; }
+  @media (max-width: 560px) {
+    .img-grid, .img-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+  .callout a { font-weight: 600; text-decoration: underline; }
+
+  .resource-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: 999px;
+    background: var(--cream); border: 1px solid var(--line);
+    font-size: 13.5px; font-weight: 600; color: var(--navy);
+    text-decoration: none; margin: 4px 0 14px;
+    transition: background 0.12s ease;
+  }
+  .resource-btn:hover { background: var(--teal-soft); }
+
+  .summary-block {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-top: 44px;
+  }
+  .summary-block h2 { color: var(--white); font-size: 22px; margin: 0 0 4px; border: none; padding: 0; }
+  .summary-block .summary-sub { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 22px; }
+  .summary-block h3 { color: var(--white); font-size: 15px; margin: 26px 0 12px; }
+  .takeaway-list { margin: 0; padding-left: 20px; }
+  .takeaway-list li { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.6; margin-bottom: 10px; }
+  .looking-ahead {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+  .looking-ahead .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta); margin: 0 0 8px; }
+  .looking-ahead p { color: rgba(255,255,255,0.85); margin: 0; font-size: 13.5px; }
+
+  .glossary-wrap { border-radius: 10px; overflow: hidden; margin-bottom: 8px; background: rgba(255,255,255,0.04); }
+  table.glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.glossary-table td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  table.glossary-table tr:last-child td { border-bottom: none; }
+  table.glossary-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  table.glossary-table td:first-child { font-weight: 700; color: var(--terracotta); white-space: nowrap; width: 150px; }
+  table.glossary-table td:last-child { color: rgba(255,255,255,0.82); }
+
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+  .quiz-pending {
+    display: inline-block; padding: 13px 28px; border-radius: 999px;
+    background: var(--line); color: var(--ink-mute);
+    font-size: 14.5px; font-weight: 600;
+  }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+    .summary-block { padding: 24px 20px; }
+    table.glossary-table td:first-child { width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-05.html">← Back to Module 05</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 05 · 05 of 07</p>
+    <h1>Exercise Technique &amp; Instruction</h1>
+    <p class="lesson-sub">Written Guide + Quiz</p>
+  </div>
+
+  <div class="content-card">
+
+    <div class="why-box">
+      <p class="label">Why It Matters</p>
+      <p>Technical knowledge is worthless if it cannot be communicated effectively. This module bridges the gap between what you know and what your athlete can learn. How you cue, demonstrate, and correct movement defines your effectiveness as a coach — it is where science becomes art.</p>
+    </div>
+
+    <h2 class="section-title">Learning Objectives</h2>
+    <p>By the end of this module, you will be able to:</p>
+    <ul class="objectives-list">
+      <li>Apply verbal, visual, and tactile cueing strategies effectively across skill levels</li>
+      <li>Design and deliver structured progressions and regressions for key exercises</li>
+      <li>Demonstrate safe spotting techniques for climbing and gym-based exercises</li>
+      <li>Identify and correct common technique errors in both gym exercises and climbing movement</li>
+      <li>Adapt exercises and instruction for a range of clients including special populations</li>
+      <li>Integrate functional training tools — TRX, kettlebells, resistance bands — into climbing-specific conditioning</li>
+      <li>Coach the foundational movement principles that underpin all climbing technique — balance, weight shift, and body tension</li>
+      <li>Teach correct footwork, hand-hold technique, and hip positioning across wall angles</li>
+      <li>Apply safe falling technique and effective spotting protocols in bouldering</li>
+      <li>Deliver a structured top rope belay licensing programme</li>
+      <li>Introduce lead clipping and lead belaying technique to a qualified top rope climber</li>
+    </ul>
+
+    <!-- SECTION 1 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 1: Cueing Strategies</h2>
+      <p>A coaching cue is any piece of information delivered by a coach to prompt or correct a movement. Effective cueing is the most direct tool you have to change an athlete's technique in real time. Understanding the three modalities — verbal, visual, and tactile — and when to use each is a fundamental coaching skill.</p>
+
+      <h3 class="subsection-title">1.1 Verbal Cueing</h3>
+      <p>Verbal cues use language to guide movement. They can describe what to do (prescriptive), what not to do (prohibitive), or the outcome of a correct movement (analogical/external). Research consistently shows that external focus cues (directing attention to the movement's effect or outcome) produce better motor learning outcomes than internal focus cues (directing attention to body parts).</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Cue Type</th><th>Example &amp; Effect</th></tr>
+          <tr><td>Internal focus (body part)</td><td>'Engage your core.' — directs attention inward; useful for beginners learning body awareness but can create movement rigidity</td></tr>
+          <tr><td>External focus (outcome)</td><td>'Push the floor away through your feet.' — directs attention outward; promotes automatic, fluent movement; better for skill acquisition</td></tr>
+          <tr><td>Analogical cue</td><td>'Imagine you're screwing your feet into the wall.' — uses familiar imagery to trigger complex movement adjustments naturally</td></tr>
+          <tr><td>Prescriptive cue</td><td>'Keep your elbow tucked in.' — tells the athlete exactly what to do; clear and direct</td></tr>
+          <tr><td>Prohibitive cue</td><td>'Don't let your shoulder collapse.' — tells what not to do; can be less effective than prescriptive as it doesn't offer an alternative</td></tr>
+        </table>
+      </div>
+
+      <p>Principles of effective verbal cueing:</p>
+      <ul>
+        <li>Keep cues short — 3–5 words where possible. Long instructions disrupt the movement.</li>
+        <li>One cue at a time — identify the most important error and address it first</li>
+        <li>Prioritise external cues — outcome-focused language produces better learning</li>
+        <li>Use consistent language — varying cue words for the same concept causes confusion</li>
+        <li>Timing matters — cue just before the movement, not mid-execution on complex skills</li>
+      </ul>
+
+      <h3 class="subsection-title">1.2 Visual Cueing (Demonstration)</h3>
+      <p>The old coaching adage is true: show, don't just tell. The human mirror neuron system means that watching a correct movement activates many of the same neural pathways as performing it. Demonstration is particularly powerful for complex, multi-joint movements where verbal description falls short.</p>
+      <p>Best practices for demonstration:</p>
+      <ul>
+        <li>Demonstrate from the correct angle — show the most informative viewpoint for the specific skill (e.g. side-on for a pull-up, front-on for footwork)</li>
+        <li>Perform a correct demonstration first — always show the ideal before showing an error for comparison</li>
+        <li>Slow down on key moments — exaggerate important positions (e.g. hip rotation in a drop-knee) to make them salient</li>
+        <li>Use video — recording and playing back movement in slow motion is one of the most powerful feedback tools available</li>
+        <li>Demonstrate at the client's level — if you cannot perform the movement correctly yourself, use video of a skilled performer</li>
+      </ul>
+
+      <h3 class="subsection-title">1.3 Tactile Cueing</h3>
+      <p>Tactile (hands-on) cueing involves physical contact with the client to guide position or provide proprioceptive feedback. It is often the most efficient way to convey a spatial correction that cannot be easily described.</p>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Important — Consent First</p>
+        <p>Always obtain explicit consent before using tactile cueing. Explain what you are going to do and why before making contact. Clients should be able to decline at any time without feeling uncomfortable. Document consent as part of your intake process.</p>
+      </div>
+
+      <p>Examples of tactile cueing in practice:</p>
+      <ul>
+        <li>Placing a hand on the athlete's shoulder blade to feel for scapular retraction during a row</li>
+        <li>Lightly tapping a hip to prompt rotation during a drop-knee drill</li>
+        <li>Applying gentle resistance to a limb to develop proprioceptive awareness of a position</li>
+        <li>Using a band or strap to create sensory feedback (e.g. knee tracking during a squat)</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/cueing-modalities.png" alt="Diagram showing verbal, visual, and tactile cueing in a climbing coaching context">
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 2: Foundations of Climbing Movement</h2>
+      <p>Before a coach can correct technique, the athlete needs the underlying movement vocabulary in place. This section covers the foundational movement principles — balance, weight shift, body tension, and hip positioning — that every other climbing skill in this course builds on.</p>
+
+      <h3 class="subsection-title">2.1 Balance and Weight Shift</h3>
+      <p>Climbers maintain stability through three points of contact with the wall at all times. Introduce two types of balance: static balance (holding a fixed pose under control) and dynamic balance (keeping balance fluid while moving between positions).</p>
+      <ul>
+        <li>Lateral (side-to-side) weight shift — before moving a limb, the climber must transfer weight to the opposite side; a foot or hand can only move freely once it is unweighted</li>
+        <li>Medial (in-and-out) weight shift — moving the hips away from the wall allows the climber to see footholds more clearly and creates a more fluid foot placement</li>
+      </ul>
+
+      <h3 class="subsection-title">2.2 Body Tension</h3>
+      <p>Body tension is the single most important physical attribute to develop early — the majority of beginner climbers fall off the wall because their body is floppy, not because they lack strength.</p>
+      <p>Teach the correct dead-hang position first: arms straight but elbows soft, neck lifted away from the shoulders so the climber hangs from the shoulder blades, not the shoulder joints. From here, ask climbers to tighten the entire body — cross the feet, squeeze legs, glutes, and core — while a partner gently pushes them from the side. The body should not swing. Instruct climbers to replicate this full-body squeeze with every hand and foot movement until it becomes automatic.</p>
+
+      <h3 class="subsection-title">2.3 Hip-Centric Climbing</h3>
+      <p>Roughly 80% of climbing is generated from the belly button down. Climbing is like cycling: the hands keep the climber on the wall and steer direction, while the legs provide the power. Coach climbers to look down more than up, and to move their feet more frequently than their hands.</p>
+      <ul>
+        <li>Flat walls — hips remain parallel to the wall throughout, even during twisting movements</li>
+        <li>Forward-slanting (leaning) walls — push the hips away from the wall to create space to lift the legs and prevent the upper body falling backward</li>
+        <li>Overhangs and roofs — the seat must move to one side by turning the body sideways; the leg opposite the reaching arm flags outward to maintain balance</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Cue</p>
+        <p>For overhangs: if the athlete wants a hold to the right, the right hip goes against the wall, the right leg pushes (drop-knee), the left leg flags out, and the right arm reaches. The drop-knee does not need to be dramatic — a visible inward dip of the knee on the reaching side is sufficient.</p>
+      </div>
+
+      <h3 class="subsection-title">2.4 Dynamic Movement (Dynos)</h3>
+      <p>A dyno uses momentum rather than static control. Key coaching points:</p>
+      <ul>
+        <li>One foot is placed slightly higher than the other before the move — this foot indicates the direction of body rotation</li>
+        <li>The hand on the same side as the higher foot is the hand that reaches</li>
+        <li>Legs are significantly stronger than arms — coach athletes to use leg drive to generate momentum, not an arm pull</li>
+        <li>All four limbs must leave the starting holds — a common error is leaving one hand on the start grip</li>
+        <li>During practice, have climbers slap the wall without grabbing to avoid skin tears; save committed grabs for actual sends</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/movement-foundations.png" alt="Infographic covering balance, weight shift, body tension, hip-centric climbing, and dynamic movement">
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 3: Footwork and Hand Technique</h2>
+      <p>Precise footwork and efficient hand-hold technique are the most common technical deficits seen in developing climbers. This section gives coaches a reference vocabulary and the specific cues and drills to correct the most frequent errors.</p>
+
+      <h3 class="subsection-title">3.1 Footwork Fundamentals</h3>
+      <p>All climbing footwork should be placed on the ball of the foot or the big toe — the only part of the foot that allows the climber to push up and increase reach or height. Placing the middle of the foot or the heel on a hold sacrifices this advantage.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Technique</th><th>Coaching Description</th></tr>
+          <tr><td>Smear</td><td>The entire front of the foot is pressed against the wall to generate friction. The harder the push, the better the grip; the closer the foot is to knee/thigh height, the better it sticks.</td></tr>
+          <tr><td>Inside Edge</td><td>The big-toe side of the shoe is placed on the hold — used for precision footwork and reaching.</td></tr>
+          <tr><td>Outside Edge</td><td>The little-toe side of the shoe is placed on the hold — used in traversing and drop-knee movements.</td></tr>
+          <tr><td>Heel Hook</td><td>Predominantly the outside foot (except on roofs). Place the heel firmly in the hold and pull downward in an arc, as if bringing the hold to the seat. Prioritise getting the knee directly above the heel before locating the next hand hold.</td></tr>
+          <tr><td>Toe Hook</td><td>Predominantly the inside foot (except on roofs). The toe hooks behind the hold with the leg fully tensed; stabilises the body and can also be used to pull.</td></tr>
+          <tr><td>Bicycle (Heel/Toe)</td><td>A simultaneous outside heel hook and inside toe press, pulled and pushed hard at the same time — a stabilising move common on steep terrain and overhangs.</td></tr>
+        </table>
+      </div>
+
+      <div class="img-grid">
+        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-smear.png" alt="Smear footwork technique"><p class="cap">Smear</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-inside-edge.png" alt="Inside edge footwork technique"><p class="cap">Inside Edge</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-outside-edge.png" alt="Outside edge footwork technique"><p class="cap">Outside Edge</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-heel-hook.png" alt="Heel hook footwork technique"><p class="cap">Heel Hook</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-toe-hook.png" alt="Toe hook footwork technique"><p class="cap">Toe Hook</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-bicycle.png" alt="Bicycle heel and toe footwork technique"><p class="cap">Bicycle</p></div>
+      </div>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coach Note</p>
+        <p>All beginner climbers fail to use their heel hooks fully. The pull must be committed — a half-hearted heel hook provides little benefit. The same applies to toe hooks: these muscles are rarely trained in everyday life and will be weak initially.</p>
+      </div>
+
+      <h3 class="subsection-title">3.2 Hand-Hold Technique</h3>
+      <ul>
+        <li>Sloping holds — the entire palm grips from the edges, not just the fingertips; as the hand slides, the climber should push harder into the grip rather than easing off</li>
+        <li>Ball-shaped holds (two hands) — bring the elbows in toward each other and stretch the shoulder blades apart to increase skin-surface contact</li>
+        <li>Gastons — the inside hand pushes away from the midline, like opening a sliding door; squeeze the shoulder blades together first and lock the core throughout</li>
+        <li>Palming — fingers should always face downward or sideways, never upward; above shoulder height with fingers pointing up, the wrist cannot maintain an effective angle and the grip will fail</li>
+        <li>Side pulls — the outside hand pulls either toward the hold (cross-through reach) or away from it (opposite-direction reach); the analogy of closing a sliding door is useful here too</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/hand-hold-types.png" alt="Diagram of five climbing hold types: sloper, ball-shaped, gaston, palming, side pull">
+      </div>
+
+      <h3 class="subsection-title">3.3 Common Footwork and Movement Errors</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Error</th><th>Correction Cue &amp; Drill</th></tr>
+          <tr><td>Smearing feet — heels dropping, toes lifting</td><td>'Weight through the ball of the foot; heel level with the toe.' Slab footwork drills on juggy routes below limit grade.</td></tr>
+          <tr><td>Barn-door (swinging out from the wall)</td><td>'Flag the free leg behind you to counterbalance.' Flagging drills — practice on a traverse with one hand deliberately off-balance.</td></tr>
+          <tr><td>Straight-arming and overgripping</td><td>'Imagine your fingers are just hooks — your arms should be almost straight on rests.' Low-angle volume climbing with a focus on relaxing the grip between moves.</td></tr>
+          <tr><td>Not using hips — square on to steep terrain</td><td>'Drop the hip of the foot that is pushing — twist your core into the wall.' Hip rotation drills on 45-degree boards; drop-knee specific practice.</td></tr>
+          <tr><td>Looking at hands instead of feet</td><td>'Your feet are smarter than you think — trust them and look where you're going next.' Blindfold footwork drill (on easy low problems with supervision).</td></tr>
+        </table>
+      </div>
+
+      <div class="img-grid cols-2">
+        <div class="img-grid-item"><img src="../images/lessons/module-05/error-barn-door.png" alt="Barn door climbing error"><p class="cap">Barn door</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/error-smearing.png" alt="Smearing footwork error"><p class="cap">Smearing</p></div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 4: Spotting Techniques &amp; Safety Protocols</h2>
+      <p>Safety is non-negotiable in coaching. Every session, whether on the wall or in the gym, carries risk — a coach's responsibility is to minimise that risk through preparation, vigilance, and sound spotting technique. These skills must be taught before climbers are allowed to attempt boulder problems without a rope.</p>
+
+      <h3 class="subsection-title">4.1 Understanding Falls</h3>
+      <p>Falls occur in two forms: unexpected (a foot slips without warning) and anticipated (the climber pumps out or deliberately backs down). The physical forces involved are identical in both cases. A falling climber accelerates toward the ground at 9.8 m/s². Even a fall from just one metre produces a landing force nine times the climber's body weight — enough to snap an ankle.</p>
+      <p>The spotter's primary job is to make contact as early as possible to slow the fall. The moment a climber moves out of easy arm's reach, the spotter's ability to help diminishes dramatically. Never attempt to catch and hold a falling climber; instead, slow and redirect the fall.</p>
+
+      <h3 class="subsection-title">4.2 Falling Technique for the Climber</h3>
+      <p>The goal when falling is to dissipate force across as much time and body surface as possible:</p>
+      <ul>
+        <li>Lift both arms forward to prevent landing on the elbows</li>
+        <li>Tuck the chin to prevent whiplash and to protect the spotter</li>
+        <li>Tuck the pelvis to protect the coccyx and spine</li>
+        <li>Land with soft, bent knees to prevent tibial fractures</li>
+        <li>Continue moving with gravity — roll backwards into the fall rather than resisting it</li>
+      </ul>
+      <p>When falling sideways or backwards, avoid the instinct to brace with hands pointing away from the body (a 'closed system'). Instead, point fingers toward the body ('thumbs to the bum'), which keeps the elbows free to bend and absorb impact (an 'open system').</p>
+
+      <h3 class="subsection-title">4.3 Spotting in the Climbing Gym — Bouldering</h3>
+      <p>Spotting in bouldering does not mean catching the climber like a football — it means guiding the climber to land safely, particularly protecting the head and neck from hitting the mat or the wall.</p>
+      <ul>
+        <li>Position yourself behind and below the climber's centre of mass — typically at hip/lower back height</li>
+        <li>Keep hands raised and ready — palms open, arms slightly bent; do not grab</li>
+        <li>Guide, don't catch — redirect the fall to a safe mat landing; absorbing the full body weight risks injury to both parties</li>
+        <li>Watch the hips, not the hands — the hips indicate fall trajectory; this is where to direct your attention</li>
+        <li>Communicate — ask the climber if they want spotting; brief them on your intentions before they start</li>
+        <li>Clear the landing zone — remove bags, shoes, water bottles from the fall zone before the climber starts</li>
+        <li>Never agree to spot if you are not fully comfortable or if there is a large weight discrepancy — find a more suitable spotter</li>
+        <li>Pad preparation — position crash pads flat with no hollow spots or edges over the anticipated landing zone; assign pad-moving during the ascent to a separate person</li>
+        <li>Aim to grasp just above the waist (near the centre of gravity); sliding into the armpits also works — do not grab too low, as this can cause dangerous backward rotation</li>
+        <li>Protect the head, neck, and spine above all else; help the climber land on their feet where possible, then allow them to naturally compress and roll</li>
+      </ul>
+      <p>Watch this video for further insight:</p>
+      <a class="resource-btn" href="https://youtu.be/XJUUXv2NeVE?si=BE43u8AH0med1EyM" target="_blank" rel="noopener">▶ Bouldering Spotting Technique</a>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Wall Angle</th><th>Spotting Position</th></tr>
+          <tr><td>Flat wall</td><td>Aim hands at the climber's waist</td></tr>
+          <tr><td>Overhang or roof</td><td>Aim hands at the climber's shoulders</td></tr>
+          <tr><td>Spotter stance</td><td>One foot back in a curtsy so that knees open and the climber can fall between them onto the spotter's chest, then tuck pelvis and chin and roll backward with the climber</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">4.4 Safety in the Gym Environment</h3>
+      <p>When coaching gym-based conditioning:</p>
+      <ul>
+        <li>Conduct an equipment check before every session — collars on barbells, correct cable attachments, no sharp edges or damaged equipment</li>
+        <li>Control the environment — keep the floor clear of tripping hazards; ensure adequate space around equipment</li>
+        <li>Know your limits — spot only exercises you are physically capable of assisting safely. A failed spot can injure both the coach and athlete.</li>
+        <li>Spot correctly for each exercise — different exercises have different spotting positions and priorities (e.g. bench press: hands beneath the bar; squat: hands at the hips/trunk)</li>
+        <li>Emergency protocols — know the location of first aid equipment, AED, and emergency exit; have the client's emergency contact accessible.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 5: Top Rope Belay Instructing</h2>
+      <p>Top rope belay instruction typically runs across three progressive sessions. Climbers must demonstrate consistent competence at each stage before advancing; the final session culminates in a supervised coach assessment and formal belay test.</p>
+
+      <h3 class="subsection-title">5.1 Session Structure</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Session</th><th>Content</th></tr>
+          <tr><td>Session One</td><td>Fitting the harness correctly; performing harness checks; tying the Figure-8 knot; performing knot checks; auto-belay climbing (instruct climbers to climb on their toes)</td></tr>
+          <tr><td>Session Two</td><td>Repeat harness and knot checks; Grigri setup, orientation checks, and mechanism explanation; top rope belaying with no climber on the rope; call signs; top rope belaying with a climber</td></tr>
+          <tr><td>Session Three</td><td>Review all equipment checks; full top rope belaying review with a climber; coach mock assessment on the wall; official belay test</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.2 Teaching the Harness</h3>
+      <p>Always teach harness knowledge in the order in which it is put on:</p>
+      <ul>
+        <li>Why it sits at belly-button height — equal body weight above and below prevents inversion in a fall</li>
+        <li>Why it must be tight — a loose harness shifts under load</li>
+        <li>Why it must not be upside down — it is not designed to carry load in that orientation</li>
+        <li>How to identify an upside-down harness: orange tag faces down, buckle on the wrong side, writing inverted, elastic straps at the back are crossed</li>
+        <li>How to identify a twisted harness: strap joining the leg loop is twisted, belay loop is twisted, leg flaps face inward</li>
+        <li>What double-backed buckles mean: the loose end of the belt threads through the buckle and folds back against itself in the direction it came from</li>
+      </ul>
+      <a class="resource-btn" href="https://share.google/EF4nVfurCsdLQ9eD1" target="_blank" rel="noopener">🔗 Harness Fitting Resource</a>
+
+      <h3 class="subsection-title">5.3 Teaching the Figure-8 Knot</h3>
+      <p>A simple method for young or beginner climbers:</p>
+      <ul>
+        <li>Measure a full arm-stretch of tail rope</li>
+        <li>Make an 'alien head' at the end of the tail</li>
+        <li>Draw a circle all the way around the alien head, then thread the tail through the front of the alien head</li>
+        <li>The knot must sit as close to the harness as possible — it is the strongest part of the rope and works best closest to the heaviest load, the climber</li>
+        <li>Count the strands to verify the knot: 2, 4, 6, 8, 10</li>
+        <li>Safety knot: draw a circle around the rope leading to the wall with the loose tail, then fold the tail through so it points away from the Figure-8; the safety knot must sit on top of the Figure-8</li>
+      </ul>
+      <a class="resource-btn" href="https://share.google/03hsU89mHfx7BRVZJ" target="_blank" rel="noopener">🔗 Figure-8 Knot Resource</a>
+
+      <h3 class="subsection-title">5.4 Belaying Technique — PBUS</h3>
+      <p>The top-roping belay technique commonly known as PBUS resonates with climbing instructors and mentors because it emphasizes the fundamental principles so distinctly. The hand transition is securely in the braking position, and it's hard to imagine the belayer losing control if the climber were to fall while the hand was sliding. Plus, the ergonomics of the technique keep the wrist and grip pronated.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coach Note</p>
+        <p>Explain why thumbs must stay up: with thumbs pointing downward, the wrist angle under load will cause the wrist to torque upward, risking joint damage. Thumbs up allows much stronger and more controlled holding.</p>
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Step</th><th>Action</th></tr>
+          <tr><td>P</td><td>PULL — Both ropes run parallel as the top hand pulls down and the bottom hand pulls up simultaneously — one single motion, both ropes moving together. Never move them separately, as this jams the device.</td></tr>
+          <tr><td>B</td><td>BRAKE — The bottom hand returns to below the belay device — this position locks the belay device and allows the belayer to control and hold the weight of a falling climber.</td></tr>
+          <tr><td>U</td><td>UNDER — The top hand moves down to the bottom rope, immediately below the other hand. Never swap above the Grigri — a fall during the swap would leave no brake hand in position.</td></tr>
+          <tr><td>S</td><td>SLIDE — The top hand slides back up the bottom rope, ready for the next belay cycle.</td></tr>
+        </table>
+      </div>
+
+      <div class="img-grid cols-4">
+        <div class="img-grid-item"><img src="../images/lessons/module-05/pbus-pull.jpg" alt="PULL step of PBUS belaying"><p class="cap">Pull</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/pbus-brake.jpg" alt="BRAKE step of PBUS belaying"><p class="cap">Brake</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/pbus-under.jpg" alt="UNDER step of PBUS belaying"><p class="cap">Under</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/pbus-slide.jpg" alt="SLIDE step of PBUS belaying"><p class="cap">Slide</p></div>
+      </div>
+
+      <p>Coaches must communicate the gravity of never releasing the brake hand in unambiguous terms: releasing the brake hand while belaying can kill the climber. The belayer holds their partner's life in one hand — this is an adult responsibility, and should be framed in terms the student will remember.</p>
+      <p>Watch the following video for further insight:</p>
+      <a class="resource-btn" href="https://youtu.be/FCUJrXSKWrw?si=yHV1UgHEU65jaYRJ" target="_blank" rel="noopener">▶ PBUS Belaying Technique</a>
+      <p>Different belay techniques are discussed fully in this article by the American Alpine Club:</p>
+      <a class="resource-btn" href="https://americanalpineclub.org/news/2020/4/2/belaying" target="_blank" rel="noopener">🔗 American Alpine Club — Belaying</a>
+
+      <h3 class="subsection-title">5.5 Lowering and Call Signs</h3>
+      <ul>
+        <li>Both hands hold the bottom rope when the climber is at the top; ask the climber to sit back into the harness so weight activates the braking mechanism</li>
+        <li>Bring the rope over the smooth part of the device and down to hip level; the brake hand stays at the hip as the rope slides slowly through the fingers</li>
+        <li>Pull the release lever back gradually to allow a controlled descent</li>
+        <li>Once the climber is on the ground, hold the release down and use the brake hand to pull the top rope up out of the device to give the climber slack to untie</li>
+      </ul>
+      <p>Call signs — ask the group who is in charge: the answer is always the belayer. Climbers must never begin climbing until the belayer has confirmed readiness.</p>
+      <ul>
+        <li>Belayer: 'Belay on, climb when ready'</li>
+        <li>Climber: 'Climbing'</li>
+        <li>Belayer: 'Climb on'</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 6: Lead Clipping and Lead Belaying Instruction</h2>
+      <p>Lead instruction is only appropriate once a climber holds a top rope belay licence. Begin by explaining what lead climbing and lead belaying are, and how they differ from top rope. All skills in this section should be practised on the ground before moving to the wall.</p>
+
+      <h3 class="subsection-title">6.1 Clipping Quickdraws</h3>
+      <p>Explain the anatomy of a quickdraw: two carabiners connected by a nylon dogbone. Identify the front (gate side) and back (solid spine) of a carabiner.</p>
+      <ul>
+        <li>Always clip in order from the knot upward to avoid Z-clipping</li>
+        <li>Slide the hand under the rope — palm facing up — until the hand is up against the gate of the carabiner. This ensures enough rope to complete the clip and prevents back-clipping</li>
+      </ul>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Method</th><th>Technique</th></tr>
+          <tr><td>The Okay Method (thumb on gate side)</td><td>Middle and ring fingers pull down on the bottom of the carabiner to control it; thumb on the gate side. Practice five times with each hand.</td></tr>
+          <tr><td>The Squeeze Method (thumb on spine side)</td><td>Pointer, middle, and ring fingers slide behind the carabiner; these curl around the spine while the fleshy pad below the thumb presses the carabiner from the front; the rope rests on the web between thumb and pointer finger, and the thumb pushes the rope through the gate.</td></tr>
+        </table>
+      </div>
+
+      <div class="img-grid cols-2">
+        <div class="img-grid-item"><img src="../images/lessons/module-05/clip-okay-method.png" alt="The Okay Method of clipping a quickdraw"><p class="cap">The Okay Method</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/clip-squeeze-method.png" alt="The Squeeze Method of clipping a quickdraw"><p class="cap">The Squeeze Method</p></div>
+      </div>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coach Note</p>
+        <p>After teaching the Okay method, demonstrate a back-clip and show what happens if the climber falls on a back-clipped draw — the rope unclips itself.</p>
+      </div>
+
+      <h3 class="subsection-title">Clipping Faults</h3>
+      <p>As you clip, you raise the highest anchor point, which protects you in the event of a fall. Clipping incorrectly exposes you to additional risks, so a leader must be able to recognize errors and know how to correct them.</p>
+
+      <p class="sub-label">Back-Clip</p>
+      <p>When the rope has been clipped in the opposite direction, with the climber's strand trapped between the carabiner and the wall, it is back-clipped. In this position, the rope has a higher chance of catching the gate and unclipping itself in the event of a fall. Fix a back clip by downclimbing to a stance below the draw, unclip by bringing a bight of rope up and through the gate, then reclip properly.</p>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/clip-back-clip.png" alt="Diagram showing a back-clipped rope with belayer's strand and climber's strand labeled">
+      </div>
+
+      <p class="sub-label">Z-Clip</p>
+      <p>When you make your next clip using a bight of rope from below the previous clip, you have Z-clipped. In this position, you have failed to move your anchor point higher than the previous clip, exposing you to a longer, more dangerous fall if you continue. You will also experience significant rope drag if you continue.</p>
+      <p>Fix a Z-clip by down-climbing to a stance where you can reach the lower draw, unclip the lower draw, then reclip it to the other strand in the correct position. This automatically moves your highest anchor point and removes the drag from the system.</p>
+      <p>You must then check to make sure your highest clip is not back-clipped (fix it, if it is), as this is sometimes a consequence of a Z-clip.</p>
+      <p>You can avoid Z-clipping by starting your clip by grabbing your tie-in knot, then sliding your hand down for the rope segment you will clip.</p>
+      <p>When Z-clipped, you have failed to raise your anchor point. By unclipping the lower draw first, you instantly correct the problem. Remember to reclip the lower draw correctly before moving on, and verify the higher clip is not back-clipped.</p>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/clip-z-clip.png" alt="Diagram showing a Z-clip error with current high point labeled">
+      </div>
+
+      <p class="sub-label">Skipping Clips</p>
+      <p>Skipping clips exposes you to longer, potentially unprotected, falls. Scope out your clipping line before you leave the ground. If you realize you have just skipped a clip, downclimb and clip it before continuing.</p>
+
+      <p class="sub-label">Hand through the gate</p>
+      <p>When you are clipping, it is best to keep any part of your hand from going through the gate. Falling with a part of your hand entangled with the exposed nose of the gate can result in puncture wounds or "de-gloving" of your skin. Use clipping methods that don't rely on this hazard.</p>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/clip-hand-through-gate.png" alt="Diagram showing the hazard of a hand through the carabiner gate">
+      </div>
+
+      <p class="sub-label">Rope in the teeth</p>
+      <p>Some climbers will temporarily put the rope in their teeth when making a high clip, in order to gather an extra length of rope to clip with. Falling with the rope in your teeth can result in having your teeth pulled out of your mouth. If you must high clip, make a long reach out instead to get the requisite amount of rope. Better yet, climb to a higher stance whenever possible for an easier clip.</p>
+
+      <p class="sub-label">Clipping the Chains at the Top</p>
+      <p>There will be two anchor quickdraws (chains) at the top of the route, with gates facing each other or spines facing each other.</p>
+      <ul>
+        <li>Gates facing each other: clip either carabiner first, take the front strand of rope and clip the second carabiner from the front — the two carabiners form a heart shape with gates facing outward</li>
+        <li>Spines facing each other: clip either carabiner first, pull the back strand of rope through between the two carabiners, and clip the second carabiner from the front</li>
+      </ul>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/clip-chains-at-top.png" alt="Diagram showing correct clipping of anchor chains at the top of a route">
+      </div>
+
+      <h3 class="subsection-title">6.2 The Smart or Pilot Belay Device</h3>
+      <p>Use a pre-loaded Grigri as a reference point. Ask climbers to find the hand picture, climber picture, and rope loop on the Smart or Pilot, and align these with those on the Grigri.</p>
+      <ul>
+        <li>Loading: make an alien head (bight of rope), push it into the loop of the device, then thread the locking carabiner through both the device loop and the rope inside it</li>
+        <li>Attaching to harness: the nose of the device must always face downward; use a manual locking carabiner screwed fully closed, then backed off half a turn</li>
+        <li>The widest part of the carabiner must be on the device-and-rope side, not the harness loop side — this gives more space for the device and rope to move</li>
+      </ul>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/smart-pilot-loading.png" alt="Diagram of correctly and incorrectly loading a Smart or Pilot belay device">
+      </div>
+
+      <h3 class="subsection-title">6.3 Lead Belaying</h3>
+      <p>Ask the climber to first perform a normal top rope belay, then demonstrate: 'Show me how you would hand something to someone.' Use this motion to illustrate what lead belaying means — giving rope to the climber as they move up.</p>
+      <ul>
+        <li>Slide the bottom hand gently down the bottom rope (stroking motion) to create slack</li>
+        <li>Push the bottom rope upward toward the device until a loop forms below the device</li>
+        <li>Pull the top rope — giving it to the climber</li>
+        <li>The bottom hand must always remain below the belay device</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coach Note</p>
+        <p>If the top rope is pulled first, or the climber jerks the rope, it will jam against the locking carabiner. This is a normal occurrence in lead belaying; coaches must teach the release procedure: slide the bottom hand down first, then bring the thumb under the nose of the device and lift upward to release.</p>
+      </div>
+
+      <p>If the climber falls during lead climbing, the belayer has very little time to react. The only movement needed: bring the top hand down immediately to the bottom hand and hold both firmly on the bottom rope.</p>
+      <p>Different belay techniques are discussed fully in this article by the American Alpine Club:</p>
+      <a class="resource-btn" href="https://americanalpineclub.org/news/2020/4/2/belaying" target="_blank" rel="noopener">🔗 American Alpine Club — Belaying</a>
+
+      <p class="sub-label">Switching to Top Rope at the Anchors</p>
+      <p>Once the climber reaches the top and clips the chains, the belayer switches to top rope mode — taking up all slack as the climber is lowered from the chains. Lowering then proceeds identically to a standard top rope lowering sequence.</p>
+      <p>Watch the following video for further insights on lead belaying technique:</p>
+      <a class="resource-btn" href="https://youtu.be/Ky4DMg74lR4?si=gcsu45BvfUIpBKgo" target="_blank" rel="noopener">▶ Lead Belaying Technique</a>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 7: Teaching Progressions &amp; Regressions</h2>
+      <p>A progression makes an exercise harder; a regression makes it easier. Every exercise you prescribe should have both — this allows you to safely challenge more capable athletes while providing achievable entry points for beginners. The ability to modify exercises fluidly is a hallmark of an experienced coach.</p>
+
+      <h3 class="subsection-title">7.1 Principles of Effective Progressions</h3>
+      <ul>
+        <li>Change one variable at a time — adding load AND speed AND complexity simultaneously makes it impossible to identify what caused a failure</li>
+        <li>Master fundamentals first — progress is only appropriate when technique is solid at the current level</li>
+        <li>Fatigue affects technique — always evaluate technique in a rested state before progressing; poor technique under fatigue is not readiness</li>
+        <li>Regress without shame — if a client is unable to perform an exercise safely, regressing is always the right decision</li>
+      </ul>
+
+      <h3 class="subsection-title">7.2 Exercise Progression / Regression Examples for Climbing</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Exercise</th><th>Regression → Progression</th></tr>
+          <tr><td>Pull-up</td><td>Assisted pull-up (band or machine), TRX row, inverted row → Weighted pull-up, L-sit pull-up, one-arm pull-up negatives</td></tr>
+          <tr><td>Hangboard dead hang</td><td>Assisted hang (feet on ground/box), shorter duration, larger edge → Weighted hang, one-arm hang, smaller edge depth</td></tr>
+          <tr><td>Push-up</td><td>Incline push-up, wall push-up → Decline push-up, ring push-up, weighted vest push-up</td></tr>
+          <tr><td>Single-leg squat</td><td>Box squat, goblet squat, split squat → Pistol squat, single-leg squat with load, Bulgarian split squat</td></tr>
+          <tr><td>Core plank</td><td>Knees-down plank, shorter duration → Extended plank, plank with arm/leg lifts, RKC plank</td></tr>
+        </table>
+      </div>
+
+      <div class="img-grid cols-2">
+        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-pullup.png" alt="Pull-up progression and regression examples"><p class="cap">Pull-up</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-pushup.png" alt="Push-up progression and regression examples"><p class="cap">Push-up</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-squat.png" alt="Squat progression and regression examples"><p class="cap">Squat</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-plank.png" alt="Plank progression and regression examples"><p class="cap">Plank</p></div>
+      </div>
+
+      <h3 class="subsection-title">7.3 Progression in Climbing Technique</h3>
+      <p>Technical progressions on the wall follow similar principles. A structured approach to climbing skill development:</p>
+      <ul>
+        <li>Isolate the skill — practice on easy terrain where the movement can be performed without the complication of physical difficulty (e.g. footwork drills on slab)</li>
+        <li>Develop competence — practise the skill repeatedly across varied contexts at low intensity</li>
+        <li>Integrate under fatigue — once the skill is reliable, practise it when somewhat tired to build robustness</li>
+        <li>Apply at limit — use the skill on challenging routes and problems where it is genuinely required</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 8: Common Gym Exercise Errors &amp; Corrections</h2>
+      <p>Recognising and correcting technique errors efficiently is the daily work of coaching. The table below outlines the most common errors seen in key gym exercises, with practical corrections. Climbing-specific movement errors are covered in Section 3.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Exercise &amp; Error</th><th>Correction Strategy</th></tr>
+          <tr><td>Pull-up — shrugging shoulders upward at the top</td><td>Cue: 'Pull your shoulders down and back first before pulling your elbows to your ribs.' Reinforce scapular depression before elbow flexion.</td></tr>
+          <tr><td>Pull-up — not achieving full hang at bottom</td><td>Cue: 'Fully straighten your arms between every rep.' Use pause hangs to reinforce the full range.</td></tr>
+          <tr><td>Push-up — sagging hips / banana back</td><td>Cue: 'Squeeze your glutes and push the floor away evenly.' Regress to incline push-up if core cannot maintain neutral spine.</td></tr>
+          <tr><td>Deadlift — rounding lower back</td><td>Cue: 'Proud chest, long spine.' Reduce load immediately. Address hip mobility restriction; may need regression to Romanian deadlift or kettlebell deadlift.</td></tr>
+          <tr><td>Squat — knees caving inward (valgus)</td><td>Cue: 'Push your knees out over your little toe.' Address hip abductor weakness; use band-around-knees for sensory feedback.</td></tr>
+        </table>
+      </div>
+
+      <div class="img-grid cols-2">
+        <div class="img-grid-item"><img src="../images/lessons/module-05/error-pullup-shrug.png" alt="Pull-up shrugging shoulders error"><p class="cap">Pull-up — shrugging</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/error-pushup-hips.png" alt="Push-up sagging hips error"><p class="cap">Push-up — sagging hips</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/error-deadlift-back.png" alt="Deadlift rounding back error"><p class="cap">Deadlift — rounding back</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/error-squat-valgus.png" alt="Squat knee valgus error"><p class="cap">Squat — knee valgus</p></div>
+      </div>
+    </div>
+
+    <!-- SECTION 9 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 9: Adapting for Special Populations</h2>
+      <p>Climbing coaches work with a diverse range of athletes — children, older adults, people returning from injury, athletes with physical disabilities. Each population requires thoughtful adaptation of instruction, environment, and programming. This section provides an introduction.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Population</th><th>Key Coaching Adaptations</th></tr>
+          <tr><td>Beginners (adult)</td><td>Use simple language; demonstrate frequently; prioritise safety and confidence over technical perfection; celebrate small wins to build intrinsic motivation.</td></tr>
+          <tr><td>Children &amp; Youth</td><td>Shorter attention spans — vary activities every 5–10 minutes; games-based learning; avoid comparative feedback (ranking vs. peers); monitor load carefully — growth plates are vulnerable.</td></tr>
+          <tr><td>Older Adults (60+)</td><td>Longer warm-up; reduce impact and balance risk; prioritise mobility and stability; use lower loads with higher reps; be aware of medication effects on heart rate and balance.</td></tr>
+          <tr><td>Returning from injury</td><td>Work within pain-free range of motion; increase load conservatively (10% rule); liaise with physiotherapist; document all modifications and any symptom changes.</td></tr>
+          <tr><td>Para-climbers / Adaptive athletes</td><td>Individualise completely — there is no single template. Work closely with the athlete to understand their specific abilities and goals. Seek specialist guidance where needed.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 10 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 10: Functional Training Tools</h2>
+      <p>Functional training tools — suspension trainers (TRX/rings), kettlebells, and resistance bands — are versatile, accessible, and particularly well-suited to climbing-specific conditioning. This section introduces each tool and highlights its key application for climbing athletes.</p>
+
+      <h3 class="subsection-title">10.1 Suspension Trainers (TRX / Gymnastics Rings)</h3>
+      <p>Suspension trainers use adjustable straps anchored to a fixed point, allowing a wide range of bodyweight exercises with variable difficulty controlled by foot position. Rings add an instability element that significantly increases shoulder stabiliser demand.</p>
+
+      <p>TRX Row — excellent horizontal pulling; targets rhomboids, mid-traps, and rear deltoids; directly addresses postural imbalances in climbers</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/trx-row.png" alt="TRX Row exercise technique guide"></div>
+
+      <p>TRX Push-up — instability increases serratus anterior and rotator cuff demand; useful antagonist exercise</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/trx-pushup.png" alt="TRX Push-up exercise technique guide"></div>
+
+      <p>Ring Turn-out — extreme proprioceptive demand; only for athletes with strong shoulder stability foundation</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/ring-turnout.png" alt="Ring Turn-out exercise technique guide"></div>
+
+      <p>TRX Fallout / Body Saw — advanced core anti-extension exercise; highly transferable to steep climbing positions</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/trx-fallout.png" alt="TRX Fallout exercise technique guide"></div>
+
+      <h3 class="subsection-title">10.2 Kettlebells</h3>
+      <p>Kettlebells are particularly effective for building posterior chain strength, grip endurance, and core stability simultaneously. Their offset centre of mass makes them ideal for developing grip and wrist strength.</p>
+
+      <p>Kettlebell Deadlift — teaches hip hinge pattern safely; excellent for beginning posterior chain development</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/kettlebell-deadlift.png" alt="Kettlebell Deadlift exercise technique guide"></div>
+
+      <p>Kettlebell Swing — builds hip power and posterior chain endurance; high metabolic demand</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/kettlebell-swing.png" alt="Kettlebell Swing exercise technique guide"></div>
+
+      <p>Goblet Squat — teaches squat pattern with thoracic extension; improves hip mobility through loaded range</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/kettlebell-goblet-squat.png" alt="Kettlebell Goblet Squat exercise technique guide"></div>
+
+      <p>Turkish Get-Up — full-body movement integrating shoulder stability, core, and hip mobility — excellent climbing-specific conditioning</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/kettlebell-turkish-getup.png" alt="Turkish Get-Up exercise technique guide"></div>
+
+      <p>Farmer's Carry — loaded bilateral carry; builds grip endurance, scapular stability, and core anti-lateral flexion strength</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/farmers-carry.png" alt="Farmer's Carry exercise technique guide"></div>
+
+      <h3 class="subsection-title">10.3 Resistance Bands</h3>
+      <p>Resistance bands are low-cost, portable, and allow a large range of exercises that are particularly well-suited to warm-up, antagonist work, and mobility. The variable resistance (greatest at full stretch) makes them excellent for shoulder and rotator cuff work.</p>
+
+      <p>Band Pull-Apart — shoulder horizontal abduction; directly trains rhomboids and posterior deltoids — a staple antagonist exercise for climbers</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/band-pull-apart.png" alt="Resistance Band Pull-Apart exercise technique guide"></div>
+
+      <p>Face Pull — external rotation and upper back; one of the most important exercises for shoulder health in climbers</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/band-face-pull.png" alt="Resistance Band Face Pull exercise technique guide"></div>
+
+      <p>Finger Extension — wrap a band around the fingers and open against resistance; direct antagonist work for the finger flexors</p>
+
+      <p>Clamshell / Hip Abduction — hip abductor activation; addresses glute medius weakness that contributes to knee valgus</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/band-clamshell.png" alt="Resistance Band Clamshell exercise technique guide"></div>
+
+      <p>Pallof Press — anti-rotation core exercise; band anchored to side, press forward against rotational pull</p>
+      <div class="lesson-figure"><img src="../images/lessons/module-05/band-pallof-press.png" alt="Resistance Band Pallof Press exercise technique guide"></div>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Module 05 — proceed to the Module 05 quiz when ready.</p>
+      <!-- QUIZ LINK NEEDED: no quiz link was found in the source document for this module.
+           Replace the span below with:
+           <a class="quiz-btn" href="QUIZ_URL_HERE" target="_blank" rel="noopener">Take the quiz →</a> -->
+      <span class="quiz-pending">Quiz link coming soon</span>
+      <p class="quiz-note">Once you have completed the quiz you will get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next module will unlock.</p>
+    </div>
+
+  </div>
+
+  <!-- ================= MODULE 05 SUMMARY ================= -->
+  <div class="summary-block">
+    <h2>Module Summary</h2>
+    <p class="summary-sub">Module 5 developed the practical coaching skills needed to transfer technical knowledge to the athlete — across cueing, movement instruction, safety, and roped climbing instruction. Key takeaways:</p>
+
+    <h3>Key Terms &amp; Definitions</h3>
+    <div class="glossary-wrap">
+      <table class="glossary-table">
+        <tr><td>Verbal Cue</td><td>A spoken instruction or prompt used to guide or correct movement.</td></tr>
+        <tr><td>Internal Focus Cue</td><td>A cue directing the athlete's attention to a body part (e.g. 'bend your knee'). Less effective for skill acquisition than external cues.</td></tr>
+        <tr><td>External Focus Cue</td><td>A cue directing attention to the outcome or effect of the movement (e.g. 'push the floor away'). Promotes more automatic, fluent movement.</td></tr>
+        <tr><td>Analogical Cue</td><td>A cue that uses a relatable image or analogy to prompt a movement naturally (e.g. 'imagine screwing your feet into the wall').</td></tr>
+        <tr><td>Tactile Cueing</td><td>Hands-on physical guidance to correct or reinforce a movement position; requires explicit consent.</td></tr>
+        <tr><td>Progression</td><td>A variation of an exercise that is more challenging than the current version; applied when technique is mastered at the current level.</td></tr>
+        <tr><td>Regression</td><td>A variation of an exercise that is less demanding; used when an athlete cannot safely perform the current version.</td></tr>
+        <tr><td>Spotting</td><td>Physical assistance provided to protect an athlete from injury during a movement or fall; requires training to perform correctly.</td></tr>
+        <tr><td>Mirror Neurons</td><td>Neural cells that activate both when performing and observing a movement; the mechanism underlying learning through demonstration.</td></tr>
+        <tr><td>Barn-Door</td><td>A climbing movement fault where the body swings away from the wall when removing one hand, due to poor balance and inadequate counterbalancing.</td></tr>
+        <tr><td>Flagging</td><td>A climbing technique where a free leg is extended to one side or behind to counterbalance the body and prevent barn-dooring.</td></tr>
+        <tr><td>Heel Hook / Toe Hook</td><td>Foot techniques that use the heel or toe to actively pull on a hold rather than only pushing; heel hooks are most powerful with the knee directly above the heel.</td></tr>
+        <tr><td>PBUS</td><td>The belay sequence chant — Pull; Brake; Under; Slide — used to teach the correct top rope belaying motion.</td></tr>
+        <tr><td>Z-Clipping</td><td>A lead climbing error where the rope is clipped out of sequence, causing it to run from a lower quickdraw up through a higher one, creating dangerous drag and a risk of a longer fall.</td></tr>
+        <tr><td>Back-Clipping</td><td>A lead climbing error where the rope runs through a carabiner the wrong way, risking the rope unclipping itself in a fall.</td></tr>
+        <tr><td>ARC Training</td><td>Aerobic Restoration and Capillarisation — sustained low-intensity continuous climbing used to develop forearm endurance and capillary density.</td></tr>
+        <tr><td>TRX</td><td>Total Resistance Exercise — a suspension trainer system that uses body weight and gravity to provide resistance; highly versatile for climbing conditioning.</td></tr>
+        <tr><td>Face Pull</td><td>A resistance band or cable exercise pulling toward the face with elbows high; targets external rotators and rear deltoids — critical for climber shoulder health.</td></tr>
+      </table>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>The three cueing modalities — verbal, visual, and tactile — each have distinct strengths; external focus verbal cues produce the best motor learning outcomes</li>
+      <li>Climbing movement is built on balance, weight shift, and body tension before any technical skill is layered on top</li>
+      <li>Footwork precision (ball of the foot, heel hooks, toe hooks) and efficient hand technique (gastons, side pulls, palming) are the most common technical gaps in developing climbers</li>
+      <li>Safe falling technique and correct spotting — guiding falls at the hips, never catching — must be taught before unroped bouldering at height</li>
+      <li>Top rope belay instruction follows a structured three-session progression, with the PBUS chant as the core teaching tool</li>
+      <li>Lead instruction builds directly on top rope competence, covering clipping technique, lead belaying, and jam release</li>
+      <li>Progressions and regressions must be planned for every exercise; always change one variable at a time and master fundamentals before advancing</li>
+      <li>Common gym errors should be addressed one at a time with the most impactful correction first</li>
+      <li>Adaptation for special populations requires individual consideration; youth, older adults, and returning injury athletes all need programme modification</li>
+      <li>Functional training tools (TRX, kettlebells, bands) are highly applicable to climbing conditioning and provide excellent variety and specificity</li>
+    </ul>
+
+    <div class="looking-ahead">
+      <p class="label">Looking Ahead</p>
+      <p>In Module 6 — Advanced Climbing Technique Instruction — applying everything you have learned about the human body, training science, and coaching practice to the specific demands of climbing technique and climbing performance programming.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
