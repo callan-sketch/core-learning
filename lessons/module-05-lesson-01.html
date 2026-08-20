@@ -152,6 +152,7 @@
   .img-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
   .img-grid-item { text-align: center; }
   .img-grid-item img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); aspect-ratio: 1; object-fit: cover; }
+  .img-grid.portrait .img-grid-item img { aspect-ratio: 3 / 4; }
   .img-grid-item .cap { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-top: 8px; }
   @media (max-width: 560px) {
     .img-grid, .img-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
@@ -221,11 +222,6 @@
     box-shadow: 0 4px 14px rgba(217,118,74,0.3);
   }
   .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
-  .quiz-pending {
-    display: inline-block; padding: 13px 28px; border-radius: 999px;
-    background: var(--line); color: var(--ink-mute);
-    font-size: 14.5px; font-weight: 600;
-  }
 
   @media (max-width: 560px) {
     .content-card { padding: 26px 20px; }
@@ -408,7 +404,7 @@
 
       <div class="img-grid">
         <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-smear.png" alt="Smear footwork technique"><p class="cap">Smear</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-inside-edge.png" alt="Inside edge footwork technique"><p class="cap">Inside Edge</p></div>
+        <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-inside-edge.png" alt="Inside edge footwork technique" style="object-position: left center;"><p class="cap">Inside Edge</p></div>
         <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-outside-edge.png" alt="Outside edge footwork technique"><p class="cap">Outside Edge</p></div>
         <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-heel-hook.png" alt="Heel hook footwork technique"><p class="cap">Heel Hook</p></div>
         <div class="img-grid-item"><img src="../images/lessons/module-05/footwork-toe-hook.png" alt="Toe hook footwork technique"><p class="cap">Toe Hook</p></div>
@@ -565,7 +561,7 @@
         </table>
       </div>
 
-      <div class="img-grid cols-4">
+      <div class="img-grid cols-4 portrait">
         <div class="img-grid-item"><img src="../images/lessons/module-05/pbus-pull.jpg" alt="PULL step of PBUS belaying"><p class="cap">Pull</p></div>
         <div class="img-grid-item"><img src="../images/lessons/module-05/pbus-brake.jpg" alt="BRAKE step of PBUS belaying"><p class="cap">Brake</p></div>
         <div class="img-grid-item"><img src="../images/lessons/module-05/pbus-under.jpg" alt="UNDER step of PBUS belaying"><p class="cap">Under</p></div>
@@ -613,9 +609,13 @@
         </table>
       </div>
 
-      <div class="img-grid cols-2">
-        <div class="img-grid-item"><img src="../images/lessons/module-05/clip-okay-method.png" alt="The Okay Method of clipping a quickdraw"><p class="cap">The Okay Method</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/clip-squeeze-method.png" alt="The Squeeze Method of clipping a quickdraw"><p class="cap">The Squeeze Method</p></div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/clip-okay-method.png" alt="The Okay Method of clipping a quickdraw">
+        <p class="fig-caption">The Okay Method</p>
+      </div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/clip-squeeze-method.png" alt="The Squeeze Method of clipping a quickdraw">
+        <p class="fig-caption">The Squeeze Method</p>
       </div>
 
       <div class="callout callout-teal">
@@ -724,11 +724,21 @@
         </table>
       </div>
 
-      <div class="img-grid cols-2">
-        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-pullup.png" alt="Pull-up progression and regression examples"><p class="cap">Pull-up</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-pushup.png" alt="Push-up progression and regression examples"><p class="cap">Push-up</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-squat.png" alt="Squat progression and regression examples"><p class="cap">Squat</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/progression-plank.png" alt="Plank progression and regression examples"><p class="cap">Plank</p></div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/progression-pullup.png" alt="Pull-up progression and regression examples">
+        <p class="fig-caption">Pull-up</p>
+      </div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/progression-pushup.png" alt="Push-up progression and regression examples">
+        <p class="fig-caption">Push-up</p>
+      </div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/progression-squat.png" alt="Squat progression and regression examples">
+        <p class="fig-caption">Squat</p>
+      </div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/progression-plank.png" alt="Plank progression and regression examples">
+        <p class="fig-caption">Plank</p>
       </div>
 
       <h3 class="subsection-title">7.3 Progression in Climbing Technique</h3>
@@ -757,11 +767,21 @@
         </table>
       </div>
 
-      <div class="img-grid cols-2">
-        <div class="img-grid-item"><img src="../images/lessons/module-05/error-pullup-shrug.png" alt="Pull-up shrugging shoulders error"><p class="cap">Pull-up — shrugging</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/error-pushup-hips.png" alt="Push-up sagging hips error"><p class="cap">Push-up — sagging hips</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/error-deadlift-back.png" alt="Deadlift rounding back error"><p class="cap">Deadlift — rounding back</p></div>
-        <div class="img-grid-item"><img src="../images/lessons/module-05/error-squat-valgus.png" alt="Squat knee valgus error"><p class="cap">Squat — knee valgus</p></div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/error-pullup-shrug.png" alt="Pull-up shrugging shoulders error">
+        <p class="fig-caption">Pull-up — shrugging</p>
+      </div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/error-pushup-hips.png" alt="Push-up sagging hips error">
+        <p class="fig-caption">Push-up — sagging hips</p>
+      </div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/error-deadlift-back.png" alt="Deadlift rounding back error">
+        <p class="fig-caption">Deadlift — rounding back</p>
+      </div>
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-05/error-squat-valgus.png" alt="Squat knee valgus error">
+        <p class="fig-caption">Squat — knee valgus</p>
       </div>
     </div>
 
@@ -840,10 +860,7 @@
 
     <div class="quiz-footer">
       <p>End of Module 05 — proceed to the Module 05 quiz when ready.</p>
-      <!-- QUIZ LINK NEEDED: no quiz link was found in the source document for this module.
-           Replace the span below with:
-           <a class="quiz-btn" href="QUIZ_URL_HERE" target="_blank" rel="noopener">Take the quiz →</a> -->
-      <span class="quiz-pending">Quiz link coming soon</span>
+      <a class="quiz-btn" href="https://forms.gle/CaGLTT3tLCkt5Wq3A" target="_blank" rel="noopener">Take the quiz →</a>
       <p class="quiz-note">Once you have completed the quiz you will get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next module will unlock.</p>
     </div>
 
