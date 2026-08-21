@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 06 — Advanced Climbing Technique &amp; Movement Skills | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .why-box {
+    background: var(--teal-soft);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .why-box p { color: #205c5d; margin: 0; font-size: 14px; }
+  .why-box .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #205c5d; margin: 0 0 8px; }
+
+  .objectives-list { margin: 0; padding-left: 22px; }
+  .objectives-list li { font-size: 14.5px; margin-bottom: 6px; }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 24px 0 10px; }
+  .subsection-title:first-child { margin-top: 0; }
+  .sub-label { font-size: 14px; font-weight: 700; color: var(--navy); margin: 18px 0 6px; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); }
+
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+
+  .summary-block {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-top: 44px;
+  }
+  .summary-block h2 { color: var(--white); font-size: 22px; margin: 0 0 4px; border: none; padding: 0; }
+  .summary-block .summary-sub { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 22px; }
+  .summary-block h3 { color: var(--white); font-size: 15px; margin: 26px 0 12px; }
+  .takeaway-list { margin: 0; padding-left: 20px; }
+  .takeaway-list li { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.6; margin-bottom: 10px; }
+  .looking-ahead {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+  .looking-ahead .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta); margin: 0 0 8px; }
+  .looking-ahead p { color: rgba(255,255,255,0.85); margin: 0; font-size: 13.5px; }
+
+  .glossary-wrap { border-radius: 10px; overflow: hidden; margin-bottom: 8px; background: rgba(255,255,255,0.04); }
+  table.glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.glossary-table td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  table.glossary-table tr:last-child td { border-bottom: none; }
+  table.glossary-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  table.glossary-table td:first-child { font-weight: 700; color: var(--terracotta); white-space: nowrap; width: 150px; }
+  table.glossary-table td:last-child { color: rgba(255,255,255,0.82); }
+
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+    .summary-block { padding: 24px 20px; }
+    table.glossary-table td:first-child { width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-06.html">← Back to Module 06</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 06 · 06 of 07</p>
+    <h1>Advanced Climbing Technique &amp; Movement Skills</h1>
+    <p class="lesson-sub">Written Guide + Quiz</p>
+  </div>
+
+  <div class="content-card">
+
+    <div class="why-box">
+      <p class="label">Why It Matters</p>
+      <p>Modules 1-5 built the foundation across anatomy, physiology, assessments, programming and basic technique instruction. Now we apply it directly to the wall. Climbing technique is the bridge between fitness and performance — two athletes with identical strength will achieve very different results depending on the efficiency of their movement. Your ability to observe, analyse, and improve climbing movement is your most sport-specific and immediately visible coaching skill.</p>
+    </div>
+
+    <h2 class="section-title">Learning Objectives</h2>
+    <p>By the end of this module, you will be able to:</p>
+    <ul class="objectives-list">
+      <li>Describe the key characteristics and demands of each major climbing discipline</li>
+      <li>Teach and coach fundamental footwork techniques including edging, smearing, heel hooks, and toe hooks</li>
+      <li>Explain and coach body positioning principles: centre of gravity management, hip rotation, and drop-knee technique</li>
+      <li>Identify and coach the main grip types used in climbing and their appropriate application and injury risk</li>
+      <li>Teach route reading and movement sequencing to climbers of all levels</li>
+      <li>Demonstrate and coach safe falling and bouldering spotting technique</li>
+      <li>Diagnose common technique errors and deliver appropriate coaching corrections</li>
+      <li>Design structured technique development progressions for beginner, intermediate, and advanced climbers</li>
+    </ul>
+
+    <!-- SECTION 1 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 1: Climbing Disciplines Overview</h2>
+      <p>Rock climbing is not a single sport — it is a family of related disciplines, each with unique movement demands, risk profiles, and coaching priorities. A well-rounded climbing coach should understand all disciplines even if they specialise in one. Understanding where a climber comes from, and where they want to go, shapes every coaching decision.</p>
+
+      <h3 class="subsection-title">1.1 Bouldering</h3>
+      <p>Bouldering involves climbing short problems — typically up to 4-5 metres — without a rope, over crash pads. Problems are rated on the V-scale (V0-V17) or Fontainebleau scale (3-9A). The absence of rope systems means the entire session is devoted to movement quality and problem-solving, making bouldering the most technique-dense format for skill development.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Characteristic</th><th>Detail</th></tr>
+          <tr><td>Physical demands</td><td>Peak contact strength, explosive power, body tension, and precise coordination</td></tr>
+          <tr><td>Typical attempt duration</td><td>1-30 seconds of intense effort per attempt</td></tr>
+          <tr><td>Rest between attempts</td><td>3-10 minutes depending on intensity; full PCr recovery is essential</td></tr>
+          <tr><td>Coaching opportunities</td><td>Direct observation, immediate feedback, easy to repeat moves, no rope management distraction</td></tr>
+          <tr><td>Safety priority</td><td>Pad placement and coverage, spotting technique, fall practice, landing zones clear</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">1.2 Sport Climbing</h3>
+      <p>Sport climbing involves pre-bolted routes with permanent protection. Climbers clip quickdraws into bolts as they ascend. Routes are rated on the French numerical system (e.g. 6a, 7b+) or the Yosemite Decimal System (5.10, 5.13). Route length and the need to manage the pump distinguish sport climbing from bouldering.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Characteristic</th><th>Detail</th></tr>
+          <tr><td>Physical demands</td><td>Power endurance, aerobic capacity, pacing strategy, psychological resilience</td></tr>
+          <tr><td>Typical attempt duration</td><td>1-30 minutes per route attempt depending on length and style</td></tr>
+          <tr><td>Coaching focus</td><td>Rest position identification, clipping efficiency, breathing, pump management, lead fall practice</td></tr>
+          <tr><td>Safety priority</td><td>Correct clipping technique, belayer communication, lead fall practice, no clipping past bolts unclipped</td></tr>
+          <tr><td>Key additional skill</td><td>Fear management — lead falling is a learned skill and a significant barrier for many climbers</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">1.3 Traditional (Trad) Climbing</h3>
+      <p>Trad climbing involves placing removable protective gear — cams (spring-loaded camming devices), nuts, and hexes — into natural features as the climber ascends. The gear is removed by the second climber. Trad requires crack climbing technique (jamming), gear placement knowledge, and route-finding ability.</p>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Scope Note</p>
+        <p>Coaching trad climbing safely requires specific technical competence in gear placement and anchor construction beyond the scope of this foundation course. Coaches should pursue a national governing body trad leader award before coaching Trad. This module addresses trad technique concepts only.</p>
+      </div>
+
+      <h3 class="subsection-title">1.4 Indoor &amp; Competition Climbing</h3>
+      <p>The majority of new climbers begin indoors, and indoor climbing is the fastest-growing sector of the sport. Competition formats sanctioned by World Climbing include:</p>
+      <ul>
+        <li>Lead — competitors attempt to climb as high as possible on a single route; top-rope or lead with isolation from previous competitors</li>
+        <li>Bouldering — competitors attempt a series of boulder problems within a time limit; scored by tops and zones reached</li>
+        <li>Speed — competitors race head-to-head on a standardised 15-metre route; highly specialised discipline</li>
+      </ul>
+      <p>For most coaching contexts, indoor bouldering and sport climbing are the primary disciplines. The principles of technique taught in this module apply directly to both indoor and outdoor climbing.</p>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 2: Footwork Fundamentals</h2>
+      <p>Footwork is the foundation of efficient climbing. Precise foot placement allows the climber to transfer weight through the legs, reducing arm load, preserving grip strength, and enabling balance. The single most common improvement a coach can make with a beginner climber is improving footwork — the gains are immediate and significant.</p>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Principle</p>
+        <p>The feet are the cheapest energy source in climbing. Every time a foot slips, skips, or lands imprecisely, the hands must compensate. A climber who can trust their feet uses approximately 30-40% less grip force on the same terrain. Footwork coaching should be a priority at every level.</p>
+      </div>
+
+      <h3 class="subsection-title">2.1 Edging</h3>
+      <p>Edging uses the inside or outside edge of the climbing shoe to stand on small footholds. It is the most precise and widely used footwork technique, particularly on vertical and less-than-vertical terrain.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Edging Type</th><th>Description &amp; Application</th></tr>
+          <tr><td>Inside edge (big toe side)</td><td>The primary edging surface for most climbers. Used on footholds directly below the body, on incut holds, and in high-step positions. The ball of the foot presses through the hold.</td></tr>
+          <tr><td>Outside edge (little toe side)</td><td>Used when the foothold is to the outside of the body, during cross-steps, and in flag positions. Enables hip rotation and opens the hip toward the wall.</td></tr>
+          <tr><td>Front-pointing (toe)</td><td>The very tip of the shoe placed on a small hold or feature — most precise but most technique-dependent. Common on pockets, crystals, and tiny edges.</td></tr>
+        </table>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-06/footwork-edging-types.png" alt="Toe down, inside edge, and outside edge footwork techniques">
+      </div>
+
+      <p>Common edging errors and corrections:</p>
+      <ul>
+        <li>Heel dropping — the heel falls below the toe, reducing friction and increasing calf fatigue. Cue: 'Keep your heel level.'</li>
+        <li>Looking away from the foothold before the foot is placed — leads to imprecise placement. Drill: 'Look at the hold until your foot is on it, then count to one before looking up.'</li>
+        <li>Placing the arch rather than the ball of the foot — wastes the stiff rand of the shoe. Cue: 'Place the ball of your foot, not the middle of the shoe.'</li>
+      </ul>
+
+      <h3 class="subsection-title">2.2 Smearing</h3>
+      <p>Smearing is the technique used when there is no defined foothold — the rubber of the shoe is pressed against the rock or wall surface, relying on friction to generate grip. It is the dominant footwork technique on slab terrain and is also used between holds on all angles.</p>
+      <ul>
+        <li>Maximise rubber contact — press as much of the shoe sole as possible against the surface; more contact area = more friction</li>
+        <li>Weight through the feet — the more body weight pressed through the foot, the greater the normal force and the greater the friction</li>
+        <li>Quiet feet — smooth, deliberate placement with no scraping; a scuffing sound indicates the foot is sliding into position rather than being placed precisely</li>
+        <li>Low heel angle — on slab, keep the heel low and the leg straight to maximise the smear surface and reduce calf fatigue.</li>
+      </ul>
+      <p>Slab-specific coaching cues: 'Trust your feet', 'Press through your heels', 'Stand up tall — lean back slightly to drive weight through the feet.'</p>
+
+      <h3 class="subsection-title">2.3 Heel Hooks</h3>
+      <p>A heel hook uses the back of the heel — specifically the Achilles-calcaneal region — on a hold to pull the body toward the wall or to lock off a position. Heel hooks are common in overhanging climbing, roofs, and compression problems.</p>
+      <ul>
+        <li>Engage the hamstring actively — a heel hook is not passive; the hamstring must contract to pull the heel into the hold and load the position</li>
+        <li>Plantarflexion at the ankle — the foot is pointed down to help lock the heel securely.</li>
+        <li>Body position — the hips should rotate to face the wall; a heel hook used correctly should allow the arm on the same side to be almost straight</li>
+        <li>Common error: placing the Achilles on the hold rather than the heel — reduces friction and risks the foot slipping. Cue: 'Drive the back of your heel into the hold — engage your hamstring.'</li>
+        <li>Injury risk: heel hooks place high torsional stress on the knee — athletes with knee instability or history of knee injury should progress heel hook training conservatively</li>
+      </ul>
+
+      <h3 class="subsection-title">2.4 Toe Hooks</h3>
+      <p>A toe hook uses the top of the toes — the dorsum of the foot — to hook onto a hold, edge, or lip. It is primarily used in overhanging terrain, roofs, and compression problems to prevent the body from swinging away from the wall.</p>
+      <ul>
+        <li>Active engagement — like the heel hook, the toe hook requires active muscular engagement (tibialis anterior and toe extensors) to maintain contact; it is not simply resting the toe on the hold</li>
+        <li>Shoe position — the laces/rand area of the shoe is the contact surface; climbing shoes with a stiff rand perform better on toe hooks</li>
+        <li>Body position — toe hooks work best when the body is pulled toward the hold; they function as a counterbalance to the hands, allowing the core to connect upper and lower body force</li>
+        <li>Drill: introduce toe hooks on low, jug-featured overhang terrain where the movement pattern can be practised safely without fall risk</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-06/footwork-smear-heel-toe.png" alt="Smearing, heel hook, and toe hook footwork techniques">
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 3: Body Positioning Principles</h2>
+      <p>Efficient body positioning reduces the force required at individual contact points, preserves energy, and expands the range of holds and sequences accessible to the climber. The key principles are centre of gravity management, hip engagement, and rotational technique.</p>
+
+      <h3 class="subsection-title">3.1 Centre of Gravity Management</h3>
+      <p>The centre of gravity (CoG) — approximately at the navel in a standing climber — must be kept over the base of support (feet) to maintain balance. When the CoG shifts outside the base of support, the hands must compensate by pulling to prevent a fall.</p>
+      <ul>
+        <li>Stay close to the wall — bringing the CoG toward the wall reduces the moment arm for shoulder and core muscles (as covered in Module 2). On vertical and slab terrain this means keeping the hips in and avoiding leaning back.</li>
+        <li>On overhangs — the physics invert; the climber hangs below the wall, and the CoG must be positioned to minimise the swing of the lower body away from the wall (barn-door effect)</li>
+        <li>Over the feet — the CoG should be directly above the primary weight-bearing foothold wherever possible; this maximises the load through the foot and minimises the pulling demand on the hands.</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Coaching Drill — CoG Awareness</p>
+        <p>Ask the athlete to traverse a vertical wall using only their legs — hands only touching, not pulling. This forces them to position their CoG correctly over each foothold to maintain balance, developing a strong intuitive sense of weight distribution without the crutch of strong pulling.</p>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-06/center-of-mass-climbing.png" alt="Diagram comparing center of mass positioning close to and far from a climbing wall">
+      </div>
+
+      <h3 class="subsection-title">3.2 Hip Rotation and the Flag</h3>
+      <p>Rotating the hips toward the wall allows the climber to reach further, reduces the torque on the shoulder, and brings the CoG closer to the wall surface — all of which improve efficiency. Hip rotation is one of the most impactful technique improvements a coach can instill in a beginner or intermediate climber.</p>
+      <p>There are two primary hip rotation techniques:</p>
+      <ul>
+        <li>Inside hip — rotating the hip of the reaching arm toward the wall. When reaching right with the right arm, rotate the right hip toward the wall by pushing through the right foot (inside edge) and pulling the left hip back. This is sometimes called the 'twist' or 'hip-in' technique.</li>
+        <li>Outside hip (flag) — when there is no foothold to support the hip rotation, extend the free leg to the side or behind (the flag) to counterbalance the body weight and prevent barn-dooring. An outside flag extends the leg to the outside of the body; an inside flag crosses behind the supporting leg.</li>
+      </ul>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-06/hip-rotation-photo.png" alt="Climber demonstrating hip rotation while reaching for a hold">
+      </div>
+
+      <h3 class="subsection-title">3.3 The Drop-Knee (Egyptian)</h3>
+      <p>The drop-knee is a powerful hip rotation technique used on overhang and steep terrain. By rotating the knee of a foot on a sidepull or foothold downward toward the floor, the hips rotate toward the wall and the climber can reach further while keeping the body close to the wall.</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-06/drop-knee-infographic.png" alt="Detailed infographic on drop-knee technique including how to perform, key points, common errors, and benefits">
+      </div>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Component</th><th>Coaching Cue</th></tr>
+          <tr><td>Foot placement</td><td>Inside edge of the shoe on the hold; the foot should be below hip height to allow the knee to drop</td></tr>
+          <tr><td>Knee direction</td><td>'Drop your knee toward the floor' — the knee rotates inward and downward, not outward</td></tr>
+          <tr><td>Hip position</td><td>The hip of the dropping knee drives toward the wall — 'Squeeze your hip into the wall'</td></tr>
+          <tr><td>Body outcome</td><td>The upper body is now side-on to the wall; the reaching arm can extend further with less shoulder load</td></tr>
+          <tr><td>Common error</td><td>Insufficient knee drop — the climber does partial rotation. Cue: 'Drop the knee all the way — knee toward the ground'</td></tr>
+        </table>
+      </div>
+
+      <p>The drop-knee is highly hip-mobility dependent. Climbers with restricted hip internal rotation (identified in the Module 3 screening) will find deep drop-knees difficult. Address hip mobility as a prerequisite for advanced drop-knee work.</p>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 4: Handholds &amp; Grip Types</h2>
+      <p>The way a climber grips a hold determines both the force generated and the injury risk incurred. Understanding grip types and their biomechanical implications is essential for coaches — particularly in the context of finger injury prevention, which is the most common chronic injury in climbing.</p>
+
+      <h3 class="subsection-title">4.1 The Main Grip Positions</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Grip Type</th><th>Description, Application &amp; Injury Risk</th></tr>
+          <tr><td>Open hand</td><td>Fingers extended at approximately 30-45 degrees at the PIP joint; all fingers in contact with the hold; thumb typically alongside the index finger. Lowest injury risk — forces are distributed more evenly across tendons and pulleys. Develops more slowly than crimp but should be prioritised for long-term health.</td></tr>
+          <tr><td>Half crimp</td><td>PIP joints bent to approximately 90 degrees, DIP joints slightly extended; thumb not wrapped. A middle ground between open hand and full crimp. Good balance of strength and safety for most training.</td></tr>
+          <tr><td>Full crimp (closed crimp)</td><td>PIP joints bent to approximately 90 degrees, DIP joints hyperextended, thumb wrapped over index finger. The strongest grip position but places the highest load on the A2 pulley — the most common climbing injury site. Should be used tactically on the wall, not trained repeatedly in isolation.</td></tr>
+          <tr><td>Pinch</td><td>The hold is gripped between the thumb and fingers; requires adductor pollicis (thumb adductor) strength. Often undertrained. Pinch strength is sport-specific and responds well to dedicated training.</td></tr>
+          <tr><td>Sloper</td><td>The palm and fingers wrap over a rounded hold; relies on friction rather than hooking. Requires shoulder position and hip proximity to the wall to be effective. Often most effective with the wrist slightly extended.</td></tr>
+          <tr><td>Pocket</td><td>One, two, or three fingers inserted into a hole in the rock. Monos (single finger) and duos (two fingers) place extreme concentrated loads on individual tendons and pulleys. Should be introduced gradually and avoided by beginners.</td></tr>
+          <tr><td>Undercling</td><td>Hold gripped with palm facing upward; requires elbow flexion and hip proximity to generate upward pull. Effective as a rest position if core and hip position are correct.</td></tr>
+          <tr><td>Sidepull</td><td>Hold gripped with palm facing sideways; force is generated laterally against the hold. Body position is critical — feet must counterbalance the pull direction.</td></tr>
+        </table>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-06/grip-types.png" alt="Eight climbing grip types: open hand, crimp, full crimp, pinch, pocket, sloper, side pull, undercling">
+      </div>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Injury Prevention — Grip Training</p>
+        <p>Beginners should be coached to use open-hand grip wherever possible. The full crimp feels stronger because it is neurologically more familiar, but it dramatically increases A2 pulley stress. Coaches should actively cue open-hand during easy climbing and make the development of open-hand strength an explicit training goal.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 5: Route Reading &amp; Movement Sequencing</h2>
+      <p>Route reading is the cognitive skill of analysing a climb before or during an attempt to identify the most efficient sequence of moves, rest positions, clipping stances, and body positions. It is a learnable skill that separates experienced climbers from beginners of equivalent physical ability, and it is often the biggest performance limiter at intermediate and advanced levels.</p>
+
+      <h3 class="subsection-title">5.1 The Route Reading Process</h3>
+      <ol>
+        <li>Identify the holds — scan from bottom to top; note hold type, orientation, and size at each position</li>
+        <li>Identify the feet — locate obvious footholds, smear zones, and heel/toe hook opportunities</li>
+        <li>Plan the sequences — work out which hand goes where, how the feet will move between positions, and where transitions happen</li>
+        <li>Identify rest positions — jugs, knee bars, heel-toe cams, or stances where at least one arm can be shaken out</li>
+        <li>Identify the crux — the hardest section; plan in detail how you will approach it, what grip type is needed, and where your feet must be</li>
+        <li>Visualise the climb — run through the sequence mentally from start to finish before leaving the ground</li>
+      </ol>
+
+      <h3 class="subsection-title">5.2 Coaching Route Reading at Different Levels</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Level</th><th>Coaching Approach</th></tr>
+          <tr><td>Beginner</td><td>Teach them to stop at the base and look up. Most beginners start climbing without observing the route at all. Even basic observation (where are the big holds?) immediately improves performance. Keep reading tasks simple.</td></tr>
+          <tr><td>Intermediate</td><td>Introduce hold orientation analysis — which way does each hold face? How should the body be positioned to use each hold most efficiently? Introduce the concept of rest positions and planned shakeouts.</td></tr>
+          <tr><td>Advanced</td><td>Focus on beta optimisation — exploring alternative sequences to find more efficient solutions. Video analysis is valuable here. Introduce concepts of pacing (fast through pumpy sections, slow through technical cruxes) and clipping position planning.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.3 Movement Sequencing Principles</h3>
+      <ul>
+        <li>Work the crux first — on redpoint attempts, many climbers burn out working to the crux before attempting it. Practice crux moves independently before linking them in context.</li>
+        <li>Think feet first — for every move, identify where the feet need to be before committing to the hand move. Footwork determines reach, so plan from the ground up.</li>
+        <li>Plan for rest — on sport routes, identify every possible rest stance before leading. A 10-second shakeout on a moderate hold early in a route can mean the difference between success and failure at the top.</li>
+        <li>Beta is personal — the optimal sequence for one climber (determined by height, reach, hip mobility, and strengths) is not necessarily optimal for another. Coaches should help athletes find their own beta, not impose a single solution.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 6: Falling Safely &amp; Spotting in Bouldering</h2>
+      <p>Fear of falling is one of the most significant limiting factors in climbing progression at all levels. Teaching athletes to fall safely removes a physical and psychological barrier, and reduces the risk of injury when falls do occur.</p>
+
+      <h3 class="subsection-title">6.1 Safe Falling Technique — Bouldering</h3>
+      <p>Bouldering falls onto crash pads require a different technique to rope falls. The key principles:</p>
+      <ul>
+        <li>Land with feet first, knees slightly bent — the legs absorb the initial impact; locking the knees on landing is the primary cause of injury in bouldering falls</li>
+        <li>Roll on landing — allow the momentum to carry through into a forward or backward roll to dissipate force over a larger surface area and time</li>
+        <li>Protect the head and neck — tuck the chin and avoid landing on hands with extended arms (wrist fracture risk)</li>
+        <li>Avoid grabbing holds on the way down — instinctive hand-grab during a fall can result in finger, pulley, or shoulder injury</li>
+        <li>Stay relaxed — a tense body transfers force poorly; practiced falling technique becomes automatic with repetition</li>
+      </ul>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Falling Practice Drill</p>
+        <p>Introduce falling practice on low-height problems (V0-V1) before progressing to higher or more committing falls. Have athletes step off the wall from low heights onto pads, progressing to controlled falls from standing height, then dynamic falls. Normalise falling as a skill — not something to be feared.</p>
+      </div>
+
+      <h3 class="subsection-title">6.2 Spotting Technique for Coaches</h3>
+      <p>A spotter's role in bouldering is to guide the climber to a safe landing — particularly to protect the head and neck — not to catch them. Attempting to catch a falling climber puts both parties at risk.</p>
+      <ul>
+        <li>Position — stand behind and below the climber's centre of mass (typically at hip height); move with the climber as they move across the problem</li>
+        <li>Hands up, ready — palms open and raised at hip height of the climber; arms slightly bent; never reach overhead with rigid arms</li>
+        <li>Watch the hips, not the hands — the hips indicate where the climber will fall; track them continuously</li>
+        <li>Guide to the pad — on a fall, use open hands to direct the climber's hips and torso toward the pad and away from the wall; avoid grabbing clothing as it can alter the fall trajectory unexpectedly</li>
+        <li>Communicate — ask the climber before they start if they want a spot; tell them where you will be. Some climbers find spotting distracting.</li>
+        <li>Pad coverage — before each problem, arrange pads to cover the most likely landing zones; ensure there are no gaps near walls or edges</li>
+        <li>Multiple spotters — for high, committing moves with a wide potential fall zone, two spotters dividing the zone is appropriate</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 7: Common Technique Errors &amp; Coaching Corrections</h2>
+      <p>Effective technique coaching begins with accurate observation. The ability to identify the root cause of an error — rather than just its symptom — distinguishes experienced coaches from novice ones. The following table covers the most common technique issues seen across all levels, with root cause analysis and practical corrections.</p>
+
+      <h3 class="subsection-title">7.1 Footwork Errors</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Error</th><th>Root Cause &amp; Correction</th></tr>
+          <tr><td>Imprecise foot placement (feet skidding or shuffling onto holds)</td><td>Not looking at the hold before placing the foot. Correction: 'Footwork drill' — climb easy routes focusing only on feet, looking at each hold before placing. Use coloured tape to mark target foot placements.</td></tr>
+          <tr><td>Heel dropping on small edges</td><td>Lack of awareness or calf weakness. Correction: 'Keep your heel level — imagine balancing a coin on it.' Reinforce with deliberate slow placement on small holds.</td></tr>
+          <tr><td>Feet coming off the wall on steep terrain</td><td>Failing to actively engage toe and foot against the hold. Correction: Introduce heel and toe hook awareness drills. Cue: 'Grip the hold with your foot — it should feel like it's being pulled into the wall.'</td></tr>
+          <tr><td>Overuse of footholds directly under the body (not using outside edge or cross-step)</td><td>Limited repertoire of footwork patterns. Correction: traverse drills with restriction — 'only use outside edge footholds' or 'only cross-step'.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">7.2 Body Positioning Errors</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Error</th><th>Root Cause &amp; Correction</th></tr>
+          <tr><td>Barn-door — body swings away from the wall</td><td>CoG outside base of support; no counterbalance. Correction: teach flagging on the spot — identify where the free leg should go; drill on a traverse with one hold deliberately positioned to require a flag.</td></tr>
+          <tr><td>Square-on hips on steep terrain</td><td>Not using hip rotation; treating all climbing as if it were a ladder. Correction: hip rotation drills on 30-45 degree boards; drop-knee specific practice; cue 'turn your hip into the wall'.</td></tr>
+          <tr><td>Arms bent on rests ('pulling on jugs')</td><td>Not trusting straight-arm resting position; unnecessary tension. Correction: 'Hang on your skeleton, not your muscles — straighten your arms on every jug.' Introduce ARC training on easy terrain.</td></tr>
+          <tr><td>Body too far from the wall on overhangs</td><td>Hips swinging back due to insufficient core tension. Correction: core engagement drills; flag or drop-knee to bring hips in; cue 'press your hips toward the wall'.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">7.3 Upper Body and Grip Errors</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Error</th><th>Root Cause &amp; Correction</th></tr>
+          <tr><td>Full crimping everything</td><td>Habit / perceived security of crimping. Correction: designate sessions as 'open-hand only'; explain the injury risk of the full crimp and the long-term benefit of open-hand development.</td></tr>
+          <tr><td>Shrugging shoulders on lock-offs</td><td>Weak scapular depressors; not initiating the pull from the lats. Correction: 'Shoulders down and back before you pull.' Reinforce with scapular pull-up exercises off the wall.</td></tr>
+          <tr><td>Locking off too long</td><td>Not committing to the next move quickly enough; holding static positions creates pump. Correction: introduce 'dynamic movement drills' — practice making the reach immediately without pausing at the lock-off.</td></tr>
+          <tr><td>Overgripping (white knuckles on easy holds)</td><td>Anxiety or lack of trust in feet. Correction: easy ARC traversing; cue 'your fingers are just hooks — relax them.' Address footwork simultaneously.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 8: Coaching Progressions by Level</h2>
+      <p>Technique development is not a single curriculum delivered identically to every athlete. The appropriate coaching content, volume of instruction, and level of complexity must match the athlete's current stage of development. Using the motor learning framework from Module 2, here is a structured progression model for climbing technique coaching.</p>
+
+      <h3 class="subsection-title">8.1 Beginner Climbers (Cognitive Stage)</h3>
+      <p>Characteristics: climbing below V2/6a; inconsistent footwork; square-on to wall; overgripping; limited route reading. The cognitive stage learner needs simple, clear, frequently repeated instruction in low-stress environments.</p>
+      <ul>
+        <li>Priority 1 — Footwork: teach inside edge placement, looking at feet, quiet feet. Use drills on easy terrain below their limit. Repeat in every session.</li>
+        <li>Priority 2 — Straight-arm resting: teach that arms should be straight on good holds; introduce the concept of conserving grip strength.</li>
+        <li>Priority 3 — Basic route reading: ask them to stop at the base and identify three holds before starting. Keep it simple.</li>
+        <li>Priority 4 — Safe falling: introduce stepping off the wall onto pads from low heights; normalise falls as part of the sport.</li>
+        <li>Coaching style: short cues, frequent demonstration, enthusiastic positive reinforcement; build confidence and enjoyment above all.</li>
+      </ul>
+
+      <h3 class="subsection-title">8.2 Intermediate Climbers (Associative Stage)</h3>
+      <p>Characteristics: climbing V3-V6 / 6b-7a; reasonably consistent footwork on easy terrain; beginning to use some hip rotation; some route reading ability. The associative stage learner has the basics and is now developing consistency and expanding their movement vocabulary.</p>
+      <ul>
+        <li>Priority 1 — Hip rotation and drop-knee: introduce on moderate overhanging terrain; drill drop-knee specifically; use outside edge drills on traverses.</li>
+        <li>Priority 2 — Grip awareness: introduce open-hand focus; explain pulley anatomy; designate open-hand training sessions.</li>
+        <li>Priority 3 — Route reading depth: introduce hold orientation analysis; teach identification of rest positions and crux sequence.</li>
+        <li>Priority 4 — Movement efficiency: introduce ARC training to develop relaxed, economic movement; address overgripping with volume climbing.</li>
+        <li>Coaching style: more analytical feedback; introduce video review; begin to delay feedback to encourage self-assessment.</li>
+      </ul>
+
+      <h3 class="subsection-title">8.3 Advanced Climbers (Autonomous Stage)</h3>
+      <p>Characteristics: climbing V7+ / 7b+; technique largely automatic on familiar terrain; may have deeply ingrained compensatory habits from years of self-teaching. The autonomous stage climber benefits from high-variability training, detailed video analysis, and coaching that targets specific identified weaknesses rather than general skill.</p>
+      <ul>
+        <li>Priority 1 — Beta optimisation: explore multiple sequences; use video to compare efficiency of different solutions.</li>
+        <li>Priority 2 — Skill under fatigue: many advanced climbers maintain excellent technique when fresh but break down under pump. Design training that intentionally develops technical robustness when tired.</li>
+        <li>Priority 3 — Psychological skills: route reading for hard redpoints, visualization, arousal control before crux moves.</li>
+        <li>Priority 4 — Individual weaknesses: use detailed assessment (e.g. video analysis of specific hold types, angles) to identify and systematically address specific technical gaps.</li>
+        <li>Coaching style: collaborative; the coach facilitates the athlete's own analytical process rather than directing it; set challenges and problems for the athlete to solve.</li>
+      </ul>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Module 06 — proceed to the Module 06 quiz when ready.</p>
+      <a class="quiz-btn" href="https://forms.gle/aRz7qDoGSdPPqsfw9" target="_blank" rel="noopener">Take the quiz →</a>
+      <p class="quiz-note">Once you have completed the quiz you will get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, the next module will unlock.</p>
+    </div>
+
+  </div>
+
+  <!-- ================= MODULE 06 SUMMARY ================= -->
+  <div class="summary-block">
+    <h2>Module Summary</h2>
+    <p class="summary-sub">Module 6 has applied the foundational knowledge of the previous modules directly to climbing movement. Key takeaways:</p>
+
+    <h3>Key Terms &amp; Definitions</h3>
+    <div class="glossary-wrap">
+      <table class="glossary-table">
+        <tr><td>Edging</td><td>Using the inside or outside edge of the climbing shoe on a defined foothold to generate precise, stable foot placements.</td></tr>
+        <tr><td>Smearing</td><td>Pressing the rubber sole of the shoe against a surface without a defined hold, relying on friction and body weight to maintain contact.</td></tr>
+        <tr><td>Heel Hook</td><td>Using the back of the heel on a hold to pull the body toward the wall; requires active hamstring engagement and ankle plantarflexion.</td></tr>
+        <tr><td>Toe Hook</td><td>Using the dorsum (top) of the foot and toes on a hold to counterbalance the body or prevent swinging; requires active engagement of foot extensors.</td></tr>
+        <tr><td>Drop-Knee (Egyptian)</td><td>A hip rotation technique on steep terrain where the knee is dropped inward and downward to rotate the hip toward the wall, enabling a longer reach.</td></tr>
+        <tr><td>Flagging</td><td>Extending a free leg to the side or behind to counterbalance the body weight and prevent barn-dooring; inside and outside flags address different fall trajectories.</td></tr>
+        <tr><td>Barn-Door</td><td>An uncontrolled rotation of the body away from the wall, caused by the centre of gravity moving outside the base of support.</td></tr>
+        <tr><td>Open-Hand Grip</td><td>A grip position with fingers extended at approximately 30-45 degrees at the PIP joint; lower injury risk than the full crimp as load is distributed more evenly.</td></tr>
+        <tr><td>Full Crimp</td><td>A grip position with PIP joints at ~90 degrees, DIP joints hyperextended, and thumb wrapped; highest force output but greatest A2 pulley stress.</td></tr>
+        <tr><td>Pinch Grip</td><td>Gripping a hold between the fingers and thumb; requires adductor pollicis strength; commonly undertrained.</td></tr>
+        <tr><td>Route Reading</td><td>The cognitive process of analysing a climb before or during an attempt to plan the most efficient sequence of moves and body positions.</td></tr>
+        <tr><td>Beta</td><td>The specific sequence of movements used to climb a route or problem; 'beta' is shared between climbers as advice about how to complete a climb.</td></tr>
+        <tr><td>Redpoint</td><td>A lead climbing ascent of a route after prior practice, completed without falls from bottom to top.</td></tr>
+        <tr><td>ARC Training</td><td>Aerobic Restoration and Capillarisation — sustained low-intensity traversing or climbing designed to develop forearm aerobic endurance and relaxed, efficient movement.</td></tr>
+        <tr><td>A2 Pulley</td><td>The annular pulley on the proximal phalanx of the finger; the most commonly injured structure in rock climbing, particularly from full crimping.</td></tr>
+      </table>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>Climbing encompasses distinct disciplines — bouldering, sport, trad, and indoor competition — each with different physical demands and coaching priorities</li>
+      <li>Footwork is the highest-leverage technique element for most climbers; edging, smearing, heel hooks, and toe hooks each require specific technique and should be systematically developed</li>
+      <li>Body positioning — CoG management, hip rotation, flagging, and the drop-knee — reduces arm load and expands the range of accessible movement; hip mobility is a key prerequisite for advanced positioning</li>
+      <li>Grip type selection significantly affects both performance and injury risk; coaches should actively develop open-hand strength and discourage over-reliance on the full crimp</li>
+      <li>Route reading is a trainable cognitive skill; introduce it at every level with complexity appropriate to the athlete's stage</li>
+      <li>Safe falling and correct spotting are non-negotiable safety skills for bouldering coaches — teach falling explicitly and practise it regularly</li>
+      <li>Technique coaching should be stage-appropriate: simple and repetitive for beginners, analytical and varied for intermediates, targeted and athlete-driven for advanced climbers</li>
+    </ul>
+
+    <div class="looking-ahead">
+      <p class="label">Looking Ahead</p>
+      <p>In Module 07 — Climbing-Specific Strength &amp; Conditioning — we take everything learned about climbing movement and build the physical training architecture that supports it: finger strength, antagonist programming, endurance methods, and a complete periodised plan for climbing performance.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
