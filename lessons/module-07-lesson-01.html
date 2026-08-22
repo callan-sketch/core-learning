@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 07 — Climbing-Specific Strength &amp; Conditioning | Core Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2a3a;
+    --navy-soft: #25394d;
+    --teal: #3a8a8c;
+    --teal-soft: #e8f2f2;
+    --terracotta: #d9764a;
+    --terracotta-soft: #fbe8dd;
+    --cream: #f7f5f1;
+    --ink: #2a2f35;
+    --ink-mute: #6b7480;
+    --line: #e2e0da;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(27,42,58,0.06), 0 8px 24px rgba(27,42,58,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  a { color: var(--teal); }
+
+  .loading-state {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: var(--ink-mute); padding: 100px 24px;
+  }
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid var(--line);
+    border-top-color: var(--teal); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #page-content { display: none; }
+
+  .site-nav { background: var(--navy); padding: 0 24px; }
+  .site-nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .site-logo {
+    color: var(--white); font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600; font-size: 19px; text-decoration: none;
+  }
+  .site-logo span { color: var(--terracotta); }
+  .nav-link {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 500;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .shell { max-width: 780px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink-mute);
+    text-decoration: none; margin-bottom: 24px;
+  }
+  .back-link:hover { color: var(--navy); }
+
+  .lesson-head { margin-bottom: 8px; }
+  .lesson-eyebrow {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700; margin: 0 0 8px;
+  }
+  .lesson-head h1 { font-size: 28px; margin: 0 0 6px; line-height: 1.2; }
+  .lesson-sub { color: var(--ink-mute); font-size: 14.5px; margin: 0 0 32px; }
+
+  .content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 40px;
+  }
+
+  .why-box {
+    background: var(--teal-soft);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .why-box p { color: #205c5d; margin: 0; font-size: 14px; }
+  .why-box .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #205c5d; margin: 0 0 8px; }
+
+  .objectives-list { margin: 0; padding-left: 22px; }
+  .objectives-list li { font-size: 14.5px; margin-bottom: 6px; }
+
+  .section-block { margin-bottom: 40px; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    border-bottom: 2px solid var(--teal);
+  }
+
+  .subsection-title { font-size: 16px; margin: 24px 0 10px; }
+  .subsection-title:first-child { margin-top: 0; }
+  .sub-label { font-size: 14px; font-weight: 700; color: var(--navy); margin: 18px 0 6px; }
+  .micro-label { font-size: 13px; font-weight: 700; color: var(--navy); margin: 14px 0 4px; }
+
+  .content-card p { font-size: 14.5px; color: var(--ink); margin: 0 0 14px; }
+  .content-card ul, .content-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .content-card li { font-size: 14.5px; margin-bottom: 6px; }
+  .content-card ul li strong, .content-card ol li strong { color: var(--navy); }
+  .content-card ul.tight li, .content-card ol.tight li { margin-bottom: 3px; }
+
+  .lesson-table-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 10px; border: 1px solid var(--line); }
+  table.lesson-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.lesson-table th {
+    background: var(--navy); color: var(--white);
+    text-align: left; padding: 10px 14px; font-weight: 600;
+    font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  table.lesson-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    color: var(--ink); vertical-align: top;
+  }
+  table.lesson-table tr:last-child td { border-bottom: none; }
+  table.lesson-table tr:nth-child(even) td { background: var(--cream); }
+  table.lesson-table td:first-child { font-weight: 600; color: var(--navy); }
+
+  .lesson-figure { margin: 20px 0; text-align: center; }
+  .lesson-figure img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .fig-caption { font-size: 12.5px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+  .callout-teal { background: var(--teal-soft); }
+  .callout-terracotta { background: var(--terracotta-soft); }
+  .callout-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .callout-teal .callout-label { color: #205c5d; }
+  .callout-terracotta .callout-label { color: #a24e2a; }
+  .callout p { margin: 0; font-size: 14px; }
+  .callout p:not(:last-child) { margin-bottom: 8px; }
+  .callout-teal p { color: #205c5d; }
+  .callout-terracotta p { color: #712b13; }
+
+  .phase-block {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    background: var(--cream);
+  }
+  .phase-block h4 { font-size: 14.5px; margin: 0 0 4px; color: var(--navy); }
+  .phase-block .phase-goal { font-size: 13px; color: var(--ink-mute); font-style: italic; margin: 0 0 10px; }
+  .phase-block p, .phase-block ul { font-size: 13.5px; }
+  .phase-block ul { margin-bottom: 8px; }
+
+  .traffic-light { border-radius: 10px; overflow: hidden; margin: 16px 0; border: 1px solid var(--line); }
+  .traffic-row { padding: 10px 16px; font-size: 13.5px; }
+  .traffic-green { background: #e8f5e9; color: #1b5e20; }
+  .traffic-yellow { background: #fff8e1; color: #8a6d00; }
+  .traffic-red { background: #fdecea; color: #a13a2a; }
+  .traffic-row strong { text-transform: uppercase; font-size: 11px; letter-spacing: 0.06em; margin-right: 6px; }
+
+  .summary-block {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-top: 44px;
+  }
+  .summary-block h2 { color: var(--white); font-size: 22px; margin: 0 0 4px; border: none; padding: 0; }
+  .summary-block .summary-sub { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 22px; }
+  .summary-block h3 { color: var(--white); font-size: 15px; margin: 26px 0 12px; }
+  .takeaway-list { margin: 0; padding-left: 20px; }
+  .takeaway-list li { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.6; margin-bottom: 10px; }
+  .looking-ahead {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+  }
+  .looking-ahead .label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta); margin: 0 0 8px; }
+  .looking-ahead p { color: rgba(255,255,255,0.85); margin: 0; font-size: 13.5px; }
+
+  .glossary-wrap { border-radius: 10px; overflow: hidden; margin-bottom: 8px; background: rgba(255,255,255,0.04); }
+  table.glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.glossary-table td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  table.glossary-table tr:last-child td { border-bottom: none; }
+  table.glossary-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  table.glossary-table td:first-child { font-weight: 700; color: var(--terracotta); white-space: nowrap; width: 170px; }
+  table.glossary-table td:last-child { color: rgba(255,255,255,0.82); }
+
+  .quiz-footer {
+    margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center;
+  }
+  .quiz-footer p { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 16px; }
+  .quiz-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 999px;
+    background: var(--terracotta); color: var(--white);
+    font-size: 14.5px; font-weight: 600; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217,118,74,0.3);
+  }
+  .quiz-note { font-size: 12.5px; color: var(--ink-mute); margin-top: 14px; }
+  .quiz-pending {
+    display: inline-block; padding: 13px 28px; border-radius: 999px;
+    background: var(--line); color: var(--ink-mute);
+    font-size: 14.5px; font-weight: 600;
+  }
+
+  @media (max-width: 560px) {
+    .content-card { padding: 26px 20px; }
+    .summary-block { padding: 24px 20px; }
+    table.glossary-table td:first-child { width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="site-logo" href="../dashboard.html">Core <span>Learning</span></a>
+    <button class="nav-link" id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <span>Loading…</span>
+</div>
+
+<div id="page-content">
+<div class="shell">
+
+  <a class="back-link" href="../module-07.html">← Back to Module 07</a>
+
+  <div class="lesson-head">
+    <p class="lesson-eyebrow">Module 07 · 07 of 07</p>
+    <h1>Climbing-Specific Strength &amp; Conditioning</h1>
+    <p class="lesson-sub">Written Guide + Quiz</p>
+  </div>
+
+  <div class="content-card">
+
+    <div class="why-box">
+      <p class="label">The Final Module</p>
+      <p>You have now covered anatomy, biomechanics, assessment, programming, technique instruction, and climbing movement. This final module brings it all together — applying every principle from the course to the design of a complete, periodised climbing performance programme. This is the technical heart of climbing coaching.</p>
+    </div>
+
+    <h2 class="section-title">Learning Objectives</h2>
+    <p>By the end of this module, you will be able to:</p>
+    <ul class="objectives-list">
+      <li>Describe the physiological demands of climbing with specific reference to the finger flexors, forearm endurance, and pulling strength</li>
+      <li>Explain the anatomy of the finger tendon system and the mechanisms behind common climbing injuries</li>
+      <li>Design antagonist training programmes addressing shoulder health, pushing patterns, and core stability</li>
+      <li>Prescribe hangboard and fingerboard protocols using principles of load management and progression</li>
+      <li>Understand the application and appropriate use of campus board training</li>
+      <li>Design climbing endurance training using ARC, 4x4s, and other methods</li>
+      <li>Apply periodisation principles to build a complete climbing performance training year</li>
+      <li>Write a structured 12-week climbing performance programme for a client</li>
+    </ul>
+
+    <!-- SECTION 1 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 1: Physiological Demands of Climbing</h2>
+      <p>To design effective climbing-specific programmes, a coach must first deeply understand what climbing actually demands from the body. The sport is unique in its combination of isometric grip strength, pulling endurance, whole-body tension, and spatial problem-solving — all performed simultaneously under time pressure and psychological stress.</p>
+
+      <h3 class="subsection-title">1.1 The Finger Flexors — The Engine of Climbing</h3>
+      <p>The finger flexors are the most heavily loaded muscle group in climbing and represent the primary physical limiter for the vast majority of climbers below elite level. Two muscles dominate:</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Muscle</th><th>Role &amp; Coaching Relevance</th></tr>
+          <tr><td>Flexor Digitorum Profundus (FDP)</td><td>Flexes the distal interphalangeal (DIP) joint — the last joint of the finger. The primary muscle engaged in crimp and open-hand gripping. Inserts via the finger flexor tendons, which pass through the annular pulleys. The FDP is the workhorse of climbing grip strength.</td></tr>
+          <tr><td>Flexor Digitorum Superficialis (FDS)</td><td>Flexes the proximal interphalangeal (PIP) joint — the middle joint of the finger. Works alongside the FDP in most grip positions. The FDS is particularly active in the half-crimp position.</td></tr>
+        </table>
+      </div>
+
+      <p>The tendons of both muscles pass through a series of annular pulleys (A1–A5) that hold the tendons close to the bone and create efficient force transmission. When grip load exceeds the structural capacity of these pulleys — through excessive intensity, volume, or inadequate recovery — the pulleys strain or rupture. This is the most common mechanism of finger injury in climbers.</p>
+
+      <h3 class="subsection-title">1.2 Forearm Endurance — The Limiting Factor on Routes</h3>
+      <p>While peak finger strength limits performance on boulder problems, forearm endurance limits performance on routes. The sustained isometric contractions required to maintain grip on holds restrict local blood flow (the occlusion effect — Module 1) and accelerate the accumulation of metabolic fatigue products. The onset of 'the pump' — a tightening, burning sensation in the forearms — signals the transition from aerobic to anaerobic metabolism in the forearm musculature.</p>
+      <p>Two primary adaptations improve forearm endurance:</p>
+      <ul>
+        <li>Capillarisation — increased density of capillaries in forearm muscles, improving oxygen delivery and waste clearance. Developed through sustained low-intensity climbing (ARC training).</li>
+        <li>Metabolic efficiency — the muscles become more efficient at using oxygen and clearing hydrogen ions at a given intensity. Developed through repeated exposure to sub-maximal sustained effort.</li>
+      </ul>
+
+      <h3 class="subsection-title">1.3 Upper Body Pulling Strength</h3>
+      <p>The ability to pull the body toward the wall and hold positions against gravity is determined primarily by the latissimus dorsi, biceps brachii, and posterior shoulder musculature (as established in Module 1). Key performance metrics relevant to coaches:</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Metric</th><th>Relevance &amp; Target Values (General Population)</th></tr>
+          <tr><td>Maximum pull-ups</td><td>A reliable proxy for relative pulling strength. 10+ unbroken pull-ups for recreational climbers; 15–20+ for performance climbers. Control full range of motion (dead hang to chin-over-bar).</td></tr>
+          <tr><td>Weighted pull-up 1RM</td><td>Directly measures pulling force; useful for tracking strength development. Intermediate climbers may add 10–20% bodyweight; advanced climbers 40–60%+ bodyweight.</td></tr>
+          <tr><td>Lock-off endurance</td><td>Ability to hold a 90-degree bent-arm position; tests both strength and local muscular endurance of the biceps and stabilisers. Relevant to clipping stances and sustained lock positions on routes.</td></tr>
+          <tr><td>Body tension (front lever progression)</td><td>Tests the ability to maintain rigid connection between upper and lower body — critical for steep climbing. Progressions: tuck front lever → advanced tuck → straddle → full.</td></tr>
+        </table>
+      </div>
+
+      <p>Below are some suggested upper limb stability exercises to do to help prevent shoulder injuries, improve stability and activate correct muscles before training:</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-07/scapular-shoulder-stability.png" alt="Scapular and shoulder stability exercises: banded standing shoulder external rotation, side lying dumbbell external rotation, push up plus, scapular engagement from a pull up bar">
+      </div>
+
+      <h3 class="subsection-title">1.4 Core and Full-Body Tension</h3>
+      <p>On steep terrain, the core acts as a transmission system — transferring force between the pulling upper body and the pushing lower body. A weak or disengaged core results in a 'break' in the kinetic chain: the hips sag away from the wall, feet pop off footholds, and the arm load increases dramatically. Core training for climbers should emphasise anti-extension, anti-rotation, and hip flexor strength in positions relevant to climbing — not just traditional floor-based exercises.</p>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 2: Finger Tendon Anatomy &amp; Injury Prevention</h2>
+      <p>Finger injuries are the most prevalent chronic injury in climbing, affecting an estimated 40–50% of active climbers in any given year. A coach who understands finger tendon anatomy, injury mechanisms, and load management principles can dramatically reduce the incidence of these injuries in their athletes.</p>
+
+      <h3 class="subsection-title">2.1 The Annular Pulley System</h3>
+      <p>The finger flexor tendons are held against the bones of the finger by a series of five annular (ring-shaped) pulleys — A1 through A5 — and three cruciate (cross-shaped) pulleys. The pulleys function like loops on a fishing rod, keeping the tendon close to the bone through the full range of finger movement and enabling efficient force transmission.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Pulley</th><th>Location &amp; Climbing Relevance</th></tr>
+          <tr><td>A1</td><td>At the MCP joint (knuckle); rarely injured in climbing</td></tr>
+          <tr><td>A2</td><td>On the proximal phalanx (first bone of the finger); THE most commonly injured pulley in climbing. Stressed maximally by the full crimp grip position.</td></tr>
+          <tr><td>A3</td><td>At the PIP joint; less commonly injured</td></tr>
+          <tr><td>A4</td><td>On the middle phalanx; second most commonly injured; stressed by the half-crimp and on pocket holds</td></tr>
+          <tr><td>A5</td><td>At the DIP joint; rarely injured in climbing</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">2.2 Pulley Injury Grading</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Grade</th><th>Description &amp; Typical Presentation</th></tr>
+          <tr><td>Grade 1 (Mild strain)</td><td>Microscopic tearing of pulley fibres. Localised tenderness; pain only with maximum effort or deep palpation. Able to continue climbing with modification.</td></tr>
+          <tr><td>Grade 2 (Partial tear)</td><td>Partial thickness tear. Pain with moderate loading; swelling may be present; 'bowstringing' may be visible on resisted flexion. Requires rest from climbing and structured rehabilitation.</td></tr>
+          <tr><td>Grade 3 (Complete rupture)</td><td>Full thickness tear. Immediate pain, often with an audible 'pop'. Significant swelling, bruising, and bowstringing. Requires medical evaluation; surgery is sometimes indicated.</td></tr>
+          <tr><td>Grade 4 (Complete rupture with associated injury)</td><td>Pulley rupture with additional injury to adjacent structures. Requires medical evaluation and imaging.</td></tr>
+        </table>
+      </div>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Coaching Response to Finger Injury</p>
+        <p>If an athlete reports a popping sound or sudden onset of sharp finger pain during climbing, stop the session immediately. Refer to a physiotherapist experienced with climbing injuries for assessment and grading. Do not allow the athlete to return to climbing without medical clearance. Premature return after a pulley injury is the primary cause of re-injury and chronic instability.</p>
+      </div>
+
+      <h3 class="subsection-title">2.3 Tendinopathy vs. Acute Injury</h3>
+      <p>Not all finger pain in climbers is a pulley injury. Flexor tendinopathy — degeneration of the tendon substance without acute rupture — is equally common and often presents as a gradual onset of aching pain along the tendon, particularly after sessions. Unlike acute pulley injuries, tendinopathy responds best to progressive loading (not rest), making accurate differentiation important. Refer to a physiotherapist for diagnosis.</p>
+
+      <h3 class="subsection-title">2.4 Load Management — The Coach's Primary Prevention Tool</h3>
+      <p>The most powerful injury prevention tool available to a climbing coach is intelligent load management. Finger tendons adapt more slowly than muscles — they require at minimum 48–72 hours between high-intensity loading sessions and take weeks to months to fully adapt to new loads.</p>
+      <ul>
+        <li>The 10% rule — do not increase weekly finger training volume or intensity by more than 10% in any given week</li>
+        <li>Warm-up is non-negotiable — begin every session with 10–15 minutes of progressively harder climbing before engaging in any max-effort finger training</li>
+        <li>Monitor pain — any pain above a 3/10 during or after finger training is a signal to reduce load; pain should resolve within 24 hours of a session</li>
+        <li>Track training load — keep a training log recording hang times, loads, and perceived difficulty; rising acute-to-chronic workload ratio is the primary risk signal</li>
+        <li>Avoid training through numbness — persistent tingling or numbness in fingers during training may indicate nerve compression and requires investigation</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 3: Antagonist Muscle Training</h2>
+      <p>The repetitive pulling, gripping, and internally rotating demands of climbing create systematic muscle imbalances that, if uncorrected, lead to chronic injury — particularly of the shoulder (rotator cuff impingement, biceps tendinopathy) and elbow (medial epicondylalgia). Antagonist training is not optional for climbing athletes — it is essential maintenance for a healthy, durable body.</p>
+
+      <h3 class="subsection-title">3.1 The Three Antagonist Priorities</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Priority</th><th>Muscles &amp; Rationale</th></tr>
+          <tr><td>1. Shoulder External Rotation</td><td>Infraspinatus, teres minor, posterior deltoid. Climbing is dominated by internal rotation and adduction. Without external rotator strength, the shoulder cannot maintain centration in the joint — leading to impingement on overhead reaches and rotator cuff strain on dynamic moves. This is the single most important antagonist group for climbers.</td></tr>
+          <tr><td>2. Scapular Retractors &amp; Depressors</td><td>Rhomboids, middle and lower trapezius, serratus anterior. The chronic protracted, anteriorly tilted scapular position of most climbers ('rounded shoulders') indicates weakness here. Correcting scapular position restores normal shoulder mechanics and reduces impingement risk.</td></tr>
+          <tr><td>3. Finger and Wrist Extensors</td><td>Extensor digitorum communis (EDC), wrist extensors. These directly oppose the finger flexors. Weakness creates a significant flexor-extensor imbalance that increases strain on the pulleys and contributes to medial elbow overuse. Finger extension exercises should be included in every climber's programme.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">3.2 Recommended Antagonist Exercises</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Exercise</th><th>Target, Sets/Reps &amp; Notes</th></tr>
+          <tr><td>Band Pull-Apart</td><td>Posterior deltoid, rhomboids, external rotators. 3 × 15–20 reps. Hold band at shoulder width, arms straight, pull apart horizontally. One of the most valuable exercises for climbing shoulder health.</td></tr>
+          <tr><td>Face Pull (cable or band)</td><td>External rotators, rear deltoid, upper trapezius. 3 × 15 reps. Pull toward the face with elbows high and wide. Combine external rotation at end range. Essential for counteracting internal rotation bias.</td></tr>
+          <tr><td>Prone A-T-Y-W raises</td><td>Lower and middle trapezius, posterior deltoid. 3 × 10–12 of each letter. Performed prone on a bench or floor with light weights. Targets chronically weak posterior shoulder stabilisers. See image below.</td></tr>
+          <tr><td>Dumbbell External Rotation</td><td>Infraspinatus, teres minor. 3 × 12–15 reps. Side-lying or with the elbow at 90 degrees braced against the side. Use light weight — these are small muscles and quality matters.</td></tr>
+          <tr><td>Push-up / Dumbbell Press</td><td>Pectorals, triceps, anterior deltoid, serratus anterior. 3 × 10–15 reps. Direct horizontal push — antagonist to the vertical pull of climbing. Serratus anterior activation (protraction at the top) is particularly important for scapular health.</td></tr>
+          <tr><td>Tricep Dips / Pushdowns</td><td>Triceps brachii. 3 × 10–15 reps. Directly oppose the biceps and brachialis dominant in climbing. Include mantling practice as a functional climbing-specific tricep exercise.</td></tr>
+          <tr><td>Finger Extension (rubber band)</td><td>Extensor digitorum communis. 3 × 20–25 reps. Wrap a thick rubber band around fingers and thumb; open the hand against resistance. Simple, inexpensive, and highly effective.</td></tr>
+          <tr><td>Wrist Curls (both directions)</td><td>Wrist flexors (loaded) and extensors (loaded). 3 × 15 reps each direction. Use a light dumbbell. Strengthens and balances the wrist musculature, reducing lateral epicondylalgia risk.</td></tr>
+        </table>
+      </div>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-07/banded-pulls-atyw.png" alt="Banded pulls A, T, Y, W exercise sequence for upper back, shoulders and posture">
+      </div>
+
+      <div class="callout callout-teal">
+        <p class="callout-label">Programming Antagonist Work</p>
+        <p>Antagonist training should be performed 2–3 times per week, ideally after climbing sessions or on dedicated conditioning days. It takes 15–25 minutes and should never be skipped during high-volume training blocks. The pulling-to-pushing volume ratio should approach 1:1 over a week of training.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 4: Hangboard &amp; Fingerboard Programming</h2>
+      <p>The hangboard (fingerboard) is the most powerful and precise tool for developing finger-specific strength in climbers. When programmed correctly it produces measurable strength gains; when misused it is one of the primary causes of finger injury. Coaches must understand the principles of hangboard programming before prescribing it.</p>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Prerequisite Check</p>
+        <p>Hangboard training should only be introduced to athletes who have completed a minimum of 1–2 years of regular climbing and have no active finger injuries. Youth athletes (under 16) should not use the hangboard at all. Adults returning from finger injury require physiotherapist clearance and a progressive introduction over several weeks before resuming normal hang protocols.</p>
+      </div>
+
+      <h3 class="subsection-title">4.1 Hangboard Variables</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Variable</th><th>Description &amp; Guidance</th></tr>
+          <tr><td>Edge depth</td><td>The depth (in mm) of the edge being used. A 20mm edge is a standard reference point for most protocols. Shallower edges (15mm, 10mm) increase difficulty; deeper edges (25mm, 35mm, full crimp edge) reduce it. Progress to shallower edges only when current depth is fully manageable.</td></tr>
+          <tr><td>Grip position</td><td>Open hand is preferred for training. Half crimp is acceptable. Full crimp should be avoided on hangboards due to high A2 pulley stress — save it for on-wall performance.</td></tr>
+          <tr><td>Duration of hang</td><td>Typically 5–10 seconds for max strength protocols; 20–45 seconds for endurance-oriented protocols. Shorter hangs allow heavier loads; longer hangs train local muscular endurance.</td></tr>
+          <tr><td>Rest between sets</td><td>Max strength: 2–3 minutes (partial PCr recovery). Endurance: 30–60 seconds (intentional incomplete recovery). Total rest between exercises: 5+ minutes for max strength work.</td></tr>
+          <tr><td>Load</td><td>Bodyweight only for beginners. Add weight (via a weight belt or vest) to increase difficulty. Reduce weight (via a pulley system or feet on the ground) to decrease difficulty. Load should allow clean technique throughout.</td></tr>
+          <tr><td>Number of sets</td><td>4–6 sets per exercise for strength focus. 2–3 sets for maintenance or within a higher-volume session.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">4.2 Max Strength Hangboard Protocol (Intermediate / Advanced)</h3>
+      <p>The following is a well-established max strength protocol for intermediate to advanced climbers. It should not be performed more than twice per week with at least 48 hours between sessions.</p>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Parameter</th><th>Set Structure</th><th>Notes</th></tr>
+          <tr><td>Warm-up</td><td>10–15 min easy climbing + 3 sets of 10s hangs at bodyweight on a large edge (35mm)</td><td>Never skip warm-up; tendons need progressive loading to prepare for max effort</td></tr>
+          <tr><td>Work sets</td><td>4–6 sets × 10s hang at maximum added weight that allows clean grip</td><td>Rest 3 minutes between sets. Use open-hand or half-crimp only.</td></tr>
+          <tr><td>Edge depth</td><td>Typically 18–20mm for most intermediate climbers</td><td>Progress to shallower edges (15mm) only after 4–6 weeks at current depth with no discomfort</td></tr>
+          <tr><td>Frequency</td><td>2× per week maximum</td><td>48–72 hours minimum between sessions targeting same tissue</td></tr>
+          <tr><td>Progression</td><td>Add 2–2.5kg when all sets are completed with clean form</td><td>Increase edge difficulty (shallower edge) every 4–6 weeks as an alternative progression</td></tr>
+          <tr><td>Session duration</td><td>25–35 minutes total (excluding warm-up)</td><td>Hangboard work should follow climbing, not replace it</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">4.3 Beginner Hangboard Introduction Protocol</h3>
+      <p>For athletes new to structured finger training, introduce hangboard work conservatively over 4–6 weeks before progressing to intensity-based protocols:</p>
+      <ul>
+        <li>Week 1–2: bodyweight hangs on a large hold (35mm or jugs) for 3 × 10s; focus on grip position and no discomfort</li>
+        <li>Week 3–4: 3 × 10s on a 25mm edge at bodyweight; introduce open-hand position specifically</li>
+        <li>Week 5–6: 4 × 10s on a 20mm edge at bodyweight; begin tracking any finger sensations carefully</li>
+        <li>Week 7+: consider progressing to a structured protocol if no discomfort and grip position is consistent</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 5: Campus Board &amp; Coordination Training</h2>
+      <p>The campus board — a series of wooden rungs on an overhanging board, used without feet — was developed by Wolfgang Gullich at the Campus Centre in Nuremberg in the 1980s. It is one of the most effective tools for developing contact strength, explosive power, and upper body coordination, but it is also one of the most injury-prone training tools in climbing if misused.</p>
+
+      <div class="callout callout-terracotta">
+        <p class="callout-label">Campus Board Prerequisites</p>
+        <p>Campus board training is for intermediate to advanced climbers only. Prerequisites: minimum 2 years consistent climbing experience; able to complete 10 strict pull-ups; no active finger or shoulder injuries; skeletal maturity (18+ years). Introducing campus training to under-prepared athletes is a primary cause of acute finger and shoulder injury.</p>
+      </div>
+
+      <h3 class="subsection-title">5.1 Campus Board Exercises</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Exercise</th><th>Description &amp; Athletic Demand</th></tr>
+          <tr><td>Laddering (1-2-3)</td><td>Move up the board rung by rung — right hand to rung 1, left to rung 2, right to rung 3. Develops continuous coordination and rate of force development. The foundational campus movement pattern.</td></tr>
+          <tr><td>Double dynos (1-2-1 or 1-3-1)</td><td>Both hands move simultaneously from rung to rung. Trains explosive bilateral power and contact strength (the ability to grip explosively upon landing a hold).</td></tr>
+          <tr><td>Max reaches</td><td>From a starting position, skip as many rungs as possible in a single move (e.g. 1 to 5, 6, or 7). Measures single-move explosive power. Highly demanding — maximum 3–4 attempts with full recovery.</td></tr>
+          <tr><td>Footless one-arm movements</td><td>Advanced — one arm moves while the other holds the rung. Extreme demand on contact strength and shoulder stability. Only for advanced athletes.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">5.2 Campus Training Programming Guidelines</h3>
+      <ul>
+        <li>Session frequency: maximum 1–2 times per week during a power phase; never consecutive days</li>
+        <li>Volume: 3–5 sets of each exercise; total campus session should not exceed 20–30 minutes</li>
+        <li>Position in session: campus work is CNS-intensive and should be performed when fully fresh — at the start of a session after a thorough warm-up</li>
+        <li>Rest between sets: 3–5 minutes for full recovery — campus training is a pure power modality</li>
+        <li>Rung size: begin with large rungs (30mm+); only progress to smaller rungs after solid technique and injury-free training history on large rungs</li>
+      </ul>
+
+      <p>The following flow chart and guidelines are suggested to all coaches regarding when to start campus board training with youth athletes:</p>
+
+      <div class="lesson-figure">
+        <img src="../images/lessons/module-07/youth-campus-board-flowchart.png" alt="Flowchart: should we be making our youth athletes campus board? A decision tree based on years climbing, growth spurt status, core/scapular/shoulder strength, and hanging capacity">
+      </div>
+
+      <p><strong>Suggestions on how to start and progress campus boarding in youth athletes that have passed the above tests</strong></p>
+      <p>This is a recommended <em>campus-boarding progression</em> which's purpose is to gradually introduce contact force, reduce "shock" loading and only later add dynamic movement.</p>
+
+      <p class="micro-label">Absolute "don'ts"</p>
+      <ul class="tight">
+        <li>No double dynos, no max-reach moves, no small rungs, no one-arm work.</li>
+        <li>No "try hard until failure."</li>
+        <li>No training through pain, lingering ache, or "hot" pulleys.</li>
+      </ul>
+
+      <p class="micro-label">Suggested warm-up template (10–15 minutes)</p>
+      <ol class="tight">
+        <li>General heat (2–3 min): easy traverse / jog / skipping</li>
+        <li>Easy climbing (5–7 min): progressively harder boulders, no crimping focus</li>
+        <li>Activation (3–5 min): scap engagement hangs on jugs (2×10s); easy feet-on "board ladder" 1–2 sets</li>
+      </ol>
+
+      <h3 class="subsection-title">The Progression Model (6 Phases)</h3>
+      <p>You only progress if the athlete is <strong>symptom-free during, after, and the next day</strong>!</p>
+
+      <p class="micro-label">Global rules (apply to every phase)</p>
+      <ul class="tight">
+        <li><strong>Frequency:</strong> 1×/week (max 2×/week for older teens with excellent recovery).</li>
+        <li><strong>Volume cap:</strong> Start very slowly. Only add one variable at a time (either sets OR complexity OR edge size).</li>
+        <li><strong>Intensity cap:</strong> Keep effort at RPE 4–6/10 (should feel "easy–moderate," never maximal). As they get stronger the volume can go up as long as the RPE stays the same.</li>
+        <li><strong>Foot use:</strong> Start feet-on always, then "feet-light," then controlled feet-off only much later.</li>
+        <li><strong>Rest:</strong> Long rests prevent sloppy, shocky movement.</li>
+        <li><strong>Stop criteria:</strong> Any sharp pain, pulley "twinge," or pain that lasts into the next day → stop and regress for 2–3 weeks. Any swelling in PIP joint, stiffening of PIP joint or joint line tenderness on finger nail side of DIP joint.</li>
+      </ul>
+
+      <div class="phase-block">
+        <h4>Phase 0 — Prehab + Movement Foundation (2–4 weeks, concurrent with climbing)</h4>
+        <p class="phase-goal">Goal: Prepare shoulders/scapula and teach quiet, controlled contact.</p>
+        <p>2×/week, 10–15 min</p>
+        <ul class="tight">
+          <li>Scap pull-ups / scap shrugs (hanging on jugs): 2–3 sets × 8–10 reps</li>
+          <li>Ring rows or band rows: 2–3 sets × 10–12 reps</li>
+          <li>Wrist extensor work (rubber band opens / light DB extensor curls): 2–3 sets × 12–15 reps</li>
+          <li>Finger "tendon glides" + gentle forearm mobility: 2–3 min</li>
+        </ul>
+        <p><em>If an athlete can't keep shoulders engaged or swings wildly, don't campus yet!</em></p>
+      </div>
+
+      <div class="phase-block">
+        <h4>Phase 1 — "Campus Board, but it's a Ladder with Feet!" (3–6 weeks)</h4>
+        <p class="phase-goal">Goal: Introduce contact and support with minimal finger stress.</p>
+        <p class="micro-label">Setup</p>
+        <ul class="tight">
+          <li>Use big jugs or very large rungs only.</li>
+          <li>Slight overhang is okay; avoid steep boards early.</li>
+        </ul>
+        <p class="micro-label">Example session (1×/week)</p>
+        <ol class="tight">
+          <li>Warm-up</li>
+          <li>Feet-on "matching ladder" — move 1 hand at a time to the next rung, match, move feet up a rung, repeat. 3–5 sets of 4–6 total hand moves. Rest 2–3 min between sets.</li>
+          <li>Feet-on "pause control" — same ladder, but pause with your hand hovering over the hold for 1–2 seconds on each move (no swing). 2–3 sets of 4 moves.</li>
+        </ol>
+        <p class="micro-label">Progression criteria to Phase 2</p>
+        <p>Zero pain + quiet movement + no skin tears + no elbow/shoulder irritation for 3 consecutive sessions.</p>
+      </div>
+
+      <div class="phase-block">
+        <h4>Phase 2 — Reduce "Shock": Feet-On + Tempo + Accuracy (3–6 weeks)</h4>
+        <p class="phase-goal">Goal: Teach controlled force application without dynamic loading.</p>
+        <p class="micro-label">Add one of these at a time</p>
+        <ul class="tight">
+          <li>Tempo: 2–3 seconds to move; 1 second pause.</li>
+          <li>Accuracy: "silent hands" (no slap/catch).</li>
+          <li>Range: slightly larger reaches without jumping.</li>
+        </ul>
+        <p class="micro-label">Example session</p>
+        <ul class="tight">
+          <li>Feet-on ladder: 4–6 sets of 4–6 moves</li>
+          <li>Add one drill: "Touch then grab" (tap next rung, return, then take it on the next go): 2–3 sets of 3–4 reps; or "Bump" (move to next rung, then bump same hand one rung higher) only if still juggy: 2–3 sets of 2 bumps each side</li>
+        </ul>
+        <p class="micro-label">Progression criteria</p>
+        <p>Still RPE ≤6, no next-day soreness in fingers/pulleys.</p>
+      </div>
+
+      <div class="phase-block">
+        <h4>Phase 3 — "Feet-Light" and Assisted Feet-Off (4–8 weeks)</h4>
+        <p class="phase-goal">Goal: Introduce partial unloading and body tension, still protecting fingers.</p>
+        <p class="micro-label">Tools</p>
+        <p>A box/chair under the board, or a light resistance band to assist, or toe-dabs.</p>
+        <p class="micro-label">Example session</p>
+        <ol class="tight">
+          <li>Feet-light ladder (toes on wall/board lightly) — 4–6 sets of 3–5 moves</li>
+          <li>Assisted feet-off "lock and place" — lift feet briefly after establishing a stable hold, then replace feet before moving again. 3–4 sets of 2–3 controlled placements per side. Rest 3 min.</li>
+        </ol>
+        <p class="micro-label">Rules</p>
+        <ul class="tight">
+          <li>No cutting loose to swing!</li>
+          <li>No "catching" moves — everything placed!</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <h4>Phase 4 — Controlled Feet-Off Ladders on Big Holds (older/robust youth) (4–8+ weeks)</h4>
+        <p class="phase-goal">Goal: Build repeatable, sub-max power endurance without max force.</p>
+        <p class="micro-label">Session (still 1×/week)</p>
+        <ul class="tight">
+          <li>Feet-off ladder on big rungs/jugs only: 5–8 sets of 2–4 moves. Rest 3–4 min between sets.</li>
+          <li>Optional: "1-3-5 style" but only if holds are huge and athlete is very stable: 3–5 sets total, very low volume.</li>
+        </ul>
+        <p class="micro-label">Keep it sub-max</p>
+        <p>If they can't repeat the set with the same form, it's too hard.</p>
+      </div>
+
+      <div class="phase-block">
+        <h4>Phase 5 — Introduce Small Dynamics (only when truly ready)</h4>
+        <p class="phase-goal">Goal: Very small controlled pops — never max.</p>
+        <p class="micro-label">Constraints</p>
+        <ul class="tight">
+          <li>Only on big, positive rungs.</li>
+          <li>Pops are micro (a few cm), with a "stick and freeze" catch.</li>
+        </ul>
+        <p class="micro-label">Session</p>
+        <ul class="tight">
+          <li>3–5 sets of 2–3 micro-pops total</li>
+          <li>Long rests between sets — 4 min</li>
+          <li>Stop well before fatigue.</li>
+        </ul>
+      </div>
+
+      <h4 class="micro-label">Monitoring — Simple "Traffic Light" Rules</h4>
+      <div class="traffic-light">
+        <div class="traffic-row traffic-green"><strong>Green</strong>no pain during, after, or next day → continue</div>
+        <div class="traffic-row traffic-yellow"><strong>Yellow</strong>mild forearm soreness okay; any finger/pulley tenderness = take 2 days complete rest from finger load / climbing and reduce volume/phase for 2–3 weeks</div>
+        <div class="traffic-row traffic-red"><strong>Red</strong>sharp pain, audible pop, swelling, or pain that persists &gt;24–48h → stop campus; medical/physio assessment</div>
+      </div>
+
+      <p class="micro-label">Practical programming examples (by age/phase)</p>
+      <ul class="tight">
+        <li><strong>U11–U13:</strong> Usually Phase 1–2 only; treat campus as coordination + shoulders, not finger strength.</li>
+        <li><strong>U14–U16:</strong> Phase 2–3 typically; Phase 4 only for robust, pain-free athletes with great recovery.</li>
+        <li><strong>U17+:</strong> Can progress further, but still keep "no max" rule unless under expert supervision.</li>
+      </ul>
+
+      <p class="micro-label">Extra safety levers (use these before "harder holds")</p>
+      <p>If you need progression but want to keep fingers safe, progress via:</p>
+      <ul class="tight">
+        <li>More rest precision (better recovery, better movement)</li>
+        <li>More sets (tiny increases)</li>
+        <li>More pauses / tempo control</li>
+        <li>Less assistance (feet-light → brief feet-off) — not via smaller rungs or bigger dynos.</li>
+      </ul>
+
+      <p class="micro-label">Practical signs that a youth climber is going through a growth spurt</p>
+      <ul class="tight">
+        <li>Rapid height increase: clothes and shoes start getting tight quickly; you may notice they're noticeably taller over a few months.</li>
+        <li>Growing pains &amp; aches: dull aches (often in legs/knees) or general muscle soreness, especially in the evening or after activity.</li>
+        <li>Big appetite + more sleep: they're hungrier than usual and may need extra sleep or seem more tired as the body uses energy to grow.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 6: Endurance Training Methods</h2>
+      <p>Endurance is a critical and often underdeveloped quality in climbers who focus heavily on bouldering or strength training. There are several distinct endurance qualities in climbing — aerobic base endurance, power endurance, and local muscular endurance — each requiring a different training approach.</p>
+
+      <h3 class="subsection-title">6.1 ARC Training (Aerobic Restoration and Capillarisation)</h3>
+      <p>ARC training is sustained, continuous low-intensity climbing performed for 20–45 minutes per session. The goal is to stay below the anaerobic threshold throughout — the forearms should feel mildly pumped but never acutely fatigued. Heart rate should be in Zone 2 (60–70% HRmax).</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>ARC Parameter</th><th>Guideline</th></tr>
+          <tr><td>Duration</td><td>20–45 minutes of continuous climbing or traversing per set</td></tr>
+          <tr><td>Intensity</td><td>2–4 grades below the climber's maximum; should be able to hold a conversation; mild pump only</td></tr>
+          <tr><td>Rest between sets</td><td>5–10 minutes if performing multiple sets</td></tr>
+          <tr><td>Frequency</td><td>2–4 times per week during base-building phase; 1–2 times per week for maintenance</td></tr>
+          <tr><td>Purpose</td><td>Develops capillary density in the forearms, improves aerobic metabolism, builds movement efficiency and relaxation, and rehabilitates from injury</td></tr>
+          <tr><td>Common error</td><td>Going too hard — the pump builds beyond mild and becomes acute. This switches from ARC to power endurance and loses the aerobic adaptation target. If the forearms are burning, the intensity is too high.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">6.2 Power Endurance Training — 4x4s</h3>
+      <p>Power endurance is the ability to sustain near-maximal effort over repeated attempts — the quality that determines performance on sustained hard routes. The 4x4 method is the most widely used and effective power endurance training format for climbers.</p>
+      <p>4x4 Protocol: Select four boulder problems of moderate difficulty (typically 2–4 grades below max). Climb all four consecutively without rest. Rest 3–5 minutes. Repeat 3–4 times.</p>
+
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>4x4 Variable</th><th>Guidance</th></tr>
+          <tr><td>Problem difficulty</td><td>Should be challenging but completable — falling off mid-circuit defeats the purpose. Choose problems that feel about 7/10 effort when fresh.</td></tr>
+          <tr><td>Rest between sets</td><td>3–5 minutes is standard. Shorter rest increases the endurance demand; longer rest makes it more strength-focused.</td></tr>
+          <tr><td>Number of circuits</td><td>3–4 circuits is typical. 2 circuits for beginners or early in a training block; up to 5 for advanced athletes.</td></tr>
+          <tr><td>Frequency</td><td>1–2 times per week maximum during power endurance phase; high recovery demand.</td></tr>
+          <tr><td>Progression</td><td>Increase problem difficulty or add a 5th problem per circuit after 2–3 weeks.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">6.3 Linked Bouldering and Route Laps</h3>
+      <p>Beyond ARC and 4x4s, additional endurance methods provide variety and specificity:</p>
+      <ul>
+        <li>Linked bouldering — string together a circuit of 5–10 problems without removing climbing shoes or sitting down; builds work capacity and pacing strategy</li>
+        <li>Route laps — climb a route at 60–70% difficulty repeatedly with short rests; excellent for sport climbing endurance and pacing strategy</li>
+        <li>Limit bouldering volume — spending significant session time attempting hard boulder problems builds specific power endurance when total volume is high; differs from max-effort single-attempt training</li>
+        <li>Hangboard repeaters — 7 seconds on, 3 seconds off for 6 repetitions per set, with 3-minute rests; targets local forearm endurance with measurable load and rest structure</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 7: Periodisation for Climbing Performance</h2>
+      <p>In Module 4 we established the theory of periodisation — macrocycles, mesocycles, microcycles, and the three primary models (linear, undulating, block). Here we apply those principles specifically to climbing, building a periodised framework that accounts for the sport's unique combination of technical skill, finger strength, endurance, and competition calendar.</p>
+
+      <h3 class="subsection-title">7.1 The Climbing Performance Year — Four Phases</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Phase</th><th>Duration, Focus &amp; Key Methods</th></tr>
+          <tr><td>Phase 1 — Base / Accumulation (6–8 weeks)</td><td>High volume, low intensity. Build aerobic base, develop general strength, address weaknesses and imbalances, consolidate technique. Methods: ARC training, antagonist hypertrophy, general strength (pull-up volume, deadlifts, rows), mobility work. Fingerboard volume is moderate at bodyweight; no max hangs yet.</td></tr>
+          <tr><td>Phase 2 — Strength (4–6 weeks)</td><td>Moderate volume, increasing intensity. Develop maximum finger strength and pulling power. Methods: Max hangboard protocols (weighted hangs), weighted pull-ups (3–5 rep range), recruitment pulling (explosive single-arm-emphasis moves on board), campus board introduction. Reduce ARC volume; maintain antagonist work.</td></tr>
+          <tr><td>Phase 3 — Power Endurance (3–5 weeks)</td><td>Moderate volume, high intensity, sport-specific. Convert strength gains into climbing performance. Methods: 4x4s, linked circuits, limit bouldering, sport route laps, competition simulation. Reduce max hangboard and weighted pull-up volume. Maintain antagonist work.</td></tr>
+          <tr><td>Phase 4 — Performance / Peak (2–4 weeks)</td><td>Low volume, high specificity. Express performance at competitions or on project routes. Methods: Climbing at limit grade; project attempts; short, sharp high-quality sessions. Minimal supplementary training. Prioritise sleep, nutrition, and recovery.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">7.2 Deload and Transition Weeks</h3>
+      <p>Between each phase, insert a deload week of 40–50% volume to allow accumulated fatigue to dissipate and the supercompensation response to occur. During the transition, athletes often report feeling unusually strong — this is the correct time to begin high-intensity work in the next phase.</p>
+      <ul>
+        <li>Deload week activity: easy climbing only (ARC pace or social bouldering), light antagonist work, mobility, rest</li>
+        <li>Duration: 5–7 days is typically sufficient; extend to 10 days for athletes showing clear overreaching signs</li>
+        <li>Do not skip deloads — the performance gains from the previous block are only fully expressed during and after recovery</li>
+      </ul>
+
+      <h3 class="subsection-title">7.3 On-Season vs. Off-Season Considerations</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Period</th><th>Training Emphasis</th></tr>
+          <tr><td>Off-season (6–12 weeks)</td><td>High-volume base building; address weaknesses; build general strength; make technique changes (easier to change technique when performance pressure is absent). Train 4–5 days per week with full focus on development over performance.</td></tr>
+          <tr><td>Pre-season (8–10 weeks)</td><td>Transition to strength and power endurance; begin climbing-specific training blocks; introduce competition simulation.</td></tr>
+          <tr><td>In-season / Competition period</td><td>Maintain fitness; manage fatigue; peak for key events. Training volume drops; specificity increases. Prioritise recovery between competitions.</td></tr>
+          <tr><td>Post-season / Transition (2–4 weeks)</td><td>Complete rest or active recovery only. Mental and physical regeneration. Reflect on the season; set goals for next year. Do not start the next training block while still fatigued from competition.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section-block">
+      <h2 class="section-title">Section 8: Designing a 12-Week Climbing Performance Programme</h2>
+      <p>Bringing together every concept from this module — and the entire course — here is a framework for writing a complete 12-week climbing performance programme. This structure should be adapted based on the individual athlete's assessment findings, goals, training history, and available time.</p>
+
+      <h3 class="subsection-title">8.1 Client Profile Example</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Parameter</th><th>Example Athlete</th></tr>
+          <tr><td>Age / Sex</td><td>27-year-old male</td></tr>
+          <tr><td>Climbing experience</td><td>4 years; primarily bouldering; also sport climbing outdoors</td></tr>
+          <tr><td>Current level</td><td>V5–V6 bouldering; 6c sport climbing</td></tr>
+          <tr><td>Goal</td><td>V8 bouldering and 7b sport climbing within 12 months; 12-week block targets V7 and 7a</td></tr>
+          <tr><td>Identified limiters (from assessment)</td><td>Finger strength (dead hang 15s on 20mm); forearm endurance (pump onset within 8 minutes); hip mobility restriction affecting drop-knee; antagonist weakness (less than 8 pull-ups; no dedicated shoulder work)</td></tr>
+          <tr><td>Available training days</td><td>4 days per week (Monday, Wednesday, Friday, Saturday)</td></tr>
+          <tr><td>Lifestyle</td><td>Office-based work; adequate sleep; no health contraindications; no current injuries</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">8.2 The 12-Week Programme Structure</h3>
+      <div class="lesson-table-wrap">
+        <table class="lesson-table">
+          <tr><th>Weeks</th><th>Phase &amp; Focus</th><th>Key Training Content</th></tr>
+          <tr><td>1–4</td><td>Base / Accumulation</td><td>Monday: ARC training 2 × 25 min + antagonist circuit (pull-apart, face pull, push-up, finger extension). Wednesday: Technique bouldering (open-hand focus, drop-knee drills) + hip mobility. Friday: Bodyweight hangboard introduction (3 × 10s on 20mm, open hand) + weighted pull-ups (3 × 8 reps). Saturday: Volume bouldering (social / easy problems). Deload: Week 4 reduced to 50% volume.</td></tr>
+          <tr><td>5–8</td><td>Strength</td><td>Monday: Max hangboard (5 × 10s weighted, 20mm, open hand) + weighted pull-ups (4 × 5 reps). Wednesday: Technique bouldering + antagonist circuit. Friday: Max hangboard + sport-specific pulling (lock-off holds, recruitment moves on board). Saturday: Bouldering session (limit problems, max 3 attempts per problem). Deload: Week 8.</td></tr>
+          <tr><td>9–11</td><td>Power Endurance</td><td>Monday: 4x4 circuit (3 circuits, moderate problems) + antagonist maintenance. Wednesday: Sport route laps (3 × 5-minute circuits on 6b–6c) + technique. Friday: Limit bouldering (quality over quantity) + antagonist. Saturday: Project attempts / redpoint climbing. No deload — Week 12 acts as taper.</td></tr>
+          <tr><td>12</td><td>Peak / Taper</td><td>Monday: Short quality bouldering session (fresh, below limit). Wednesday: Easy ARC + mobility. Friday: REST. Saturday: Target performance — project attempt or competition.</td></tr>
+        </table>
+      </div>
+
+      <h3 class="subsection-title">8.3 Programme Design Checklist</h3>
+      <p>Before finalising any climbing performance programme, review the following:</p>
+      <ul>
+        <li>Have I addressed the athlete's specific identified limiters from their assessment?</li>
+        <li>Is finger training load progressing at no more than 10% per week?</li>
+        <li>Is antagonist work included at least twice per week throughout all phases?</li>
+        <li>Are deload weeks placed at the end of each mesocycle (every 3–4 weeks)?</li>
+        <li>Does the programme peak at the right time (competition or redpoint target)?</li>
+        <li>Is total weekly climbing volume appropriate for the athlete's recovery capacity?</li>
+        <li>Have I included technique practice in every phase — not just fitness training?</li>
+        <li>Have I discussed the programme with the athlete and obtained their buy-in?</li>
+      </ul>
+    </div>
+
+    <div class="quiz-footer">
+      <p>End of Module 07 — proceed to the Module 07 quiz when ready.</p>
+      <!-- QUIZ LINK NEEDED: no quiz link was found in the source document for this module.
+           Replace the span below with:
+           <a class="quiz-btn" href="QUIZ_URL_HERE" target="_blank" rel="noopener">Take the quiz →</a> -->
+      <span class="quiz-pending">Quiz link coming soon</span>
+      <p class="quiz-note">Once you have completed the quiz you will get a reply email telling you whether you passed (pass mark is 80%). If you didn't pass, you'll need to retry — if you passed, you will have completed the Core Learning course!</p>
+    </div>
+
+  </div>
+
+  <!-- ================= MODULE 07 SUMMARY ================= -->
+  <div class="summary-block">
+    <h2>Module Summary</h2>
+    <p class="summary-sub">Module 07 has applied the full breadth of the course to the specific demands of climbing performance. Key takeaways:</p>
+
+    <h3>Key Terms &amp; Definitions</h3>
+    <div class="glossary-wrap">
+      <table class="glossary-table">
+        <tr><td>Flexor Digitorum Profundus (FDP)</td><td>The deep finger flexor muscle that flexes the distal joint of the finger; the primary muscle loaded during climbing grip and the source of force transmitted through the annular pulleys.</td></tr>
+        <tr><td>Annular Pulley</td><td>A fibrous ring that holds the finger flexor tendons close to the bone; the A2 pulley on the proximal phalanx is the most commonly injured structure in climbing.</td></tr>
+        <tr><td>Bowstringing</td><td>A visible or palpable displacement of the finger flexor tendon away from the bone when the finger is flexed under resistance; indicates a significant pulley rupture.</td></tr>
+        <tr><td>Pulley Injury Grading</td><td>A 1–4 scale classifying severity of annular pulley damage: Grade 1 (mild strain) through Grade 4 (complete rupture with associated injury).</td></tr>
+        <tr><td>Tendinopathy</td><td>Degenerative changes in tendon tissue without acute rupture; presents as gradual onset pain along the tendon; responds best to progressive loading rather than rest.</td></tr>
+        <tr><td>Contact Strength</td><td>The ability to grip a hold explosively at the moment of contact; a key quality developed through campus board training and dynamic bouldering.</td></tr>
+        <tr><td>Capillarisation</td><td>The development of new capillary blood vessels in muscle tissue through sustained low-intensity training; increases oxygen delivery and metabolite clearance in the forearms.</td></tr>
+        <tr><td>ARC Training</td><td>Aerobic Restoration and Capillarisation — sustained 20–45 minute continuous climbing at low intensity; develops forearm aerobic endurance and efficient movement.</td></tr>
+        <tr><td>4x4s</td><td>A power endurance training method: four boulder problems climbed consecutively without rest, repeated 3–4 times with 3–5 minute rest between circuits.</td></tr>
+        <tr><td>Repeaters</td><td>A hangboard endurance protocol: 7 seconds on, 3 seconds off, repeated 6 times per set with 3-minute rests; targets local forearm muscular endurance.</td></tr>
+        <tr><td>Campus Board</td><td>An overhanging training board with protruding wooden rungs used without feet; develops contact strength, explosive power, and upper body coordination.</td></tr>
+        <tr><td>Lock-Off</td><td>A static pulling position with the arm bent at 90 degrees or greater; requires isometric strength of the biceps, brachialis, and shoulder stabilisers.</td></tr>
+        <tr><td>Front Lever</td><td>A gymnastics-derived movement where the body is held horizontal from a bar or rings; tests and develops core anti-extension strength and pulling power.</td></tr>
+        <tr><td>Acute-to-Chronic Workload Ratio</td><td>The ratio of recent training load (acute, past 1 week) to long-term average load (chronic, past 4 weeks); a rising ratio is associated with increased injury risk.</td></tr>
+        <tr><td>Power Endurance</td><td>The ability to sustain near-maximal effort across multiple hard moves or over a sustained period; the key quality for performance on difficult sport routes.</td></tr>
+      </table>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>Climbing performance is limited primarily by finger flexor strength, forearm endurance, pulling power, and core tension — each requiring targeted, progressive training</li>
+      <li>Finger tendon anatomy and the A2 pulley system explain why injury prevention must be central to all finger training prescription; load management is the coach's most powerful prevention tool</li>
+      <li>Antagonist training — shoulder external rotation, scapular retractors, and finger extensors — is non-negotiable for long-term climbing health and should feature in every training week</li>
+      <li>Hangboard programming follows clear principles: open-hand grip, progressive load, adequate rest, 48-hour minimum recovery between sessions, and strict prerequisites for introduction</li>
+      <li>Campus board training is a high-reward, high-risk tool reserved for intermediate to advanced climbers; prerequisites and conservative volume management are essential</li>
+      <li>Endurance is developed through ARC training (aerobic base and capillarisation), 4x4s (power endurance), and route laps (sport-specific endurance)</li>
+      <li>Periodisation structures the training year into base, strength, power endurance, and peak phases — with deloads between each to enable supercompensation</li>
+      <li>A complete 12-week programme integrates assessment findings, individual limiters, progressive overload, technique development, and targeted peaking</li>
+    </ul>
+
+    <div class="looking-ahead">
+      <p class="label">Course Complete</p>
+      <p>Congratulations — you have completed all seven modules of the Core Learning climbing coach certification. You now hold the complete foundation across anatomy, assessment, programming, technique instruction, movement analysis, and climbing-specific conditioning needed to coach climbers safely and effectively at any level.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
+    authDomain: "core-coaching-login.firebaseapp.com",
+    projectId: "core-coaching-login",
+    storageBucket: "core-coaching-login.firebasestorage.app",
+    messagingSenderId: "184932860937",
+    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
+    measurementId: "G-N7WNPL47WQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
+    document.getElementById("loading-state").style.display = "none";
+    document.getElementById("page-content").style.display = "block";
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
+  });
+</script>
+
+</body>
+</html>
