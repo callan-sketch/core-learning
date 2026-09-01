@@ -231,6 +231,43 @@
     margin-top: 5px;
   }
 
+  .checkbox-field { margin: 20px 0 4px; }
+
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    accent-color: var(--teal);
+    cursor: pointer;
+  }
+
+  .checkbox-label a {
+    color: var(--teal);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .checkbox-label a:hover { text-decoration: underline; }
+
+  .field-error {
+    display: none;
+    font-size: 12.5px;
+    color: var(--error);
+    margin-top: 6px;
+    padding-left: 28px;
+  }
+  .field-error.visible { display: block; }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -593,6 +630,14 @@
         <p class="hint">Leave blank if not applicable.</p>
       </div>
 
+      <div class="checkbox-field" id="terms-field">
+        <label class="checkbox-label">
+          <input type="checkbox" id="ob-terms" onchange="document.getElementById('terms-error').classList.remove('visible')">
+          <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> set out by Core Learning.</span>
+        </label>
+        <p class="field-error" id="terms-error">Please accept the Terms &amp; Conditions and Privacy Policy to continue.</p>
+      </div>
+
       <button class="btn btn-primary" onclick="submitOnboarding()">Continue to payment</button>
     </div>
 
@@ -628,7 +673,7 @@
       <p class="payment-status" id="payment-status"></p>
 
       <p class="sub" style="margin: 18px 0 0; text-align: center;">
-        Prefer to pay per module, or need a custom arrangement? Email <a href="mailto:callan@wam.co.za" style="color: var(--teal); font-weight: 600;">callan@wam.co.za</a> and we'll sort it out directly.
+        Prefer to pay per module, or need a custom arrangement? Email <a href="mailto:info@corelearning.co.za" style="color: var(--teal); font-weight: 600;">info@corelearning.co.za</a> and we'll sort it out directly.
       </p>
     </div>
 
@@ -811,9 +856,20 @@
     const email = document.getElementById('ob-email').value.trim();
     const experience = document.getElementById('ob-experience').value;
     const gym = document.getElementById('ob-gym').value.trim();
+    const termsAccepted = document.getElementById('ob-terms').checked;
+
+    if (!termsAccepted) {
+      document.getElementById('terms-error').classList.add('visible');
+      return;
+    }
+
     if (currentUser) {
       try {
-        await updateDoc(doc(db, "users", currentUser.uid), { name, age, email, experience, gym });
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          name, age, email, experience, gym,
+          termsAccepted: true,
+          termsAcceptedAt: new Date().toISOString()
+        });
       } catch (err) {
         console.error("Onboarding save failed:", err);
       }
