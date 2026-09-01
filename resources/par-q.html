@@ -89,6 +89,15 @@ body{font-family:var(--sans);background:var(--bone);color:var(--text);min-height
 .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 .submit-err{color:var(--danger);font-size:13px;margin-top:.5rem;display:none}
+.consent-box{background:var(--bgsec);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px 18px;margin:20px 0}
+.consent-box .consent-title{font-weight:600;font-size:13px;color:var(--text);margin-bottom:8px}
+.consent-box p{font-size:13px;color:var(--textlt);margin-bottom:12px;line-height:1.6}
+.consent-option{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text);margin-bottom:10px;cursor:pointer;line-height:1.5}
+.consent-option:last-of-type{margin-bottom:0}
+.consent-option input[type="checkbox"]{width:18px;height:18px;margin-top:1px;flex-shrink:0;accent-color:var(--teal);cursor:pointer}
+.consent-option a{color:var(--teal);font-weight:600}
+.consent-error{display:none;font-size:12.5px;color:var(--danger);margin-top:10px}
+.consent-error.show{display:block}
 .submit-err.show{display:block}
 
 .completion{text-align:center;padding:2rem 1rem}
@@ -257,6 +266,20 @@ body{font-family:var(--sans);background:var(--bone);color:var(--text);min-height
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="consent-box">
+    <div class="consent-title">Data &amp; Privacy Consent</div>
+    <p>This form collects personal information, including health-related information, which is stored by Core Learning for the purpose of physical activity readiness screening. See our <a href="https://corelearning.co.za/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for full details on how your information is used and protected.</p>
+    <label class="consent-option">
+      <input type="checkbox" id="consent-self" onchange="clearConsentError()">
+      <span>I am the person being assessed, and I consent to my information being collected and stored as described above.</span>
+    </label>
+    <label class="consent-option">
+      <input type="checkbox" id="consent-coach" onchange="clearConsentError()">
+      <span>I am a coach completing this on behalf of my client, and I confirm I have explained the above to them and they consent to their information being collected and stored as described.</span>
+    </label>
+    <div class="consent-error" id="consent-error">Please confirm consent above before submitting.</div>
   </div>
 
   <!-- Submission status -->
@@ -619,7 +642,13 @@ function buildPayload() {
     followup: followupSection,
     signatureDataUrl: sigData,
     formVersion: "PAR-Q+ 2024 (01-11-2023)",
+    consentGivenBy: document.getElementById("consent-coach").checked ? "coach" : "self",
   };
+}
+
+// ── Consent checkbox handling ────────────────────────────────────────────────
+function clearConsentError() {
+  document.getElementById("consent-error").classList.remove("show");
 }
 
 // ── Submit form ────────────────────────────────────────────────────────────────
@@ -631,6 +660,14 @@ async function submitDeclaration() {
   if (!date)  { alert("Please enter the date to complete the declaration."); return; }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     alert("Please enter a valid email address, or leave it blank."); return;
+  }
+
+  const consentSelf  = document.getElementById("consent-self").checked;
+  const consentCoach = document.getElementById("consent-coach").checked;
+  if (!consentSelf && !consentCoach) {
+    document.getElementById("consent-error").classList.add("show");
+    document.getElementById("consent-error").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
   }
 
   const btn       = document.getElementById("submit-btn");

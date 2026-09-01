@@ -108,6 +108,14 @@ input:focus { border-color:var(--accent); background:#fff; }
 .btn-pdf:hover { opacity:.85; }
 
 .decl-box { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:20px; font-size:13px; color:var(--muted); line-height:1.7; }
+.consent-box { background:var(--accent-lt); border:1.5px solid #b8cfe0; border-radius:var(--radius); padding:16px 18px; margin-bottom:20px; }
+.consent-box.err { border-color:#c94040; background:#fdf0ee; }
+.consent-box .consent-title { font-weight:700; font-size:13px; color:var(--text); margin-bottom:8px; }
+.consent-box p { font-size:12.5px; color:var(--muted); margin-bottom:12px; line-height:1.6; }
+.consent-option { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text); margin-bottom:10px; cursor:pointer; line-height:1.5; }
+.consent-option:last-of-type { margin-bottom:0; }
+.consent-option input[type="checkbox"] { width:18px; height:18px; margin-top:1px; flex-shrink:0; accent-color:var(--accent); cursor:pointer; }
+.consent-option a { color:var(--accent); font-weight:600; }
 
 .outcome-card { border-radius:var(--radius); padding:24px; margin-bottom:24px; border:2px solid; }
 .outcome-card.green { background:var(--green-lt); border-color:#7dbf9a; }
@@ -296,6 +304,19 @@ input:focus { border-color:var(--accent); background:#fff; }
   <div class="panel" id="panel-4">
     <div class="section-hd">Step 5 of 5 — <span>Declaration &amp; Submission</span></div>
     <div class="decl-box">I declare that the information provided in this questionnaire is accurate and complete to the best of my knowledge. I understand that this screening tool does not constitute a medical diagnosis, and that flagged results indicate a recommendation for further clinical evaluation. I consent to this information being shared with my coach or team support staff for the purpose of athlete health management.</div>
+
+    <div class="consent-box" id="consentBox">
+      <div class="consent-title">Data &amp; Privacy Consent</div>
+      <p>This form also collects personal information, including health-related information, which is stored by Core Learning for the purpose of this screening. See our <a href="https://corelearning.co.za/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for full details on how your information is used and protected.</p>
+      <label class="consent-option">
+        <input type="checkbox" id="consentSelf" onchange="chkD()">
+        <span>I am the person being assessed, and I consent to my information being collected and stored as described above.</span>
+      </label>
+      <label class="consent-option">
+        <input type="checkbox" id="consentCoach" onchange="chkD()">
+        <span>I am a coach/tester completing this on behalf of the athlete, and I confirm I have explained the above to them and they consent to their information being collected and stored as described.</span>
+      </label>
+    </div>
     <div class="q-block"><div class="q-text">Participant Name (type to sign) <span style="color:#c94040">*</span></div>
       <input type="text" id="f-sig" placeholder="Type your full name as signature" oninput="chkD()"></div>
     <div class="q-block"><div class="q-text">Today's Date</div>
@@ -580,7 +601,12 @@ function updLeaBtn(){
 }
 
 // ─── DECLARATION ─────────────────────────────────────────────────────────────
-function chkD(){ S.sig=$('f-sig').value.trim(); $('btn-4-next').disabled=!S.sig; }
+function chkD(){
+  S.sig=$('f-sig').value.trim();
+  const consentGiven = $('consentSelf').checked || $('consentCoach').checked;
+  $('consentBox').classList.toggle('err', !consentGiven && S.sig);
+  $('btn-4-next').disabled = !S.sig || !consentGiven;
+}
 
 // ─── SCORING ─────────────────────────────────────────────────────────────────
 // EDE-QS: simple sum of all 12 items, no subscales. Range 0-36. Flag if >= 15.
@@ -643,6 +669,7 @@ function buildPayload(eq,leaf,leam,outcome){
     coachEmail     : S.coachEmail,
     tester         : S.tester,
     signature      : S.sig,
+    consentGivenBy : $('consentCoach').checked ? 'coach' : 'self',
     // Biometrics
     heightCm       : S.ht,
     weightKg       : S.wt,

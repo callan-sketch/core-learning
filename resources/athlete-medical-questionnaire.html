@@ -189,6 +189,14 @@
     box-shadow: 0 0 0 3px rgba(42,122,122,0.12);
   }
   input.err { border-color: var(--error); }
+  .consent-box { background: var(--teal-lt); border: 1.5px solid var(--teal); border-radius: 8px; padding: 16px 18px; margin: 24px 0; }
+  .consent-box.err { border-color: var(--error); background: var(--error-bg); }
+  .consent-box .consent-title { font-weight: 700; font-size: 13px; color: var(--navy); margin-bottom: 8px; }
+  .consent-box p { font-size: 12.5px; color: var(--mid); margin-bottom: 12px; line-height: 1.6; }
+  .consent-option { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--navy); margin-bottom: 10px; cursor: pointer; line-height: 1.5; }
+  .consent-option:last-of-type { margin-bottom: 0; }
+  .consent-option input[type="checkbox"] { width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; accent-color: var(--teal); cursor: pointer; }
+  .consent-option a { color: var(--teal); font-weight: 600; }
   textarea { resize: vertical; min-height: 80px; }
 
   .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -611,8 +619,21 @@
     </div>
   </div>
 
+  <div class="consent-box" id="consentBox">
+    <div class="consent-title">Data &amp; Privacy Consent</div>
+    <p>This form collects personal information, including health-related information, which is stored by Core Learning for the purpose of medical screening and athlete health management. See our <a href="https://corelearning.co.za/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for full details on how your information is used and protected.</p>
+    <label class="consent-option">
+      <input type="checkbox" id="consentSelf" onchange="clearConsentErr()">
+      <span>I am the athlete being assessed (or their parent/guardian completing this on their behalf per Part 4), and I consent to this information being collected and stored as described above.</span>
+    </label>
+    <label class="consent-option">
+      <input type="checkbox" id="consentCoach" onchange="clearConsentErr()">
+      <span>I am a coach completing this on behalf of an athlete, and I confirm I have explained the above to them (or their parent/guardian) and they consent to their information being collected and stored as described.</span>
+    </label>
+  </div>
+
   <div class="msg msg-success" id="successMsg">✓ <strong>Questionnaire submitted successfully.</strong> A copy has been emailed to the athlete and examiner. The Climbing Medical Officer will review your responses and be in contact if required.</div>
-  <div class="msg msg-error"   id="errorMsg">Please complete all required fields marked with *.</div>
+  <div class="msg msg-error"   id="errorMsg">Please complete all required fields marked with *, and confirm the consent checkbox above.</div>
 
   <div class="submit-area">
     <button class="submit-btn" id="submitBtn" type="button" onclick="submitForm()">Submit Medical Questionnaire</button>
@@ -653,6 +674,10 @@
 
   function isEmail(val) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val); }
 
+  function clearConsentErr() {
+    document.getElementById('consentBox').classList.remove('err');
+  }
+
   function validate() {
     var ok = true;
 
@@ -687,6 +712,12 @@
         if (empty) ok = false;
       });
     }
+
+    // Data & privacy consent — at least one of the two must be checked
+    var consentBox = document.getElementById('consentBox');
+    var consentGiven = document.getElementById('consentSelf').checked || document.getElementById('consentCoach').checked;
+    consentBox.classList.toggle('err', !consentGiven);
+    if (!consentGiven) ok = false;
 
     return ok;
   }
@@ -741,7 +772,8 @@
       ['over18',               r('q33')],
       ['parentConfirm',        r('q34')],
       ['parentName',           v('q35')],
-      ['parentID',             v('q36')]
+      ['parentID',             v('q36')],
+      ['consentGivenBy',       document.getElementById('consentCoach').checked ? 'coach' : 'self']
     ];
 
     var form = document.createElement('form');

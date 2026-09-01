@@ -85,6 +85,27 @@ iframe#gform {
 .disclaimer { margin-top:24px; padding:14px 16px; border:1px solid var(--border); border-radius:var(--radius); font-size:12px; color:var(--muted); line-height:1.6; background:var(--surface); }
 .disclaimer strong { color:var(--text); }
 
+.consent-box { background:var(--accent-lt); border:1.5px solid #b8cfe0; border-radius:var(--radius); padding:16px 18px; margin-bottom:20px; }
+.consent-box.err { border-color:#c0392b; background:#fdf0ee; }
+.consent-box .consent-title { font-weight:700; font-size:13px; color:var(--text); margin-bottom:8px; }
+.consent-box p { font-size:12.5px; color:var(--muted); margin-bottom:12px; line-height:1.6; }
+.consent-option { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text); margin-bottom:10px; cursor:pointer; line-height:1.5; }
+.consent-option:last-of-type { margin-bottom:0; }
+.consent-option input[type="checkbox"] { width:18px; height:18px; margin-top:1px; flex-shrink:0; accent-color:var(--accent); cursor:pointer; }
+.consent-option a { color:var(--accent); font-weight:600; }
+.consent-error { display:none; font-size:12px; color:#c0392b; margin-top:10px; }
+.consent-error.show { display:block; }
+
+.form-frame-wrap.locked { position:relative; }
+.form-frame-wrap.locked iframe { filter:blur(3px); pointer-events:none; }
+.form-lock-overlay {
+  display:none; position:absolute; inset:0; z-index:2;
+  align-items:center; justify-content:center; text-align:center;
+  background:rgba(245,244,240,.85); padding:24px;
+}
+.form-frame-wrap.locked .form-lock-overlay { display:flex; }
+.form-lock-overlay p { max-width:340px; font-size:13px; color:var(--text); font-weight:500; line-height:1.6; }
+
 .footer-note { margin-top:28px; font-size:11px; color:var(--muted); text-align:center; font-family:'DM Mono',monospace; }
 
 @media (max-width:480px){
@@ -136,10 +157,24 @@ iframe#gform {
 
   <div class="info-box"><strong>Before you begin:</strong> All information is kept confidential unless otherwise instructed by the respondent. If you're unsure of your health status, have multiple health problems, or are pregnant, speak with your doctor before doing this assessment or starting a new exercise programme. Please ensure correct spelling of names so results can be tracked over time.</div>
 
-  <div class="form-frame-wrap">
+  <div class="consent-box" id="consentBox">
+    <div class="consent-title">Data &amp; Privacy Consent</div>
+    <p>This assessment collects personal information, including health and biometric information, which is stored by Core Learning for the purpose of performance testing and tracking results over time. See our <a href="https://corelearning.co.za/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for full details on how information is used and protected.</p>
+    <label class="consent-option">
+      <input type="checkbox" id="consentSelf" onchange="updateConsentGate()">
+      <span>I am the person being assessed, and I consent to my information being collected and stored as described above.</span>
+    </label>
+    <label class="consent-option">
+      <input type="checkbox" id="consentCoach" onchange="updateConsentGate()">
+      <span>I am a coach completing this on behalf of my client, and I confirm I have explained the above to them and they consent to their information being collected and stored as described.</span>
+    </label>
+    <div class="consent-error" id="consentError">Please confirm consent above before opening the assessment.</div>
+  </div>
+
+  <div class="form-frame-wrap locked" id="formFrameWrap">
     <div class="form-frame-hd">
       <span>Assessment Form · 10 Pages</span>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8JHFir7m0LrsN3qnphrAuxjCSORVUeHteQoY_DnqV-CA0oA/viewform" target="_blank" rel="noopener">Open in New Tab ↗</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8JHFir7m0LrsN3qnphrAuxjCSORVUeHteQoY_DnqV-CA0oA/viewform" target="_blank" rel="noopener" onclick="return gateNewTabLink(event)">Open in New Tab ↗</a>
     </div>
     <div style="position:relative;">
       <div class="frame-loading" id="frameLoading">Loading form…</div>
@@ -148,6 +183,9 @@ iframe#gform {
         onload="document.getElementById('frameLoading').style.display='none'">
         Loading…
       </iframe>
+      <div class="form-lock-overlay">
+        <p>Please confirm consent above before completing this assessment.</p>
+      </div>
     </div>
   </div>
 
@@ -185,6 +223,35 @@ iframe#gform {
     document.getElementById("cl-loading-state").style.display = "none";
     document.getElementById("cl-page-content").style.display = "block";
   });
+</script>
+
+<script>
+  function updateConsentGate() {
+    const consentGiven = document.getElementById('consentSelf').checked || document.getElementById('consentCoach').checked;
+    const wrap = document.getElementById('formFrameWrap');
+    const errorBox = document.getElementById('consentError');
+    const consentBox = document.getElementById('consentBox');
+
+    if (consentGiven) {
+      wrap.classList.remove('locked');
+      errorBox.classList.remove('show');
+      consentBox.classList.remove('err');
+    } else {
+      wrap.classList.add('locked');
+    }
+  }
+
+  function gateNewTabLink(event) {
+    const consentGiven = document.getElementById('consentSelf').checked || document.getElementById('consentCoach').checked;
+    if (!consentGiven) {
+      event.preventDefault();
+      document.getElementById('consentError').classList.add('show');
+      document.getElementById('consentBox').classList.add('err');
+      document.getElementById('consentBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    return true;
+  }
 </script>
 
 </body>
