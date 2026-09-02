@@ -49,6 +49,9 @@ body { font-family:'DM Sans',system-ui,sans-serif; background:var(--bg); color:v
 .q-num { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:5px; }
 .q-text { font-size:14px; font-weight:500; line-height:1.5; margin-bottom:14px; }
 .q-sub  { font-size:12px; color:var(--muted); margin-top:-10px; margin-bottom:12px; font-weight:300; line-height:1.55; }
+.q-image { margin:4px 0 14px; border-radius:var(--radius); overflow:hidden; border:1.5px dashed var(--border); background:var(--bg); }
+.q-image img { width:100%; display:block; border-radius:var(--radius); }
+.q-image-placeholder { padding:22px 16px; text-align:center; font-family:'DM Mono',monospace; font-size:10.5px; color:var(--muted); letter-spacing:.03em; line-height:1.6; }
 
 .opts { display:flex; flex-direction:column; gap:6px; }
 .opt { display:flex; align-items:center; gap:10px; padding:8px 12px; border:1.5px solid var(--border); border-radius:var(--radius); background:var(--bg); cursor:pointer; font-size:13px; transition:all .12s; width:100%; text-align:left; font-family:'DM Sans',sans-serif; color:var(--text); }
@@ -216,10 +219,12 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Max Number of Bar Pull-Ups</div>
       <div class="q-sub">Dead hang start, chin clears the bar, full elbow extension at the bottom of every rep. Continue to failure or technical breakdown.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — bar pull-up form</div></div>
       <input type="number" id="f-maxpullups" placeholder="Reps"></div>
 
     <div class="q-block"><div class="q-text">2RM Pull-Ups</div>
       <div class="q-sub">Record the maximum additional weight successfully lifted for 2 clean reps.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — weighted pull-up setup</div></div>
       <div class="unit-suffix"><input type="number" id="f-rm2pullup" placeholder="e.g. 10" step="0.5"><span>kg added</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
@@ -227,12 +232,14 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Number of Push-Ups in a Minute</div>
       <div class="q-sub">Standard push-up form, chest to within a fist of the floor, full lockout at the top.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — push-up form</div></div>
       <input type="number" id="f-pushups" placeholder="Reps"></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
       <input type="text" id="f-pushupnotes" placeholder="Notes (optional)"></div>
 
     <div class="q-block"><div class="q-text">Standing Jump for Height</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — jump test setup</div></div>
       <div class="unit-suffix"><input type="number" id="f-jump" placeholder="e.g. 45" step="0.5"><span>cm</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
@@ -249,14 +256,17 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Hanging L-Sit</div>
       <div class="q-sub">Hang from a bar or rings, legs raised parallel to the ground, knees locked straight. Time until form breaks down.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — L-sit position</div></div>
       <div class="unit-suffix"><input type="number" id="f-lsit" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Hollow Body Hold</div>
       <div class="q-sub">Lower back pressed to the floor, arms and legs extended and raised. Time until lower back lifts off the floor.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — hollow body position</div></div>
       <div class="unit-suffix"><input type="number" id="f-hollow" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Plank</div>
       <div class="q-sub">Forearm plank, straight line from head to heels. Time until hips sag or lift. Rest 2 minutes before the next exercise.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — plank position</div></div>
       <div class="unit-suffix"><input type="number" id="f-plank" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
@@ -273,6 +283,7 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="info-box">Finger tests can be performed with an open crimp or half crimp grip. Record which grip position was used for all finger tests below.</div>
 
     <div class="q-block"><div class="q-text">Grip Position Used</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — open crimp vs. half crimp comparison</div></div>
       <div class="opts-row">
         <button class="opt" id="gp-Open" onclick="setGripPos('Open crimp')"><span class="opt-circle"></span>Open Crimp</button>
         <button class="opt" id="gp-Half" onclick="setGripPos('Half crimp')"><span class="opt-circle"></span>Half Crimp</button>
@@ -296,6 +307,7 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="lr-pair">
       <div class="q-block"><div class="lr-label">Left</div><div class="q-text">Peak Force (MVC)</div>
+        <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — Tindeq device setup</div></div>
         <div class="unit-suffix"><input type="number" id="f-mvcleft" placeholder="e.g. 32.5" step="0.1"><span>kg</span></div></div>
       <div class="q-block"><div class="lr-label">Right</div><div class="q-text">Peak Force (MVC)</div>
         <div class="unit-suffix"><input type="number" id="f-mvcright" placeholder="e.g. 33.0" step="0.1"><span>kg</span></div></div>
@@ -330,6 +342,7 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Two-Arm Weighted Hang from a 20mm Edge</div>
       <div class="q-sub">Warm up thoroughly. Add weight via a dip belt until you find the maximum load you can hang for a clean 5-second hold on a 20mm edge, both hands, open or half crimp as recorded above. Allow full recovery (5 min+) between attempts.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — weighted hang setup</div></div>
       <div class="unit-suffix"><input type="number" id="f-maxhang" placeholder="e.g. 15" step="0.5"><span>kg added</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
@@ -354,6 +367,7 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Bodyweight Hang from 20mm Edges</div>
       <div class="q-sub">Test how long you can hang bodyweight from 20mm edges, open or half crimp as recorded above.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — bodyweight edge hang</div></div>
       <div class="unit-suffix"><input type="number" id="f-bwhang" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Climbing Endurance — Repeaters on 20mm Edges</div>
@@ -373,6 +387,7 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="section-hd">Step 6 of 8 — <span>Other Finger &amp; Arm Strength/Endurance</span></div>
 
     <div class="q-block"><div class="q-text">Length of Time Hanging Both Arms at 90° Elbow Flexion from a Jug</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — 90° jug hang position</div></div>
       <div class="unit-suffix"><input type="number" id="f-jug90" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
@@ -380,6 +395,7 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">One-Arm Hang from a Slot (2-pad) Beastmaker</div>
       <div class="q-sub">If a slot isn't available, a pull-up bar may be used as an alternative — note this below.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — one-arm hang setup</div></div>
       <div class="lr-pair">
         <div><div class="lr-label">Left</div>
           <div class="unit-suffix"><input type="number" id="f-arml" placeholder="Seconds"><span>sec</span></div></div>
@@ -393,6 +409,7 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Power — Campus Reach Distance</div>
       <div class="q-sub">Maximum single-move campus reach distance, left and right leading arm.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — campus reach setup</div></div>
       <div class="lr-pair">
         <div><div class="lr-label">Left</div>
           <div class="unit-suffix"><input type="number" id="f-campusl" placeholder="e.g. 42" step="0.5"><span>cm</span></div></div>
@@ -412,6 +429,34 @@ input:focus { border-color:var(--accent); background:#fff; }
   <div class="panel" id="panel-6">
     <div class="section-hd">Step 7 of 8 — <span>Movement Quality</span></div>
 
+    <div class="q-image" style="border-style:solid; padding:16px;">
+      <svg width="100%" viewBox="0 0 680 220" role="img" style="display:block;">
+        <title>Cossack squat assessment criteria</title>
+        <rect x="30" y="30" width="150" height="150" rx="8" fill="var(--green-lt)" stroke="var(--green)" stroke-width="1"/>
+        <circle cx="105" cy="58" r="7" fill="var(--green)"/>
+        <text x="105" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--green)">Good tracking</text>
+        <text x="105" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--green)">Full depth,</text>
+        <text x="105" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--green)">knee aligned</text>
+
+        <rect x="197" y="30" width="150" height="150" rx="8" fill="var(--amber-lt)" stroke="var(--amber)" stroke-width="1"/>
+        <circle cx="272" cy="58" r="7" fill="var(--amber)"/>
+        <text x="272" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--amber)">Valgus / lift</text>
+        <text x="272" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--amber)">Full depth,</text>
+        <text x="272" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--amber)">knee caves in</text>
+
+        <rect x="364" y="30" width="150" height="150" rx="8" fill="var(--bg)" stroke="var(--muted)" stroke-width="1"/>
+        <circle cx="439" cy="58" r="7" fill="var(--muted)"/>
+        <text x="439" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--text)">Partial depth</text>
+        <text x="439" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--muted)">Doesn't reach</text>
+        <text x="439" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--muted)">full depth</text>
+
+        <rect x="531" y="30" width="150" height="150" rx="8" fill="var(--red-lt)" stroke="var(--red)" stroke-width="1"/>
+        <circle cx="606" cy="58" r="7" fill="var(--red)"/>
+        <text x="606" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--red)">Can't complete</text>
+        <text x="606" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--red)">Significant</text>
+        <text x="606" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--red)">compensation</text>
+      </svg>
+    </div>
     <div class="q-block"><div class="q-text">Cossack Squat — Left</div>
       <div class="q-sub">Depth and knee tracking quality on the left side.</div>
       <div class="opts">
@@ -434,6 +479,7 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Box Step-Up Against Wall — Left</div>
       <div class="q-sub">Standing close to a wall, step up onto the box leading with the left leg without using momentum or pushing off the wall.</div>
+      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — box step-up setup</div></div>
       <div class="opts-row">
         <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>20 inch</button>
         <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>24 inch</button>
