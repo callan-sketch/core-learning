@@ -68,8 +68,8 @@ input[type=text],input[type=number],input[type=email] { width:100%; padding:9px 
 input:focus { border-color:var(--accent); background:#fff; }
 .unit-suffix { position:relative; }
 .unit-suffix span { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--muted); pointer-events:none; }
-.bmi-chip { display:none; align-items:center; gap:10px; margin-top:14px; padding:10px 14px; background:var(--bg); border-radius:var(--radius); font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); }
-.bmi-chip.show { display:inline-flex; }
+.bmi-chip { display:none; align-items:center; gap:10px; margin:14px auto 0; padding:10px 14px; background:var(--bg); border-radius:var(--radius); font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); width:fit-content; }
+.bmi-chip.show { display:flex; }
 .bmi-val { font-size:18px; font-weight:600; font-family:'DM Sans',sans-serif; color:var(--text); }
 .bmi-cat { padding:2px 8px; border-radius:20px; font-size:10px; letter-spacing:.06em; text-transform:uppercase; }
 .bmi-ok   { background:var(--green-lt); color:var(--green); }
@@ -233,14 +233,14 @@ input:focus { border-color:var(--accent); background:#fff; }
         <button class="opt" id="pt-2RM" onclick="setPullupType('2 RM weighted PU')"><span class="opt-circle"></span>2RM Weighted PU</button>
       </div></div>
 
-    <div class="q-block"><div class="q-text">Max Number of Bar Pull-Ups</div>
+    <div class="q-block" id="block-maxpullups" style="display:none;"><div class="q-text">Max Number of Bar Pull-Ups</div>
       <div class="q-sub">Dead hang start, chin clears the bar, full elbow extension at the bottom of every rep. Continue to failure or technical breakdown.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — bar pull-up form</div></div>
+      <div class="q-image filled"><img src="images/max-pullup-test.jpg" alt="Max bodyweight pull-up test, dead hang start and chin over bar top position"></div>
       <input type="number" id="f-maxpullups" placeholder="Reps"></div>
 
-    <div class="q-block"><div class="q-text">2RM Pull-Ups</div>
+    <div class="q-block" id="block-rm2pullup" style="display:none;"><div class="q-text">2RM Pull-Ups</div>
       <div class="q-sub">Record the maximum additional weight successfully lifted for 2 clean reps.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — weighted pull-up setup</div></div>
+      <div class="q-image filled"><img src="images/rm2-pullup-test.jpg" alt="2 rep max weighted pull-up test using a weight belt"></div>
       <div class="unit-suffix"><input type="number" id="f-rm2pullup" placeholder="e.g. 10" step="0.5"><span>kg added</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
@@ -248,14 +248,14 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Number of Push-Ups in a Minute</div>
       <div class="q-sub">Standard push-up form, chest to within a fist of the floor, full lockout at the top.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — push-up form</div></div>
+      <div class="q-image filled"><img src="images/pushup-test.jpg" alt="Push-up form, top and bottom position"></div>
       <input type="number" id="f-pushups" placeholder="Reps"></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
       <input type="text" id="f-pushupnotes" placeholder="Notes (optional)"></div>
 
     <div class="q-block"><div class="q-text">Standing Jump for Height</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — jump test setup</div></div>
+      <div class="q-image filled"><img src="images/jump-test.jpg" alt="Standing jump for height test, standing reach and jump reach compared"></div>
       <div class="unit-suffix"><input type="number" id="f-jump" placeholder="e.g. 45" step="0.5"><span>cm</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
@@ -272,17 +272,17 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Hanging L-Sit</div>
       <div class="q-sub">Hang from a bar or rings, legs raised parallel to the ground, knees locked straight. Time until form breaks down.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — L-sit position</div></div>
+      <div class="q-image filled"><img src="images/lsit-test.jpg" alt="Hanging L-sit position from a pull-up bar"></div>
       <div class="unit-suffix"><input type="number" id="f-lsit" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Hollow Body Hold</div>
       <div class="q-sub">Lower back pressed to the floor, arms and legs extended and raised. Time until lower back lifts off the floor.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — hollow body position</div></div>
+      <div class="q-image filled"><img src="images/hollow-hold-test.jpg" alt="Hollow body hold position"></div>
       <div class="unit-suffix"><input type="number" id="f-hollow" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Plank</div>
       <div class="q-sub">Forearm plank, straight line from head to heels. Time until hips sag or lift. Rest 2 minutes before the next exercise.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — plank position</div></div>
+      <div class="q-image filled"><img src="images/plank-test.jpg" alt="Forearm plank position"></div>
       <div class="unit-suffix"><input type="number" id="f-plank" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
@@ -598,6 +598,8 @@ function setPullupType(v) {
   S.pullup_type = v;
   $('pt-Max').classList.toggle('sel', v === 'Max body weight PU');
   $('pt-2RM').classList.toggle('sel', v === '2 RM weighted PU');
+  $('block-maxpullups').style.display = (v === 'Max body weight PU') ? '' : 'none';
+  $('block-rm2pullup').style.display  = (v === '2 RM weighted PU') ? '' : 'none';
 }
 
 function setGripPos(v) {
