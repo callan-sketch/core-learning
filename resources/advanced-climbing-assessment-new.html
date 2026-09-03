@@ -299,7 +299,7 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="info-box">Finger tests can be performed with an open crimp or half crimp grip. Record which grip position was used for all finger tests below.</div>
 
     <div class="q-block"><div class="q-text">Grip Position Used</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — open crimp vs. half crimp comparison</div></div>
+      <div class="q-image filled"><img src="images/grip-position-test.jpg" alt="Open crimp versus half crimp hand grip comparison on a hold"></div>
       <div class="opts-row">
         <button class="opt" id="gp-Open" onclick="setGripPos('Open crimp')"><span class="opt-circle"></span>Open Crimp</button>
         <button class="opt" id="gp-Half" onclick="setGripPos('Half crimp')"><span class="opt-circle"></span>Half Crimp</button>
@@ -323,7 +323,6 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="lr-pair">
       <div class="q-block"><div class="lr-label">Left</div><div class="q-text">Peak Force (MVC)</div>
-        <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — Tindeq device setup</div></div>
         <div class="unit-suffix"><input type="number" id="f-mvcleft" placeholder="e.g. 32.5" step="0.1"><span>kg</span></div></div>
       <div class="q-block"><div class="lr-label">Right</div><div class="q-text">Peak Force (MVC)</div>
         <div class="unit-suffix"><input type="number" id="f-mvcright" placeholder="e.g. 33.0" step="0.1"><span>kg</span></div></div>
@@ -383,11 +382,12 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="q-block"><div class="q-text">Bodyweight Hang from 20mm Edges</div>
       <div class="q-sub">Test how long you can hang bodyweight from 20mm edges, open or half crimp as recorded above.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — bodyweight edge hang</div></div>
+      <div class="q-image filled"><img src="images/bodyweight-hang-test.jpg" alt="Bodyweight hang from a 20mm edge on a hangboard"></div>
       <div class="unit-suffix"><input type="number" id="f-bwhang" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Climbing Endurance — Repeaters on 20mm Edges</div>
       <div class="q-sub">Bodyweight repeaters (7s hang / 3s rest) on the 20mm edge until failure. Record total time under tension.</div>
+      <div class="q-image filled"><img src="images/repeaters-test.jpg" alt="Repeaters protocol: 7 second hang, 3 second rest, repeat"></div>
       <div class="unit-suffix"><input type="number" id="f-bwrepeaters" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
@@ -403,7 +403,7 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="section-hd">Step 6 of 8 — <span>Other Finger &amp; Arm Strength/Endurance</span></div>
 
     <div class="q-block"><div class="q-text">Length of Time Hanging Both Arms at 90° Elbow Flexion from a Jug</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — 90° jug hang position</div></div>
+      <div class="q-image filled"><img src="images/jug90-hang-test.jpg" alt="Two-arm hang at 90 degree elbow flexion from a jug"></div>
       <div class="unit-suffix"><input type="number" id="f-jug90" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
