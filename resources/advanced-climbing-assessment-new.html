@@ -445,57 +445,32 @@ input:focus { border-color:var(--accent); background:#fff; }
   <div class="panel" id="panel-6">
     <div class="section-hd">Step 7 of 8 — <span>Movement Quality</span></div>
 
-    <div class="q-image" style="border-style:solid; padding:16px;">
-      <svg width="100%" viewBox="0 0 680 220" role="img" style="display:block;">
-        <title>Cossack squat assessment criteria</title>
-        <rect x="30" y="30" width="150" height="150" rx="8" fill="var(--green-lt)" stroke="var(--green)" stroke-width="1"/>
-        <circle cx="105" cy="58" r="7" fill="var(--green)"/>
-        <text x="105" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--green)">Good tracking</text>
-        <text x="105" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--green)">Full depth,</text>
-        <text x="105" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--green)">knee aligned</text>
-
-        <rect x="197" y="30" width="150" height="150" rx="8" fill="var(--amber-lt)" stroke="var(--amber)" stroke-width="1"/>
-        <circle cx="272" cy="58" r="7" fill="var(--amber)"/>
-        <text x="272" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--amber)">Valgus / lift</text>
-        <text x="272" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--amber)">Full depth,</text>
-        <text x="272" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--amber)">knee caves in</text>
-
-        <rect x="364" y="30" width="150" height="150" rx="8" fill="var(--bg)" stroke="var(--muted)" stroke-width="1"/>
-        <circle cx="439" cy="58" r="7" fill="var(--muted)"/>
-        <text x="439" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--text)">Partial depth</text>
-        <text x="439" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--muted)">Doesn't reach</text>
-        <text x="439" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--muted)">full depth</text>
-
-        <rect x="531" y="30" width="150" height="150" rx="8" fill="var(--red-lt)" stroke="var(--red)" stroke-width="1"/>
-        <circle cx="606" cy="58" r="7" fill="var(--red)"/>
-        <text x="606" y="92" text-anchor="middle" font-family="'DM Sans',sans-serif" font-weight="600" font-size="13" fill="var(--red)">Can't complete</text>
-        <text x="606" y="115" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--red)">Significant</text>
-        <text x="606" y="131" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="var(--red)">compensation</text>
-      </svg>
+    <div class="q-image filled">
+      <img src="images/cossack-squat-criteria.jpg" alt="Cossack squat depth criteria: 1) knee flexion less than 90 degrees, 2) over 90 degrees but thigh not past parallel, 3) over 90 degrees and thigh past parallel, 4) full flexion, able to rest at bottom of range">
     </div>
     <div class="q-block"><div class="q-text">Cossack Squat — Left</div>
-      <div class="q-sub">Depth and knee tracking quality on the left side.</div>
+      <div class="q-sub">Depth reached, per the criteria above.</div>
       <div class="opts">
-        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>Full depth, knee tracks well, heel stays down</button>
-        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>Full depth, some knee valgus or heel lift</button>
-        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>Partial depth only</button>
-        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>Unable to perform / significant compensation</button>
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>1 — Knee flexion less than 90°</button>
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>2 — Knee flexion over 90°, thigh not past parallel</button>
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>3 — Knee flexion over 90°, thigh past parallel</button>
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>4 — Full flexion, able to rest at bottom of range</button>
       </div>
       <input type="hidden" id="f-cossackl"></div>
 
     <div class="q-block"><div class="q-text">Cossack Squat — Right</div>
-      <div class="q-sub">Depth and knee tracking quality on the right side.</div>
+      <div class="q-sub">Depth reached, per the criteria above.</div>
       <div class="opts">
-        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>Full depth, knee tracks well, heel stays down</button>
-        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>Full depth, some knee valgus or heel lift</button>
-        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>Partial depth only</button>
-        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>Unable to perform / significant compensation</button>
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>1 — Knee flexion less than 90°</button>
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>2 — Knee flexion over 90°, thigh not past parallel</button>
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>3 — Knee flexion over 90°, thigh past parallel</button>
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>4 — Full flexion, able to rest at bottom of range</button>
       </div>
       <input type="hidden" id="f-cossackr"></div>
 
     <div class="q-block"><div class="q-text">Box Step-Up Against Wall — Left</div>
       <div class="q-sub">Standing close to a wall, step up onto the box leading with the left leg without using momentum or pushing off the wall.</div>
-      <div class="q-image"><div class="q-image-placeholder">📷 Image placeholder — box step-up setup</div></div>
+      <div class="q-image filled"><img src="images/boxstep-test.jpg" alt="Box step-up against a wall: start position with both toes touching the wall, finish position standing upright on the box"></div>
       <div class="opts-row">
         <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>20 inch</button>
         <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>24 inch</button>
