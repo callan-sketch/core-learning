@@ -50,6 +50,7 @@ body { font-family:'DM Sans',system-ui,sans-serif; background:var(--bg); color:v
 .q-text { font-size:14px; font-weight:500; line-height:1.5; margin-bottom:14px; }
 .q-sub  { font-size:12px; color:var(--muted); margin-top:-10px; margin-bottom:12px; font-weight:300; line-height:1.55; }
 .q-image { margin:4px 0 14px; border-radius:var(--radius); overflow:hidden; border:1.5px dashed var(--border); background:var(--bg); }
+.q-image.filled { border-style:solid; background:none; }
 .q-image img { width:100%; display:block; border-radius:var(--radius); }
 .q-image-placeholder { padding:22px 16px; text-align:center; font-family:'DM Mono',monospace; font-size:10.5px; color:var(--muted); letter-spacing:.03em; line-height:1.6; }
 
@@ -67,6 +68,13 @@ input[type=text],input[type=number],input[type=email] { width:100%; padding:9px 
 input:focus { border-color:var(--accent); background:#fff; }
 .unit-suffix { position:relative; }
 .unit-suffix span { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--muted); pointer-events:none; }
+.bmi-chip { display:none; align-items:center; gap:10px; margin-top:14px; padding:10px 14px; background:var(--bg); border-radius:var(--radius); font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); }
+.bmi-chip.show { display:inline-flex; }
+.bmi-val { font-size:18px; font-weight:600; font-family:'DM Sans',sans-serif; color:var(--text); }
+.bmi-cat { padding:2px 8px; border-radius:20px; font-size:10px; letter-spacing:.06em; text-transform:uppercase; }
+.bmi-ok   { background:var(--green-lt); color:var(--green); }
+.bmi-warn { background:var(--amber-lt); color:var(--amber); }
+.bmi-flag { background:var(--red-lt);   color:var(--red);   }
 
 .lr-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .lr-pair .lr-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
@@ -124,7 +132,7 @@ input:focus { border-color:var(--accent); background:#fff; }
   <div class="masthead">
     <div class="masthead-label">Core Learning · Performance Testing</div>
     <h1>Advanced Climbing Assessment</h1>
-    <p>A full biometric and performance testing battery for climbers, tracked over time. Takes approximately 30–45 minutes to complete in full.</p>
+    <p>A full biometric and performance testing battery for climbers, tracked over time.</p>
   </div>
 
   <div class="step-track">
@@ -189,17 +197,25 @@ input:focus { border-color:var(--accent); background:#fff; }
 
     <div class="field-row">
       <div class="q-block"><div class="q-text">Height</div>
-        <div class="unit-suffix"><input type="number" id="f-height" placeholder="e.g. 172" step="0.1"><span>cm</span></div></div>
+        <div class="unit-suffix"><input type="number" id="f-height" placeholder="e.g. 172" step="0.1" oninput="updateBMI()"><span>cm</span></div></div>
       <div class="q-block"><div class="q-text">Weight</div>
-        <div class="unit-suffix"><input type="number" id="f-weight" placeholder="e.g. 64" step="0.1"><span>kg</span></div></div>
+        <div class="unit-suffix"><input type="number" id="f-weight" placeholder="e.g. 64" step="0.1" oninput="updateBMI()"><span>kg</span></div></div>
+    </div>
+
+    <div class="bmi-chip" id="bmi-display">
+      <span>BMI:</span>
+      <span class="bmi-val" id="bmi-val">—</span>
+      <span class="bmi-cat" id="bmi-cat"></span>
     </div>
 
     <div class="q-block"><div class="q-text">Arm Reach ("Wingspan")</div>
       <div class="q-sub">Finger tip to finger tip, arms spread horizontally.</div>
+      <div class="q-image filled"><img src="images/wingspan-test.jpg" alt="Arm reach test, arms spread horizontally against a wall"></div>
       <div class="unit-suffix"><input type="number" id="f-wingspan" placeholder="e.g. 176" step="0.1"><span>cm</span></div></div>
 
     <div class="q-block"><div class="q-text">Max Vertical Reach</div>
       <div class="q-sub">Standing measure from the ground to finger tips, reaching straight up.</div>
+      <div class="q-image filled"><img src="images/vertical-reach-test.jpg" alt="Standing maximum vertical reach test against a wall"></div>
       <div class="unit-suffix"><input type="number" id="f-maxreach" placeholder="e.g. 228" step="0.1"><span>cm</span></div></div>
 
     <div class="nav-row">
@@ -552,6 +568,25 @@ function goBackFromStep5() {
   else go(4);
 }
 
+// ─── BMI CALCULATION ─────────────────────────────────────────────────────────
+function updateBMI() {
+  const h = parseFloat($('f-height').value);
+  const w = parseFloat($('f-weight').value);
+  const disp = $('bmi-display');
+  if (!h || !w) { disp.classList.remove('show'); return; }
+  const bmi = w / Math.pow(h / 100, 2);
+  $('bmi-val').textContent = bmi.toFixed(1);
+  const catEl = $('bmi-cat');
+  let cat, cls;
+  if (bmi < 18.5)      { cat = 'Underweight'; cls = 'bmi-warn'; }
+  else if (bmi < 25)   { cat = 'Normal';      cls = 'bmi-ok'; }
+  else if (bmi < 30)   { cat = 'Overweight';  cls = 'bmi-warn'; }
+  else                 { cat = 'Obese';       cls = 'bmi-flag'; }
+  catEl.textContent = cat;
+  catEl.className = 'bmi-cat ' + cls;
+  disp.classList.add('show');
+}
+
 // ─── SINGLE-CHOICE HANDLERS ─────────────────────────────────────────────────
 function setGender(v) {
   S.gender = v;
@@ -625,6 +660,9 @@ function buildPayload() {
     age: $('f-age').value,
     height: $('f-height').value,
     weight: $('f-weight').value,
+    bmi: (parseFloat($('f-height').value) && parseFloat($('f-weight').value))
+      ? (parseFloat($('f-weight').value) / Math.pow(parseFloat($('f-height').value) / 100, 2)).toFixed(1)
+      : '',
     wingspan: $('f-wingspan').value,
     max_reach: $('f-maxreach').value,
     pullup_type: S.pullup_type || '',
