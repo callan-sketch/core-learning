@@ -5,253 +5,717 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Advanced Climbing Assessment</title>
 <style>
-  .cl-banner {
-  background: #1b2a3a;
-  padding: 0 24px;
-}
-.cl-banner-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  height: 60px;
-}
-.cl-banner-logo {
-  color: #ffffff;
-  font-family: 'Fraunces', Georgia, serif;
-  font-weight: 600;
-  font-size: 18px;
-  text-decoration: none;
-  letter-spacing: -0.01em;
-}
-.cl-banner-logo span {
-  color: #d9764a;
-}
+.cl-banner { background: #1b2a3a; padding: 0 24px; }
+.cl-banner-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; height: 60px; }
+.cl-banner-logo { color: #ffffff; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 18px; text-decoration: none; letter-spacing: -0.01em; }
+.cl-banner-logo span { color: #d9764a; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg:#f5f4f0; --surface:#ffffff; --border:#dddbd4; --text:#1c1c1c; --muted:#6b6b6b;
   --accent:#1a3a5c; --accent-lt:#e8eef5;
+  --green:#1e6b3c; --green-lt:#e8f5ee;
+  --amber:#8a4f00; --amber-lt:#fff3e0;
+  --red:#8b1a1a;   --red-lt:#fdecea;
   --radius:4px;
 }
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 html { scroll-behavior:smooth; }
 body { font-family:'DM Sans',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; }
-.shell { max-width:760px; margin:0 auto; padding:0 20px 80px; }
-
+.shell { max-width:680px; margin:0 auto; padding:0 20px 80px; }
 .masthead { padding:32px 0 24px; border-bottom:2px solid var(--text); margin-bottom:32px; }
 .masthead-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
 .masthead h1 { font-size:22px; font-weight:700; letter-spacing:-.02em; line-height:1.2; }
 .masthead p { margin-top:8px; font-size:13px; color:var(--muted); font-weight:300; }
 
-.info-box { background:var(--accent-lt); border:1px solid #b8cfe0; border-radius:var(--radius); padding:13px 16px; font-size:13px; color:var(--accent); margin-bottom:24px; line-height:1.6; }
+.step-track { display:flex; flex-wrap:wrap; margin-bottom:32px; }
+.step-pip { display:flex; align-items:center; gap:6px; padding:7px 10px; border:1.5px solid var(--border); border-right:none; background:var(--surface); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); flex:1; white-space:nowrap; transition:background .2s,color .2s; }
+.step-pip:first-child { border-radius:var(--radius) 0 0 var(--radius); }
+.step-pip:last-child  { border-right:1.5px solid var(--border); border-radius:0 var(--radius) var(--radius) 0; }
+.step-pip .dot { width:7px; height:7px; border-radius:50%; background:var(--border); flex-shrink:0; }
+.step-pip.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.step-pip.active .dot { background:rgba(255,255,255,.6); }
+.step-pip.done   { background:var(--accent-lt); color:var(--accent); border-color:#b8cfe0; }
+.step-pip.done .dot { background:var(--accent); }
+
+.panel { display:none; animation:fadeUp .25s ease; }
+.panel.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.section-hd { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:20px; }
+.section-hd span { color:var(--text); font-weight:500; }
+
+.q-block { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 18px 14px; margin-bottom:12px; transition:border-color .15s; }
+.q-block.answered { border-color:#9dbfb0; }
+.q-num { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:5px; }
+.q-text { font-size:14px; font-weight:500; line-height:1.5; margin-bottom:14px; }
+.q-sub  { font-size:12px; color:var(--muted); margin-top:-10px; margin-bottom:12px; font-weight:300; line-height:1.55; }
+.q-image { margin:4px 0 14px; border-radius:var(--radius); overflow:hidden; border:1.5px dashed var(--border); background:var(--bg); }
+.q-image.filled { border-style:solid; background:none; }
+.q-image img { width:100%; display:block; border-radius:var(--radius); }
+.q-image-placeholder { padding:22px 16px; text-align:center; font-family:'DM Mono',monospace; font-size:10.5px; color:var(--muted); letter-spacing:.03em; line-height:1.6; }
+
+.opts { display:flex; flex-direction:column; gap:6px; }
+.opt { display:flex; align-items:center; gap:10px; padding:8px 12px; border:1.5px solid var(--border); border-radius:var(--radius); background:var(--bg); cursor:pointer; font-size:13px; transition:all .12s; width:100%; text-align:left; font-family:'DM Sans',sans-serif; color:var(--text); }
+.opt:hover { border-color:#aaa; background:#eceae4; }
+.opt.sel   { border-color:var(--accent); background:var(--accent); color:#fff; }
+.opt-circle { width:12px; height:12px; border-radius:50%; border:1.5px solid currentColor; flex-shrink:0; }
+.opt.sel .opt-circle { background:rgba(255,255,255,.7); }
+.opts-row { display:flex; gap:8px; flex-wrap:wrap; }
+.opts-row .opt { flex:1; justify-content:center; min-width:120px; }
+
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+input[type=text],input[type=number],input[type=email] { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:var(--radius); background:var(--bg); font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); outline:none; transition:border-color .15s; }
+input:focus { border-color:var(--accent); background:#fff; }
+.unit-suffix { position:relative; }
+.unit-suffix span { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--muted); pointer-events:none; }
+.bmi-chip { display:none; align-items:center; gap:10px; margin:14px auto 0; padding:10px 14px; background:var(--bg); border-radius:var(--radius); font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); width:fit-content; }
+.bmi-chip.show { display:flex; }
+.bmi-val { font-size:18px; font-weight:600; font-family:'DM Sans',sans-serif; color:var(--text); }
+.bmi-cat { padding:2px 8px; border-radius:20px; font-size:10px; letter-spacing:.06em; text-transform:uppercase; }
+.bmi-ok   { background:var(--green-lt); color:var(--green); }
+.bmi-warn { background:var(--amber-lt); color:var(--amber); }
+.bmi-flag { background:var(--red-lt);   color:var(--red);   }
+
+.lr-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.lr-pair .lr-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+
+.info-box { background:var(--accent-lt); border:1px solid #b8cfe0; border-radius:var(--radius); padding:13px 16px; font-size:13px; color:var(--accent); margin-bottom:20px; line-height:1.6; }
 .info-box strong { font-weight:600; }
+.info-box.amber { background:var(--amber-lt); border-color:#e6c288; color:var(--amber); }
 
-.form-frame-wrap {
-  background:var(--surface);
-  border:1.5px solid var(--border);
-  border-radius:var(--radius);
-  overflow:hidden;
-  box-shadow:0 1px 3px rgba(0,0,0,.04);
-}
-.form-frame-hd {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 18px;
-  border-bottom:1px solid var(--border);
-  background:var(--bg);
-}
-.form-frame-hd span {
-  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
-}
-.form-frame-hd a {
-  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase;
-  color:var(--accent); text-decoration:none; border:1.5px solid var(--border); border-radius:var(--radius);
-  padding:5px 10px; transition:border-color .15s,color .15s;
-}
-.form-frame-hd a:hover { border-color:var(--accent); }
-
-iframe#gform {
-  display:block;
-  width:100%;
-  height:1250px;
-  border:none;
-  background:var(--surface);
-}
-.frame-loading {
-  display:flex; align-items:center; justify-content:center;
-  height:1250px; font-family:'DM Mono',monospace; font-size:12px; color:var(--muted);
-  position:absolute; width:100%; pointer-events:none;
-}
-
-.disclaimer { margin-top:24px; padding:14px 16px; border:1px solid var(--border); border-radius:var(--radius); font-size:12px; color:var(--muted); line-height:1.6; background:var(--surface); }
-.disclaimer strong { color:var(--text); }
+.nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:28px; gap:12px; }
+.btn { padding:11px 26px; border:none; border-radius:var(--radius); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:opacity .15s; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { opacity:.85; }
+.btn-primary:disabled { opacity:.35; cursor:not-allowed; }
+.btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); }
+.btn-ghost:hover { border-color:#999; color:var(--text); }
 
 .consent-box { background:var(--accent-lt); border:1.5px solid #b8cfe0; border-radius:var(--radius); padding:16px 18px; margin-bottom:20px; }
-.consent-box.err { border-color:#c0392b; background:#fdf0ee; }
+.consent-box.err { border-color:#c94040; background:#fdf0ee; }
 .consent-box .consent-title { font-weight:700; font-size:13px; color:var(--text); margin-bottom:8px; }
 .consent-box p { font-size:12.5px; color:var(--muted); margin-bottom:12px; line-height:1.6; }
 .consent-option { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text); margin-bottom:10px; cursor:pointer; line-height:1.5; }
 .consent-option:last-of-type { margin-bottom:0; }
 .consent-option input[type="checkbox"] { width:18px; height:18px; margin-top:1px; flex-shrink:0; accent-color:var(--accent); cursor:pointer; }
 .consent-option a { color:var(--accent); font-weight:600; }
-.consent-error { display:none; font-size:12px; color:#c0392b; margin-top:10px; }
-.consent-error.show { display:block; }
 
-.form-frame-wrap.locked { position:relative; }
-.form-frame-wrap.locked iframe { filter:blur(3px); pointer-events:none; }
-.form-lock-overlay {
-  display:none; position:absolute; inset:0; z-index:2;
-  align-items:center; justify-content:center; text-align:center;
-  background:rgba(245,244,240,.85); padding:24px;
+.decl-box { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:20px; font-size:13px; color:var(--muted); line-height:1.7; }
+
+.submit-status { display:none; margin-top:16px; padding:12px 16px; border-radius:var(--radius); font-size:13px; font-family:'DM Mono',monospace; line-height:1.5; }
+.submit-status.sending { background:var(--amber-lt); color:var(--amber); border:1px solid #e6a033; display:block; }
+.submit-status.ok      { background:var(--green-lt); color:var(--green); border:1px solid #7dbf9a; display:block; }
+.submit-status.err     { background:var(--red-lt);   color:var(--red);   border:1px solid #d45c5c; display:block; }
+
+.review-list { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:4px 18px; margin-bottom:20px; }
+.review-row { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); font-size:13px; }
+.review-row:last-child { border-bottom:none; }
+.review-row .rk { color:var(--muted); }
+.review-row .rv { font-weight:500; text-align:right; }
+
+@media (max-width:560px) {
+  .field-row, .lr-pair { grid-template-columns:1fr; }
+  .step-pip { font-size:8px; padding:6px 7px; }
 }
-.form-frame-wrap.locked .form-lock-overlay { display:flex; }
-.form-lock-overlay p { max-width:340px; font-size:13px; color:var(--text); font-weight:500; line-height:1.6; }
-
-.footer-note { margin-top:28px; font-size:11px; color:var(--muted); text-align:center; font-family:'DM Mono',monospace; }
-
-@media (max-width:480px){
-  iframe#gform, .frame-loading { height:1500px; }
-}
-
-  .cl-loading-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 14px;
-    color: #6b7480;
-    padding: 80px 24px;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-  .cl-spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid #e2e0da;
-    border-top-color: #3a8a8c;
-    border-radius: 50%;
-    animation: cl-spin 0.7s linear infinite;
-  }
-  @keyframes cl-spin { to { transform: rotate(360deg); } }
-  #cl-page-content { display: none; }
 </style>
 </head>
 <body>
-<div class="cl-loading-state" id="cl-loading-state">
-  <div class="cl-spinner"></div>
-  <span>Loading…</span>
-</div>
 
-<div id="cl-page-content">
-
-  <nav class="cl-banner">
+<nav class="cl-banner">
   <div class="cl-banner-inner">
-    <a class="cl-banner-logo" href="https://corelearning.co.za/dashboard.html">Core <span>Learning</span></a>
+    <a class="cl-banner-logo" href="https://corelearning.co.za/index.html">Core <span>Learning</span></a>
   </div>
 </nav>
+
 <div class="shell">
 
   <div class="masthead">
-    <div class="masthead-label">Core Learning · Athlete Testing</div>
+    <div class="masthead-label">Core Learning · Performance Testing</div>
     <h1>Advanced Climbing Assessment</h1>
-    <p>Full biometric and performance testing battery, tracked over time.</p>
+    <p>A full biometric and performance testing battery for climbers, tracked over time.</p>
   </div>
 
-  <div class="info-box"><strong>Before you begin:</strong> All information is kept confidential unless otherwise instructed by the respondent. If you're unsure of your health status, have multiple health problems, or are pregnant, speak with your doctor before doing this assessment or starting a new exercise programme. Please ensure correct spelling of names so results can be tracked over time.</div>
-
-  <div class="consent-box" id="consentBox">
-    <div class="consent-title">Data &amp; Privacy Consent</div>
-    <p>This assessment collects personal information, including health and biometric information, which is stored by Core Learning for the purpose of performance testing and tracking results over time. See our <a href="https://corelearning.co.za/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for full details on how information is used and protected.</p>
-    <label class="consent-option">
-      <input type="checkbox" id="consentSelf" onchange="updateConsentGate()">
-      <span>I am the person being assessed, and I consent to my information being collected and stored as described above.</span>
-    </label>
-    <label class="consent-option">
-      <input type="checkbox" id="consentCoach" onchange="updateConsentGate()">
-      <span>I am a coach completing this on behalf of my client, and I confirm I have explained the above to them and they consent to their information being collected and stored as described.</span>
-    </label>
-    <div class="consent-error" id="consentError">Please confirm consent above before opening the assessment.</div>
+  <div class="step-track">
+    <div class="step-pip active" id="pip-0"><span class="dot"></span>Profile</div>
+    <div class="step-pip" id="pip-1"><span class="dot"></span>Physical</div>
+    <div class="step-pip" id="pip-2"><span class="dot"></span>Strength</div>
+    <div class="step-pip" id="pip-3"><span class="dot"></span>Core</div>
+    <div class="step-pip" id="pip-4"><span class="dot"></span>Fingers</div>
+    <div class="step-pip" id="pip-5"><span class="dot"></span>Grip/Arm</div>
+    <div class="step-pip" id="pip-6"><span class="dot"></span>Movement</div>
+    <div class="step-pip" id="pip-7"><span class="dot"></span>Review</div>
   </div>
 
-  <div class="form-frame-wrap locked" id="formFrameWrap">
-    <div class="form-frame-hd">
-      <span>Assessment Form · 10 Pages</span>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8JHFir7m0LrsN3qnphrAuxjCSORVUeHteQoY_DnqV-CA0oA/viewform" target="_blank" rel="noopener" onclick="return gateNewTabLink(event)">Open in New Tab ↗</a>
+  <!-- ═══ STEP 0: PROFILE + CONSENT ═══ -->
+  <div class="panel active" id="panel-0">
+    <div class="section-hd">Step 1 of 8 — <span>Athlete Profile</span></div>
+    <div class="info-box"><strong>Before you begin:</strong> All information is kept confidential unless otherwise instructed by the respondent. If you're unsure of your health status, have multiple health problems, or are pregnant, speak with your doctor before doing this assessment or starting a new exercise programme. Please ensure correct spelling of names so results can be tracked over time.</div>
+
+    <div class="consent-box" id="consentBox">
+      <div class="consent-title">Data &amp; Privacy Consent</div>
+      <p>This assessment collects personal information, including health and biometric information, which is stored by Core Learning for the purpose of performance testing and tracking results over time. See our <a href="https://corelearning.co.za/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for full details on how information is used and protected.</p>
+      <label class="consent-option">
+        <input type="checkbox" id="consentSelf" onchange="chkP()">
+        <span>I am the person being assessed, and I consent to my information being collected and stored as described above.</span>
+      </label>
+      <label class="consent-option">
+        <input type="checkbox" id="consentCoach" onchange="chkP()">
+        <span>I am a coach completing this on behalf of my client, and I confirm I have explained the above to them and they consent to their information being collected and stored as described.</span>
+      </label>
     </div>
-    <div style="position:relative;">
-      <div class="frame-loading" id="frameLoading">Loading form…</div>
-      <iframe id="gform"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSe8JHFir7m0LrsN3qnphrAuxjCSORVUeHteQoY_DnqV-CA0oA/viewform?embedded=true"
-        onload="document.getElementById('frameLoading').style.display='none'">
-        Loading…
-      </iframe>
-      <div class="form-lock-overlay">
-        <p>Please confirm consent above before completing this assessment.</p>
+
+    <div class="q-block"><div class="q-text">Email <span style="color:#c94040">*</span></div>
+      <input type="email" id="f-email" placeholder="you@email.com" oninput="chkP()"></div>
+
+    <div class="field-row">
+      <div class="q-block"><div class="q-text">Climber's First Name <span style="color:#c94040">*</span></div>
+        <input type="text" id="f-first" placeholder="First name" oninput="chkP()"></div>
+      <div class="q-block"><div class="q-text">Climber's Surname <span style="color:#c94040">*</span></div>
+        <input type="text" id="f-surname" placeholder="Surname" oninput="chkP()"></div>
+    </div>
+
+    <div class="q-block"><div class="q-text">Gender <span style="color:#c94040">*</span></div>
+      <div class="opts-row">
+        <button class="opt" id="gender-Male" onclick="setGender('Male')"><span class="opt-circle"></span>Male</button>
+        <button class="opt" id="gender-Female" onclick="setGender('Female')"><span class="opt-circle"></span>Female</button>
+      </div></div>
+
+    <div class="field-row">
+      <div class="q-block"><div class="q-text">Year of Birth</div>
+        <input type="number" id="f-yob" min="1930" max="2020" placeholder="e.g. 2008"></div>
+      <div class="q-block"><div class="q-text">Age at Time of Testing <span style="color:#c94040">*</span></div>
+        <input type="number" id="f-age" min="5" max="90" placeholder="e.g. 16" oninput="chkP()"></div>
+    </div>
+
+    <div class="nav-row"><div></div>
+      <button class="btn btn-primary" id="btn-0-next" disabled onclick="go(1)">Next: Physical Characteristics →</button></div>
+  </div>
+
+  <!-- ═══ STEP 1: PHYSICAL CHARACTERISTICS ═══ -->
+  <div class="panel" id="panel-1">
+    <div class="section-hd">Step 2 of 8 — <span>Physical Characteristics</span></div>
+
+    <div class="field-row">
+      <div class="q-block"><div class="q-text">Height</div>
+        <div class="unit-suffix"><input type="number" id="f-height" placeholder="e.g. 172" step="0.1" oninput="updateBMI()"><span>cm</span></div></div>
+      <div class="q-block"><div class="q-text">Weight</div>
+        <div class="unit-suffix"><input type="number" id="f-weight" placeholder="e.g. 64" step="0.1" oninput="updateBMI()"><span>kg</span></div></div>
+    </div>
+
+    <div class="bmi-chip" id="bmi-display">
+      <span>BMI:</span>
+      <span class="bmi-val" id="bmi-val">—</span>
+      <span class="bmi-cat" id="bmi-cat"></span>
+    </div>
+
+    <div class="q-block"><div class="q-text">Arm Reach ("Wingspan")</div>
+      <div class="q-sub">Finger tip to finger tip, arms spread horizontally.</div>
+      <div class="q-image filled"><img src="images/wingspan-test.jpg" alt="Arm reach test, arms spread horizontally against a wall"></div>
+      <div class="unit-suffix"><input type="number" id="f-wingspan" placeholder="e.g. 176" step="0.1"><span>cm</span></div></div>
+
+    <div class="q-block"><div class="q-text">Max Vertical Reach</div>
+      <div class="q-sub">Standing measure from the ground to finger tips, reaching straight up.</div>
+      <div class="q-image filled"><img src="images/vertical-reach-test.jpg" alt="Standing maximum vertical reach test against a wall"></div>
+      <div class="unit-suffix"><input type="number" id="f-maxreach" placeholder="e.g. 228" step="0.1"><span>cm</span></div></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(0)">← Back</button>
+      <button class="btn btn-primary" onclick="go(2)">Next: Strength Testing →</button></div>
+  </div>
+
+  <!-- ═══ STEP 2: STRENGTH TESTING ═══ -->
+  <div class="panel" id="panel-2">
+    <div class="section-hd">Step 3 of 8 — <span>Strength Testing</span></div>
+
+    <div class="q-block"><div class="q-text">For pull-ups, choose either 2 Rep Max weighted pull-ups or Max reps bodyweight pull-ups.</div>
+      <div class="opts-row">
+        <button class="opt" id="pt-Max" onclick="setPullupType('Max body weight PU')"><span class="opt-circle"></span>Max Bodyweight PU</button>
+        <button class="opt" id="pt-2RM" onclick="setPullupType('2 RM weighted PU')"><span class="opt-circle"></span>2RM Weighted PU</button>
+      </div></div>
+
+    <div class="q-block" id="block-maxpullups" style="display:none;"><div class="q-text">Max Number of Bar Pull-Ups</div>
+      <div class="q-sub">Dead hang start, chin clears the bar, full elbow extension at the bottom of every rep. Continue to failure or technical breakdown.</div>
+      <div class="q-image filled"><img src="images/max-pullup-test.jpg" alt="Max bodyweight pull-up test, dead hang start and chin over bar top position"></div>
+      <input type="number" id="f-maxpullups" placeholder="Reps"></div>
+
+    <div class="q-block" id="block-rm2pullup" style="display:none;"><div class="q-text">2RM Pull-Ups</div>
+      <div class="q-sub">Record the maximum additional weight successfully lifted for 2 clean reps.</div>
+      <div class="q-image filled"><img src="images/rm2-pullup-test.jpg" alt="2 rep max weighted pull-up test using a weight belt"></div>
+      <div class="unit-suffix"><input type="number" id="f-rm2pullup" placeholder="e.g. 10" step="0.5"><span>kg added</span></div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
+      <input type="text" id="f-pullupnotes" placeholder="Notes on technique, equipment, or conditions (optional)"></div>
+
+    <div class="q-block"><div class="q-text">Number of Push-Ups in a Minute</div>
+      <div class="q-sub">Standard push-up form, chest to within a fist of the floor, full lockout at the top.</div>
+      <div class="q-image filled"><img src="images/pushup-test.jpg" alt="Push-up form, top and bottom position"></div>
+      <input type="number" id="f-pushups" placeholder="Reps"></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
+      <input type="text" id="f-pushupnotes" placeholder="Notes (optional)"></div>
+
+    <div class="q-block"><div class="q-text">Standing Jump for Height</div>
+      <div class="q-image filled"><img src="images/jump-test.jpg" alt="Standing jump for height test, standing reach and jump reach compared"></div>
+      <div class="unit-suffix"><input type="number" id="f-jump" placeholder="e.g. 45" step="0.5"><span>cm</span></div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
+      <input type="text" id="f-jumpnotes" placeholder="Notes (optional)"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(1)">← Back</button>
+      <button class="btn btn-primary" onclick="go(3)">Next: Core Strength →</button></div>
+  </div>
+
+  <!-- ═══ STEP 3: CORE STRENGTH ═══ -->
+  <div class="panel" id="panel-3">
+    <div class="section-hd">Step 4 of 8 — <span>Core Strength</span></div>
+
+    <div class="q-block"><div class="q-text">Hanging L-Sit</div>
+      <div class="q-sub">Hang from a bar or rings, legs raised parallel to the ground, knees locked straight. Time until form breaks down.</div>
+      <div class="q-image filled"><img src="images/lsit-test.jpg" alt="Hanging L-sit position from a pull-up bar"></div>
+      <div class="unit-suffix"><input type="number" id="f-lsit" placeholder="Seconds"><span>sec</span></div></div>
+
+    <div class="q-block"><div class="q-text">Hollow Body Hold</div>
+      <div class="q-sub">Lower back pressed to the floor, arms and legs extended and raised. Time until lower back lifts off the floor.</div>
+      <div class="q-image filled"><img src="images/hollow-hold-test.jpg" alt="Hollow body hold position"></div>
+      <div class="unit-suffix"><input type="number" id="f-hollow" placeholder="Seconds"><span>sec</span></div></div>
+
+    <div class="q-block"><div class="q-text">Plank</div>
+      <div class="q-sub">Forearm plank, straight line from head to heels. Time until hips sag or lift. Rest 2 minutes before the next exercise.</div>
+      <div class="q-image filled"><img src="images/plank-test.jpg" alt="Forearm plank position"></div>
+      <div class="unit-suffix"><input type="number" id="f-plank" placeholder="Seconds"><span>sec</span></div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
+      <input type="text" id="f-corenotes" placeholder="Notes (optional)"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(2)">← Back</button>
+      <button class="btn btn-primary" onclick="go(4)">Next: Finger Testing →</button></div>
+  </div>
+
+  <!-- ═══ STEP 4: FINGER TESTING SETUP ═══ -->
+  <div class="panel" id="panel-4">
+    <div class="section-hd">Step 5 of 8 — <span>Finger Testing</span></div>
+    <div class="info-box">Finger tests can be performed with an open crimp or half crimp grip. Record which grip position was used for all finger tests below.</div>
+
+    <div class="q-block"><div class="q-text">Grip Position Used</div>
+      <div class="q-image filled"><img src="images/grip-position-test.jpg" alt="Open crimp versus half crimp hand grip comparison on a hold"></div>
+      <div class="opts-row">
+        <button class="opt" id="gp-Open" onclick="setGripPos('Open crimp')"><span class="opt-circle"></span>Open Crimp</button>
+        <button class="opt" id="gp-Half" onclick="setGripPos('Half crimp')"><span class="opt-circle"></span>Half Crimp</button>
+      </div></div>
+
+    <div class="q-block"><div class="q-text">What type of finger strength testing equipment do you have?</div>
+      <div class="opts">
+        <button class="opt" id="fe-Tindeq" onclick="setFingerEq('Tindeq')"><span class="opt-circle"></span>Tindeq (force sensor)</button>
+        <button class="opt" id="fe-EdgesW" onclick="setFingerEq('Edges WITH weights')"><span class="opt-circle"></span>Edges WITH weights <span style="opacity:.7;font-size:11px;">— recommended for over 18's</span></button>
+        <button class="opt" id="fe-EdgesNW" onclick="setFingerEq('Edges NO weights')"><span class="opt-circle"></span>Edges NO weights <span style="opacity:.7;font-size:11px;">— recommended for under 18's</span></button>
+      </div></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(3)">← Back</button>
+      <button class="btn btn-primary" id="btn-4-next" disabled onclick="goFingerBranch()">Next →</button></div>
+  </div>
+
+  <!-- ═══ STEP 4a: TINDEQ ═══ -->
+  <div class="panel" id="panel-4a">
+    <div class="section-hd">Step 5 of 8 — <span>Finger Testing · Tindeq</span></div>
+
+    <div class="lr-pair">
+      <div class="q-block"><div class="lr-label">Left</div><div class="q-text">Peak Force (MVC)</div>
+        <div class="unit-suffix"><input type="number" id="f-mvcleft" placeholder="e.g. 32.5" step="0.1"><span>kg</span></div></div>
+      <div class="q-block"><div class="lr-label">Right</div><div class="q-text">Peak Force (MVC)</div>
+        <div class="unit-suffix"><input type="number" id="f-mvcright" placeholder="e.g. 33.0" step="0.1"><span>kg</span></div></div>
+    </div>
+
+    <div class="lr-pair">
+      <div class="q-block"><div class="lr-label">Left</div><div class="q-text">Rate of Force Development (RFD)</div>
+        <input type="text" id="f-rfdleft" placeholder="Value from Tindeq app"></div>
+      <div class="q-block"><div class="lr-label">Right</div><div class="q-text">Rate of Force Development (RFD)</div>
+        <input type="text" id="f-rfdright" placeholder="Value from Tindeq app"></div>
+    </div>
+
+    <div class="lr-pair">
+      <div class="q-block"><div class="lr-label">Left</div><div class="q-text">Critical Force (CF)</div>
+        <input type="text" id="f-cfleft" placeholder="Value from Tindeq app"></div>
+      <div class="q-block"><div class="lr-label">Right</div><div class="q-text">Critical Force (CF)</div>
+        <input type="text" id="f-cfright" placeholder="Value from Tindeq app"></div>
+    </div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
+      <input type="text" id="f-tindeqnotes" placeholder="Notes (optional)"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(4)">← Back</button>
+      <button class="btn btn-primary" onclick="go(5)">Next: Grip &amp; Arm Endurance →</button></div>
+  </div>
+
+  <!-- ═══ STEP 4b: EDGES WITH WEIGHTS ═══ -->
+  <div class="panel" id="panel-4b">
+    <div class="section-hd">Step 5 of 8 — <span>Finger Testing · Weighted Edges</span></div>
+    <div class="info-box amber">Only recommended for over 18 year olds.</div>
+
+    <div class="q-block"><div class="q-text">Two-Arm Weighted Hang from a 20mm Edge</div>
+      <div class="q-sub">Warm up thoroughly. Add weight via a dip belt until you find the maximum load you can hang for a clean 5-second hold on a 20mm edge, both hands, open or half crimp as recorded above. Allow full recovery (5 min+) between attempts.</div>
+      <div class="q-image filled"><img src="images/weighted-hang-test.jpg" alt="Two-arm weighted hang with added weight via a dip belt"></div>
+      <div class="unit-suffix"><input type="number" id="f-maxhang" placeholder="e.g. 15" step="0.5"><span>kg added</span></div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
+      <input type="text" id="f-maxhangnotes" placeholder="Notes (optional)"></div>
+
+    <div class="q-block"><div class="q-text">Loaded Repeaters</div>
+      <div class="q-sub">Using a load you can sustain, perform repeaters (7s hang / 3s rest) on the 20mm edge until failure. Record total time under tension.</div>
+      <div class="unit-suffix"><input type="number" id="f-loadedrep" placeholder="Seconds"><span>sec</span></div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
+      <input type="text" id="f-loadednotes" placeholder="Notes (optional)"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(4)">← Back</button>
+      <button class="btn btn-primary" onclick="go(5)">Next: Grip &amp; Arm Endurance →</button></div>
+  </div>
+
+  <!-- ═══ STEP 4c: EDGES NO WEIGHTS ═══ -->
+  <div class="panel" id="panel-4c">
+    <div class="section-hd">Step 5 of 8 — <span>Finger Testing · Edges (No Weights)</span></div>
+    <div class="info-box">Recommended for under 18 year olds.</div>
+
+    <div class="q-block"><div class="q-text">Bodyweight Hang from 20mm Edges</div>
+      <div class="q-sub">Test how long you can hang bodyweight from 20mm edges, open or half crimp as recorded above.</div>
+      <div class="q-image filled"><img src="images/bodyweight-hang-test.jpg" alt="Bodyweight hang from a 20mm edge on a hangboard"></div>
+      <div class="unit-suffix"><input type="number" id="f-bwhang" placeholder="Seconds"><span>sec</span></div></div>
+
+    <div class="q-block"><div class="q-text">Climbing Endurance — Repeaters on 20mm Edges</div>
+      <div class="q-sub">Bodyweight repeaters (7s hang / 3s rest) on the 20mm edge until failure. Record total time under tension.</div>
+      <div class="q-image filled"><img src="images/repeaters-test.jpg" alt="Repeaters protocol: 7 second hang, 3 second rest, repeat"></div>
+      <div class="unit-suffix"><input type="number" id="f-bwrepeaters" placeholder="Seconds"><span>sec</span></div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above tests?</div>
+      <input type="text" id="f-bwnotes" placeholder="Notes (optional)"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(4)">← Back</button>
+      <button class="btn btn-primary" onclick="go(5)">Next: Grip &amp; Arm Endurance →</button></div>
+  </div>
+
+  <!-- ═══ STEP 5: GRIP & ARM ENDURANCE ═══ -->
+  <div class="panel" id="panel-5">
+    <div class="section-hd">Step 6 of 8 — <span>Other Finger &amp; Arm Strength/Endurance</span></div>
+
+    <div class="q-block"><div class="q-text">Length of Time Hanging Both Arms at 90° Elbow Flexion from a Jug</div>
+      <div class="q-image filled"><img src="images/jug90-hang-test.jpg" alt="Two-arm hang at 90 degree elbow flexion from a jug"></div>
+      <div class="unit-suffix"><input type="number" id="f-jug90" placeholder="Seconds"><span>sec</span></div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
+      <input type="text" id="f-jugnotes" placeholder="Notes (optional)"></div>
+
+    <div class="q-block"><div class="q-text">One-Arm Hang from a Slot (2-pad) Beastmaker</div>
+      <div class="q-sub">If a slot isn't available, a pull-up bar may be used as an alternative — note this below.</div>
+      <div class="q-image filled"><img src="images/one-arm-hang-test.jpg" alt="One-arm hang from a slot on a Beastmaker hangboard"></div>
+      <div class="lr-pair">
+        <div><div class="lr-label">Left</div>
+          <div class="unit-suffix"><input type="number" id="f-arml" placeholder="Seconds"><span>sec</span></div></div>
+        <div><div class="lr-label">Right</div>
+          <div class="unit-suffix"><input type="number" id="f-armr" placeholder="Seconds"><span>sec</span></div></div>
+      </div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
+      <div class="q-sub">Specify bar or slot used, or any other alterations.</div>
+      <input type="text" id="f-armnotes" placeholder="Notes (optional)"></div>
+
+    <div class="q-block"><div class="q-text">Power — Campus Reach Distance</div>
+      <div class="q-sub">Maximum single-move campus reach distance, left and right leading arm.</div>
+      <div class="q-image filled"><img src="images/campus-reach-test.jpg" alt="Maximum single-move campus reach on a campus board"></div>
+      <div class="lr-pair">
+        <div><div class="lr-label">Left</div>
+          <div class="unit-suffix"><input type="number" id="f-campusl" placeholder="e.g. 42" step="0.5"><span>cm</span></div></div>
+        <div><div class="lr-label">Right</div>
+          <div class="unit-suffix"><input type="number" id="f-campusr" placeholder="e.g. 44" step="0.5"><span>cm</span></div></div>
+      </div></div>
+
+    <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
+      <input type="text" id="f-campusnotes" placeholder="Notes (optional)"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="goBackFromStep5()">← Back</button>
+      <button class="btn btn-primary" onclick="go(6)">Next: Movement Quality →</button></div>
+  </div>
+
+  <!-- ═══ STEP 6: MOVEMENT QUALITY ═══ -->
+  <div class="panel" id="panel-6">
+    <div class="section-hd">Step 7 of 8 — <span>Movement Quality</span></div>
+
+    <div class="q-image filled">
+      <img src="images/cossack-squat-criteria.jpg" alt="Cossack squat depth criteria: 1) knee flexion less than 90 degrees, 2) over 90 degrees but thigh not past parallel, 3) over 90 degrees and thigh past parallel, 4) full flexion, able to rest at bottom of range">
+    </div>
+    <div class="q-block"><div class="q-text">Cossack Squat — Left</div>
+      <div class="q-sub">Depth reached, per the criteria above.</div>
+      <div class="opts">
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>1 — Knee flexion less than 90°</button>
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>2 — Knee flexion over 90°, thigh not past parallel</button>
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>3 — Knee flexion over 90°, thigh past parallel</button>
+        <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>4 — Full flexion, able to rest at bottom of range</button>
       </div>
-    </div>
+      <input type="hidden" id="f-cossackl"></div>
+
+    <div class="q-block"><div class="q-text">Cossack Squat — Right</div>
+      <div class="q-sub">Depth reached, per the criteria above.</div>
+      <div class="opts">
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>1 — Knee flexion less than 90°</button>
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>2 — Knee flexion over 90°, thigh not past parallel</button>
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>3 — Knee flexion over 90°, thigh past parallel</button>
+        <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>4 — Full flexion, able to rest at bottom of range</button>
+      </div>
+      <input type="hidden" id="f-cossackr"></div>
+
+    <div class="q-block"><div class="q-text">Box Step-Up Against Wall — Left</div>
+      <div class="q-sub">Standing close to a wall, step up onto the box leading with the left leg without using momentum or pushing off the wall.</div>
+      <div class="q-image filled"><img src="images/boxstep-test.jpg" alt="Box step-up against a wall: start position with both toes touching the wall, finish position standing upright on the box"></div>
+      <div class="opts-row">
+        <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>20 inch</button>
+        <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>24 inch</button>
+        <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>30 inch</button>
+      </div>
+      <input type="hidden" id="f-boxstepl"></div>
+
+    <div class="q-block"><div class="q-text">Box Step-Up Against Wall — Right</div>
+      <div class="q-sub">Same test, leading with the right leg.</div>
+      <div class="opts-row">
+        <button class="opt" data-grp="boxr" onclick="setSingleChoice('boxr','f-boxstepr',this)"><span class="opt-circle"></span>20 inch</button>
+        <button class="opt" data-grp="boxr" onclick="setSingleChoice('boxr','f-boxstepr',this)"><span class="opt-circle"></span>24 inch</button>
+        <button class="opt" data-grp="boxr" onclick="setSingleChoice('boxr','f-boxstepr',this)"><span class="opt-circle"></span>30 inch</button>
+      </div>
+      <input type="hidden" id="f-boxstepr"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(5)">← Back</button>
+      <button class="btn btn-primary" onclick="go(7)">Next: Review &amp; Submit →</button></div>
   </div>
 
-  <div class="disclaimer"><strong>Note:</strong> This assessment is submitted directly through Google Forms — responses are saved to Core Learning's existing results spreadsheet the same way they always have been.</div>
+  <!-- ═══ STEP 7: REVIEW & SUBMIT ═══ -->
+  <div class="panel" id="panel-7">
+    <div class="section-hd">Step 8 of 8 — <span>Review &amp; Submit</span></div>
 
-  <div class="footer-note">If the form doesn't load above, use "Open in New Tab" to complete it directly.</div>
+    <div class="decl-box">I declare that the information provided in this assessment is accurate and complete to the best of my knowledge, and that all tests were performed following the protocols described.</div>
+
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="q-block"><div class="q-text">Tester / Coach Name (if applicable)</div>
+      <input type="text" id="f-tester" placeholder="Leave blank if self-tested"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="go(6)">← Back</button>
+      <button class="btn btn-primary" onclick="submitAssessment()">Submit Assessment</button></div>
+
+    <div class="submit-status" id="submit-status"></div>
+  </div>
 
 </div>
-
-</div>
-
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
-    authDomain: "core-coaching-login.firebaseapp.com",
-    projectId: "core-coaching-login",
-    storageBucket: "core-coaching-login.firebasestorage.app",
-    messagingSenderId: "184932860937",
-    appId: "1:184932860937:web:83da63f1453eff8ca824d8",
-    measurementId: "G-N7WNPL47WQ"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "https://corelearning.co.za/index.html";
-      return;
-    }
-    document.getElementById("cl-loading-state").style.display = "none";
-    document.getElementById("cl-page-content").style.display = "block";
-  });
-</script>
 
 <script>
-  function updateConsentGate() {
-    const consentGiven = document.getElementById('consentSelf').checked || document.getElementById('consentCoach').checked;
-    const wrap = document.getElementById('formFrameWrap');
-    const errorBox = document.getElementById('consentError');
-    const consentBox = document.getElementById('consentBox');
+const $ = id => document.getElementById(id);
+const S = { gender:'', pullup_type:'', grip_pos:'', finger_eq:'', fingerBranch:null };
 
-    if (consentGiven) {
-      wrap.classList.remove('locked');
-      errorBox.classList.remove('show');
-      consentBox.classList.remove('err');
-    } else {
-      wrap.classList.add('locked');
-    }
-  }
+// ─── PANEL NAVIGATION ───────────────────────────────────────────────────────
+function showPanel(id, pipIndex) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === id));
+  document.querySelectorAll('.step-pip').forEach((p,i) => {
+    p.classList.toggle('active', i === pipIndex);
+    p.classList.toggle('done', i < pipIndex);
+  });
+  window.scrollTo(0,0);
+}
 
-  function gateNewTabLink(event) {
-    const consentGiven = document.getElementById('consentSelf').checked || document.getElementById('consentCoach').checked;
-    if (!consentGiven) {
-      event.preventDefault();
-      document.getElementById('consentError').classList.add('show');
-      document.getElementById('consentBox').classList.add('err');
-      document.getElementById('consentBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return false;
-    }
-    return true;
+function go(n) {
+  showPanel('panel-' + n, n);
+  if (n === 7) buildReview();
+}
+
+function goFingerBranch() {
+  const eq = S.finger_eq;
+  if (eq === 'Tindeq')               { S.fingerBranch = '4a'; showPanel('panel-4a', 4); }
+  else if (eq === 'Edges WITH weights') { S.fingerBranch = '4b'; showPanel('panel-4b', 4); }
+  else if (eq === 'Edges NO weights')   { S.fingerBranch = '4c'; showPanel('panel-4c', 4); }
+}
+
+function goBackFromStep5() {
+  if (S.fingerBranch) showPanel('panel-' + S.fingerBranch, 4);
+  else go(4);
+}
+
+// ─── BMI CALCULATION ─────────────────────────────────────────────────────────
+function updateBMI() {
+  const h = parseFloat($('f-height').value);
+  const w = parseFloat($('f-weight').value);
+  const disp = $('bmi-display');
+  if (!h || !w) { disp.classList.remove('show'); return; }
+  const bmi = w / Math.pow(h / 100, 2);
+  $('bmi-val').textContent = bmi.toFixed(1);
+  const catEl = $('bmi-cat');
+  let cat, cls;
+  if (bmi < 18.5)      { cat = 'Underweight'; cls = 'bmi-warn'; }
+  else if (bmi < 25)   { cat = 'Normal';      cls = 'bmi-ok'; }
+  else if (bmi < 30)   { cat = 'Overweight';  cls = 'bmi-warn'; }
+  else                 { cat = 'Obese';       cls = 'bmi-flag'; }
+  catEl.textContent = cat;
+  catEl.className = 'bmi-cat ' + cls;
+  disp.classList.add('show');
+}
+
+// ─── SINGLE-CHOICE HANDLERS ─────────────────────────────────────────────────
+function setGender(v) {
+  S.gender = v;
+  ['Male','Female'].forEach(g => $('gender-'+g).classList.toggle('sel', g===v));
+  chkP();
+}
+
+function setPullupType(v) {
+  S.pullup_type = v;
+  $('pt-Max').classList.toggle('sel', v === 'Max body weight PU');
+  $('pt-2RM').classList.toggle('sel', v === '2 RM weighted PU');
+  $('block-maxpullups').style.display = (v === 'Max body weight PU') ? '' : 'none';
+  $('block-rm2pullup').style.display  = (v === '2 RM weighted PU') ? '' : 'none';
+}
+
+function setGripPos(v) {
+  S.grip_pos = v;
+  $('gp-Open').classList.toggle('sel', v === 'Open crimp');
+  $('gp-Half').classList.toggle('sel', v === 'Half crimp');
+}
+
+function setFingerEq(v) {
+  S.finger_eq = v;
+  $('fe-Tindeq').classList.toggle('sel', v === 'Tindeq');
+  $('fe-EdgesW').classList.toggle('sel', v === 'Edges WITH weights');
+  $('fe-EdgesNW').classList.toggle('sel', v === 'Edges NO weights');
+  $('btn-4-next').disabled = false;
+}
+
+function setSingleChoice(grp, hiddenId, btnEl) {
+  document.querySelectorAll('.opt[data-grp="' + grp + '"]').forEach(b => b.classList.remove('sel'));
+  btnEl.classList.add('sel');
+  $(hiddenId).value = btnEl.textContent.trim();
+}
+
+// ─── VALIDATION (Step 0) ────────────────────────────────────────────────────
+function chkP() {
+  const email = $('f-email').value.trim();
+  const first = $('f-first').value.trim();
+  const surname = $('f-surname').value.trim();
+  const age = $('f-age').value;
+  const consentGiven = $('consentSelf').checked || $('consentCoach').checked;
+  $('consentBox').classList.toggle('err', false);
+  $('btn-0-next').disabled = !(email && first && surname && S.gender && age && consentGiven);
+}
+
+// ─── REVIEW SUMMARY (Step 7) ────────────────────────────────────────────────
+function buildReview() {
+  const rows = [
+    ['Name', ($('f-first').value + ' ' + $('f-surname').value).trim() || '—'],
+    ['Email', $('f-email').value || '—'],
+    ['Gender', S.gender || '—'],
+    ['Age', $('f-age').value || '—'],
+    ['Height / Weight', ($('f-height').value || '—') + ' cm / ' + ($('f-weight').value || '—') + ' kg'],
+    ['Pull-up type recorded', S.pullup_type || '—'],
+    ['Finger grip position', S.grip_pos || '—'],
+    ['Finger test equipment', S.finger_eq || '—'],
+  ];
+  $('reviewList').innerHTML = rows.map(r =>
+    '<div class="review-row"><span class="rk">' + r[0] + '</span><span class="rv">' + r[1] + '</span></div>'
+  ).join('');
+}
+
+// ─── BUILD PAYLOAD ───────────────────────────────────────────────────────────
+function buildPayload() {
+  return {
+    timestamp: new Date().toISOString(),
+    email: $('f-email').value.trim(),
+    first: $('f-first').value.trim(),
+    surname: $('f-surname').value.trim(),
+    gender: S.gender || '',
+    yob: $('f-yob').value,
+    age: $('f-age').value,
+    height: $('f-height').value,
+    weight: $('f-weight').value,
+    bmi: (parseFloat($('f-height').value) && parseFloat($('f-weight').value))
+      ? (parseFloat($('f-weight').value) / Math.pow(parseFloat($('f-height').value) / 100, 2)).toFixed(1)
+      : '',
+    wingspan: $('f-wingspan').value,
+    max_reach: $('f-maxreach').value,
+    pullup_type: S.pullup_type || '',
+    max_pullups: $('f-maxpullups').value,
+    rm2_pullup: $('f-rm2pullup').value,
+    pullup_notes: $('f-pullupnotes').value,
+    pushups: $('f-pushups').value,
+    pushup_notes: $('f-pushupnotes').value,
+    jump: $('f-jump').value,
+    jump_notes: $('f-jumpnotes').value,
+    l_sit: $('f-lsit').value,
+    hollow: $('f-hollow').value,
+    plank: $('f-plank').value,
+    core_notes: $('f-corenotes').value,
+    grip_pos: S.grip_pos || '',
+    finger_eq: S.finger_eq || '',
+    mvc_left: $('f-mvcleft').value,
+    mvc_right: $('f-mvcright').value,
+    rfd_left: $('f-rfdleft').value,
+    rfd_right: $('f-rfdright').value,
+    cf_left: $('f-cfleft').value,
+    cf_right: $('f-cfright').value,
+    tindeq_notes: $('f-tindeqnotes').value,
+    maxhang: $('f-maxhang').value,
+    maxhang_notes: $('f-maxhangnotes').value,
+    loaded_rep: $('f-loadedrep').value,
+    loaded_notes: $('f-loadednotes').value,
+    bw_hang: $('f-bwhang').value,
+    bw_repeaters: $('f-bwrepeaters').value,
+    bw_notes: $('f-bwnotes').value,
+    jug_90: $('f-jug90').value,
+    jug_notes: $('f-jugnotes').value,
+    arm_l: $('f-arml').value,
+    arm_r: $('f-armr').value,
+    arm_notes: $('f-armnotes').value,
+    campus_l: $('f-campusl').value,
+    campus_r: $('f-campusr').value,
+    campus_notes: $('f-campusnotes').value,
+    cossack_l: $('f-cossackl').value,
+    cossack_r: $('f-cossackr').value,
+    boxstep_l: $('f-boxstepl').value,
+    boxstep_r: $('f-boxstepr').value,
+    tester: $('f-tester').value.trim(),
+    consentGivenBy: $('consentCoach').checked ? 'coach' : 'self',
+  };
+}
+
+// ─── SUBMIT ───────────────────────────────────────────────────────────────────
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsvB42xMuq0vAp4buIC7p49JbbnxjuycVgBBM7ETwtIKBGQ-5NncWinQD42FhTRwo/exec";
+
+function submitAssessment() {
+  const statusEl = $('submit-status');
+  if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    statusEl.className = 'submit-status err';
+    statusEl.textContent = 'Setup incomplete: this form has not been connected to a Google Sheet yet.';
+    return;
   }
+  const payload = buildPayload();
+  statusEl.className = 'submit-status sending';
+  statusEl.textContent = 'Submitting…';
+  fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+    .then(() => {
+      const reportUrl = SCRIPT_URL + '?email=' + encodeURIComponent(payload.email);
+      const pdfUrl = reportUrl + '&format=pdf';
+      statusEl.className = 'submit-status ok';
+      statusEl.innerHTML = 'Assessment submitted successfully. Results have been saved.<br>' +
+        '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">' +
+          '<a href="' + reportUrl + '" target="_blank" class="btn btn-primary" style="text-decoration:none;display:inline-block">View My Results</a>' +
+          '<a href="' + pdfUrl + '" target="_blank" class="btn btn-ghost" style="text-decoration:none;display:inline-block">Download PDF</a>' +
+        '</div>';
+    })
+    .catch(e => {
+      statusEl.className = 'submit-status err';
+      statusEl.textContent = 'Could not reach the script: ' + e.message;
+    });
+}
 </script>
 
 </body>
