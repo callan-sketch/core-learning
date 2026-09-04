@@ -217,6 +217,21 @@
   .tag-form { background: var(--terracotta-soft); color: #a24e2a; }
   .tag-tool { background: var(--teal-soft); color: #205c5d; }
 
+  .resource-card.locked {
+    opacity: 0.55;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .resource-card.locked:hover {
+    transform: none;
+    box-shadow: var(--shadow);
+  }
+
+  .resource-card .go.locked-note {
+    color: var(--ink-mute);
+  }
+
   @media (max-width: 900px) {
     .resource-grid { grid-template-columns: repeat(2, 1fr); }
   }
@@ -298,7 +313,7 @@
 
   <div class="resource-grid">
 
-    <a class="resource-card" href="resources/muscle-finder.html" target="_blank" rel="noopener">
+    <a class="resource-card" data-unlock="2" href="resources/muscle-finder.html" target="_blank" rel="noopener">
       <div class="resource-icon" style="background: var(--teal-soft);">🔎</div>
       <span class="resource-tag tag-tool">Reference</span>
       <h3>Muscle Finder</h3>
@@ -306,7 +321,7 @@
       <span class="go">Open tool →</span>
     </a>
 
-    <a class="resource-card" href="resources/rotator-cuff.html" target="_blank" rel="noopener">
+    <a class="resource-card" data-unlock="2" href="resources/rotator-cuff.html" target="_blank" rel="noopener">
       <div class="resource-icon" style="background: var(--teal-soft);">💪</div>
       <span class="resource-tag tag-tool">Reference</span>
       <h3>Rotator Cuff</h3>
@@ -314,7 +329,7 @@
       <span class="go">Open tool →</span>
     </a>
 
-    <a class="resource-card" href="resources/par-q.html" target="_blank" rel="noopener">
+    <a class="resource-card" data-unlock="4" href="resources/par-q.html" target="_blank" rel="noopener">
       <div class="resource-icon" style="background: var(--terracotta-soft);">📋</div>
       <span class="resource-tag tag-form">Screening</span>
       <h3>PAR-Q+</h3>
@@ -322,7 +337,7 @@
       <span class="go">Open form →</span>
     </a>
 
-    <a class="resource-card" href="resources/athlete-medical-questionnaire.html" target="_blank" rel="noopener">
+    <a class="resource-card" data-unlock="4" href="resources/athlete-medical-questionnaire.html" target="_blank" rel="noopener">
       <div class="resource-icon" style="background: var(--terracotta-soft);">🩺</div>
       <span class="resource-tag tag-form">Screening</span>
       <h3>Athlete Medical Questionnaire</h3>
@@ -330,7 +345,7 @@
       <span class="go">Open form →</span>
     </a>
 
-    <a class="resource-card" href="resources/reds-questionnaire.html" target="_blank" rel="noopener">
+    <a class="resource-card" data-unlock="4" href="resources/reds-questionnaire.html" target="_blank" rel="noopener">
       <div class="resource-icon" style="background: var(--terracotta-soft);">⚖️</div>
       <span class="resource-tag tag-form">Screening</span>
       <h3>RED-S Screening</h3>
@@ -338,7 +353,7 @@
       <span class="go">Open form →</span>
     </a>
 
-    <a class="resource-card" href="resources/advanced-climbing-assessment.html" target="_blank" rel="noopener">
+    <a class="resource-card" data-unlock="4" href="resources/advanced-climbing-assessment.html" target="_blank" rel="noopener">
       <div class="resource-icon" style="background: var(--terracotta-soft);">🧗</div>
       <span class="resource-tag tag-form">Assessment</span>
       <h3>Advanced Climbing Assessment</h3>
@@ -346,7 +361,7 @@
       <span class="go">Open form →</span>
     </a>
 
-    <a class="resource-card" href="https://callan-sketch.github.io/climbing-recovery/" target="_blank" rel="noopener">
+    <a class="resource-card" data-unlock="5" href="https://callan-sketch.github.io/climbing-recovery/" target="_blank" rel="noopener">
       <div class="resource-icon" style="background: var(--teal-soft);">🧊</div>
       <span class="resource-tag tag-tool">Reference</span>
       <h3>Recovery Tool</h3>
@@ -360,7 +375,7 @@
 </div>
 
 <footer class="site-footer">
-  <p>Core Learning — part of the Core brand family. <a href="mailto:callan@wam.co.za">callan@wam.co.za</a></p>
+  <p>Core Learning — part of the Core brand family. <a href="mailto:info@corelearning.co.za">info@corelearning.co.za</a></p>
 </footer>
 
 <script type="module">
@@ -368,6 +383,9 @@
   import {
     getAuth, onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",
@@ -381,12 +399,38 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (!user) {
       window.location.href = "index.html";
       return;
     }
+
+    let unlockedModules = [];
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) {
+        const data = snap.data();
+        unlockedModules = Array.isArray(data.unlockedModules) ? data.unlockedModules : [];
+      }
+    } catch (err) {
+      console.error("Failed to load unlock progress:", err);
+    }
+
+    document.querySelectorAll(".resource-card[data-unlock]").forEach((card) => {
+      const requiredModule = parseInt(card.dataset.unlock, 10);
+      if (unlockedModules.includes(requiredModule)) return;
+
+      card.classList.add("locked");
+      card.removeAttribute("href");
+      const goEl = card.querySelector(".go");
+      if (goEl) {
+        goEl.textContent = "🔒 Unlocks at Module 0" + requiredModule;
+        goEl.classList.add("locked-note");
+      }
+    });
+
     document.getElementById("loading-state").style.display = "none";
     document.getElementById("page-content").style.display = "block";
   });
