@@ -702,8 +702,14 @@ function submitAssessment() {
   statusEl.textContent = 'Submitting…';
   fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
     .then(() => {
+      const reportUrl = SCRIPT_URL + '?email=' + encodeURIComponent(payload.email);
+      const pdfUrl = reportUrl + '&format=pdf';
       statusEl.className = 'submit-status ok';
-      statusEl.textContent = 'Assessment submitted successfully. Results have been saved and a confirmation email will follow shortly.';
+      statusEl.innerHTML = 'Assessment submitted successfully. Results have been saved.<br>' +
+        '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">' +
+          '<a href="' + reportUrl + '" target="_blank" class="btn btn-primary" style="text-decoration:none;display:inline-block">View My Results</a>' +
+          '<a href="' + pdfUrl + '" target="_blank" class="btn btn-ghost" style="text-decoration:none;display:inline-block">Download PDF</a>' +
+        '</div>';
     })
     .catch(e => {
       statusEl.className = 'submit-status err';
