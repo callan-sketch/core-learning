@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<!--
+  LIVE VERSION — this is the production resource, deployed on GitHub as
+  advanced-climbing-assessment.html (renamed from -new), replacing the old
+  Google Form embed. It is the only version of this assessment Chris runs.
+
+  Workflow: further changes happen on a working "-new" copy of this file in
+  chat. Chris reviews and, once happy, manually replaces this live file on
+  GitHub with the updated version — repeating that swap-over after each
+  batch of changes.
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -234,12 +244,12 @@ input:focus { border-color:var(--accent); background:#fff; }
       </div></div>
 
     <div class="q-block" id="block-maxpullups" style="display:none;"><div class="q-text">Max Number of Bar Pull-Ups</div>
-      <div class="q-sub">Dead hang start, chin clears the bar, full elbow extension at the bottom of every rep. Continue to failure or technical breakdown.</div>
+      <div class="q-sub">Arms shoulder width apart; feet always facing forward; no kipping or leg movement allowed; must obtain lock off and chin over bar.</div>
       <div class="q-image filled"><img src="images/max-pullup-test.jpg" alt="Max bodyweight pull-up test, dead hang start and chin over bar top position"></div>
       <input type="number" id="f-maxpullups" placeholder="Reps"></div>
 
     <div class="q-block" id="block-rm2pullup" style="display:none;"><div class="q-text">2RM Pull-Ups</div>
-      <div class="q-sub">Record the maximum additional weight successfully lifted for 2 clean reps.</div>
+      <div class="q-sub">Complete 2 pull-ups using the maximum weight you can. Add weight to your body using a harness or sling. It may take several sets to find a max weight, so rest 3 minutes between each attempt. The 2 pull-ups must be completed from nearly straight arms to chin at bar in a controlled manner, without any movement in your lower body. Hands should be at around shoulder width with palms facing away. Rest 5 minutes before completing the next exercise.</div>
       <div class="q-image filled"><img src="images/rm2-pullup-test.jpg" alt="2 rep max weighted pull-up test using a weight belt"></div>
       <div class="unit-suffix"><input type="number" id="f-rm2pullup" placeholder="e.g. 10" step="0.5"><span>kg added</span></div></div>
 
@@ -247,7 +257,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <input type="text" id="f-pullupnotes" placeholder="Notes on technique, equipment, or conditions (optional)"></div>
 
     <div class="q-block"><div class="q-text">Number of Push-Ups in a Minute</div>
-      <div class="q-sub">Standard push-up form, chest to within a fist of the floor, full lockout at the top.</div>
+      <div class="q-sub">Fingers facing forwards; elbows stay at sides; at the bottom make sure your chest touches the ground before you push up again.</div>
       <div class="q-image filled"><img src="images/pushup-test.jpg" alt="Push-up form, top and bottom position"></div>
       <input type="number" id="f-pushups" placeholder="Reps"></div>
 
@@ -255,6 +265,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <input type="text" id="f-pushupnotes" placeholder="Notes (optional)"></div>
 
     <div class="q-block"><div class="q-text">Standing Jump for Height</div>
+      <div class="q-sub">Difference measured from finger tips on max reach standing to jumping.</div>
       <div class="q-image filled"><img src="images/jump-test.jpg" alt="Standing jump for height test, standing reach and jump reach compared"></div>
       <div class="unit-suffix"><input type="number" id="f-jump" placeholder="e.g. 45" step="0.5"><span>cm</span></div></div>
 
@@ -271,17 +282,17 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="section-hd">Step 4 of 8 — <span>Core Strength</span></div>
 
     <div class="q-block"><div class="q-text">Hanging L-Sit</div>
-      <div class="q-sub">Hang from a bar or rings, legs raised parallel to the ground, knees locked straight. Time until form breaks down.</div>
+      <div class="q-sub">Engage shoulders. Lift legs as straight as flexibility allows to perpendicular with body. Hold as long as possible. If it drops past 45 degrees you have 1 chance to correct — if it drops again, time is taken.</div>
       <div class="q-image filled"><img src="images/lsit-test.jpg" alt="Hanging L-sit position from a pull-up bar"></div>
       <div class="unit-suffix"><input type="number" id="f-lsit" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Hollow Body Hold</div>
-      <div class="q-sub">Lower back pressed to the floor, arms and legs extended and raised. Time until lower back lifts off the floor.</div>
+      <div class="q-sub">Lie on the ground. Extend your arms so your shoulders are raised off the floor, then straighten your legs into a low dish position. Do not allow the lower back to raise off the floor while in this position. Raise the arms straight so your biceps touch your ears. Record how long you can hold this position with good form throughout. If you reach 120 seconds, stop the test and record a score of 120 seconds. Rest 2 minutes before completing the next exercise.</div>
       <div class="q-image filled"><img src="images/hollow-hold-test.jpg" alt="Hollow body hold position"></div>
       <div class="unit-suffix"><input type="number" id="f-hollow" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Plank</div>
-      <div class="q-sub">Forearm plank, straight line from head to heels. Time until hips sag or lift. Rest 2 minutes before the next exercise.</div>
+      <div class="q-sub">From a press-up position, walk your hands as far forwards as possible. Maintain a flat back by tensing your core and glutes, and be sure not to let your lower back sag. Hold this position for as long as you can. If you reach 240 seconds stop and record 240 seconds. Rest 2 minutes before completing the next exercise.</div>
       <div class="q-image filled"><img src="images/plank-test.jpg" alt="Forearm plank position"></div>
       <div class="unit-suffix"><input type="number" id="f-plank" placeholder="Seconds"><span>sec</span></div></div>
 
@@ -356,7 +367,7 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="info-box amber">Only recommended for over 18 year olds.</div>
 
     <div class="q-block"><div class="q-text">Two-Arm Weighted Hang from a 20mm Edge</div>
-      <div class="q-sub">Warm up thoroughly. Add weight via a dip belt until you find the maximum load you can hang for a clean 5-second hold on a 20mm edge, both hands, open or half crimp as recorded above. Allow full recovery (5 min+) between attempts.</div>
+      <div class="q-sub">The aim of this test is to find the maximum total load you can hang with two arms for 7 seconds using either a strict half crimp or an open hand grip (whichever is your preferred position) on a 20mm edge. Start at a low load and increase gradually until you can no longer complete a full 7 second hang — if in doubt, start at bodyweight. Hang for 7 seconds in your preferred grip position and rest for 2 minutes. If successful, use a dipping belt or climbing harness to add weight and attempt another 7 second hang at the increased weight; if unsuccessful, use a dipping belt or harness and a pulley system to take some weight off and attempt the hang at a decreased weight. Add between 1kg and 5kg per round depending on how hard the previous hang felt (larger increments if it felt extremely easy). Aim to find your maximum weight within 4 to 8 rounds, resting 2 minutes between each attempt. Record the maximum weight you added (kg). Rest 10 minutes before completing the next exercise.</div>
       <div class="q-image filled"><img src="images/weighted-hang-test.jpg" alt="Two-arm weighted hang with added weight via a dip belt"></div>
       <div class="unit-suffix"><input type="number" id="f-maxhang" placeholder="e.g. 15" step="0.5"><span>kg added</span></div></div>
 
@@ -364,7 +375,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <input type="text" id="f-maxhangnotes" placeholder="Notes (optional)"></div>
 
     <div class="q-block"><div class="q-text">Loaded Repeaters</div>
-      <div class="q-sub">Using a load you can sustain, perform repeaters (7s hang / 3s rest) on the 20mm edge until failure. Record total time under tension.</div>
+      <div class="q-sub">Use 80% of your max hang weight (80% of your bodyweight plus added weight) achieved in the Two-Arm Weighted Hang above. Hang for 7 seconds followed by 3 seconds of rest, repeated to failure. Record total time tested till failure, including resting time (sec).</div>
       <div class="unit-suffix"><input type="number" id="f-loadedrep" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Any alterations to the above test?</div>
@@ -381,12 +392,12 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="info-box">Recommended for under 18 year olds.</div>
 
     <div class="q-block"><div class="q-text">Bodyweight Hang from 20mm Edges</div>
-      <div class="q-sub">Test how long you can hang bodyweight from 20mm edges, open or half crimp as recorded above.</div>
+      <div class="q-sub">Test how long you can hang your bodyweight with arms from the 20mm edges on the beastmaker or similar. Keep your shoulders engaged. Record the time (sec).</div>
       <div class="q-image filled"><img src="images/bodyweight-hang-test.jpg" alt="Bodyweight hang from a 20mm edge on a hangboard"></div>
       <div class="unit-suffix"><input type="number" id="f-bwhang" placeholder="Seconds"><span>sec</span></div></div>
 
     <div class="q-block"><div class="q-text">Climbing Endurance — Repeaters on 20mm Edges</div>
-      <div class="q-sub">Bodyweight repeaters (7s hang / 3s rest) on the 20mm edge until failure. Record total time under tension.</div>
+      <div class="q-sub">Hang for 7 seconds with both arms, scapulae engaged; 3 seconds rest; repeat till failure. Record total seconds till failure.</div>
       <div class="q-image filled"><img src="images/repeaters-test.jpg" alt="Repeaters protocol: 7 second hang, 3 second rest, repeat"></div>
       <div class="unit-suffix"><input type="number" id="f-bwrepeaters" placeholder="Seconds"><span>sec</span></div></div>
 
@@ -403,6 +414,7 @@ input:focus { border-color:var(--accent); background:#fff; }
     <div class="section-hd">Step 6 of 8 — <span>Other Finger &amp; Arm Strength/Endurance</span></div>
 
     <div class="q-block"><div class="q-text">Length of Time Hanging Both Arms at 90° Elbow Flexion from a Jug</div>
+      <div class="q-sub">Timed until unable to maintain 90° elbow flexion. Allowed 1 warning to return to 90°.</div>
       <div class="q-image filled"><img src="images/jug90-hang-test.jpg" alt="Two-arm hang at 90 degree elbow flexion from a jug"></div>
       <div class="unit-suffix"><input type="number" id="f-jug90" placeholder="Seconds"><span>sec</span></div></div>
 
@@ -410,7 +422,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <input type="text" id="f-jugnotes" placeholder="Notes (optional)"></div>
 
     <div class="q-block"><div class="q-text">One-Arm Hang from a Slot (2-pad) Beastmaker</div>
-      <div class="q-sub">If a slot isn't available, a pull-up bar may be used as an alternative — note this below.</div>
+      <div class="q-sub">In your most comfortable position, shoulders engaged, for time. If you can't hang for at least 5 seconds from the slot, you can hang from a pull-up bar instead — note this below.</div>
       <div class="q-image filled"><img src="images/one-arm-hang-test.jpg" alt="One-arm hang from a slot on a Beastmaker hangboard"></div>
       <div class="lr-pair">
         <div><div class="lr-label">Left</div>
@@ -424,7 +436,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <input type="text" id="f-armnotes" placeholder="Notes (optional)"></div>
 
     <div class="q-block"><div class="q-text">Power — Campus Reach Distance</div>
-      <div class="q-sub">Maximum single-move campus reach distance, left and right leading arm.</div>
+      <div class="q-sub">From a matching jug on a slightly overhanging wall, campus with the leading arm as high as possible, just to touch. Distance from jug to fingertip reach (cm).</div>
       <div class="q-image filled"><img src="images/campus-reach-test.jpg" alt="Maximum single-move campus reach on a campus board"></div>
       <div class="lr-pair">
         <div><div class="lr-label">Left</div>
@@ -449,7 +461,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <img src="images/cossack-squat-criteria.jpg" alt="Cossack squat depth criteria: 1) knee flexion less than 90 degrees, 2) over 90 degrees but thigh not past parallel, 3) over 90 degrees and thigh past parallel, 4) full flexion, able to rest at bottom of range">
     </div>
     <div class="q-block"><div class="q-text">Cossack Squat — Left</div>
-      <div class="q-sub">Depth reached, per the criteria above.</div>
+      <div class="q-sub">Left knee bends, right knee stays straight, right foot must stay flat on the ground. Measure range of knee bend, per the depth criteria above.</div>
       <div class="opts">
         <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>1 — Knee flexion less than 90°</button>
         <button class="opt" data-grp="cossackl" onclick="setSingleChoice('cossackl','f-cossackl',this)"><span class="opt-circle"></span>2 — Knee flexion over 90°, thigh not past parallel</button>
@@ -459,7 +471,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <input type="hidden" id="f-cossackl"></div>
 
     <div class="q-block"><div class="q-text">Cossack Squat — Right</div>
-      <div class="q-sub">Depth reached, per the criteria above.</div>
+      <div class="q-sub">Right knee bends, left knee stays straight, left foot must stay flat on the ground. Measure range of knee bend, per the depth criteria above.</div>
       <div class="opts">
         <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>1 — Knee flexion less than 90°</button>
         <button class="opt" data-grp="cossackr" onclick="setSingleChoice('cossackr','f-cossackr',this)"><span class="opt-circle"></span>2 — Knee flexion over 90°, thigh not past parallel</button>
@@ -468,9 +480,11 @@ input:focus { border-color:var(--accent); background:#fff; }
       </div>
       <input type="hidden" id="f-cossackr"></div>
 
+    <div class="q-image filled">
+      <img src="images/boxstep-test.jpg" alt="Box step-up against a wall: start position with both toes touching the wall, finish position standing upright on the box">
+    </div>
     <div class="q-block"><div class="q-text">Box Step-Up Against Wall — Left</div>
-      <div class="q-sub">Standing close to a wall, step up onto the box leading with the left leg without using momentum or pushing off the wall.</div>
-      <div class="q-image filled"><img src="images/boxstep-test.jpg" alt="Box step-up against a wall: start position with both toes touching the wall, finish position standing upright on the box"></div>
+      <div class="q-sub">From a position facing the wall, both toes touching the wall (the foot on the ground and the foot on the box), step up with control leading with the left leg till standing upright. 3 attempts maximum.</div>
       <div class="opts-row">
         <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>20 inch</button>
         <button class="opt" data-grp="boxl" onclick="setSingleChoice('boxl','f-boxstepl',this)"><span class="opt-circle"></span>24 inch</button>
@@ -479,7 +493,7 @@ input:focus { border-color:var(--accent); background:#fff; }
       <input type="hidden" id="f-boxstepl"></div>
 
     <div class="q-block"><div class="q-text">Box Step-Up Against Wall — Right</div>
-      <div class="q-sub">Same test, leading with the right leg.</div>
+      <div class="q-sub">Same test, leading with the right leg. 3 attempts maximum.</div>
       <div class="opts-row">
         <button class="opt" data-grp="boxr" onclick="setSingleChoice('boxr','f-boxstepr',this)"><span class="opt-circle"></span>20 inch</button>
         <button class="opt" data-grp="boxr" onclick="setSingleChoice('boxr','f-boxstepr',this)"><span class="opt-circle"></span>24 inch</button>
