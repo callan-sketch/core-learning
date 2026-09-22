@@ -377,8 +377,7 @@
         <div class="section-title">Email</div>
         <div class="field">
           <label for="email">Email *</label>
-          <input type="email" id="email" name="email" required>
-          <p class="field-hint">Please use the exact same email you signed up to the course with — a different email here will stop the next lesson from unlocking.</p>
+          <input type="email" id="email" name="email" required readonly style="background:#f0f0ee; color:#888; cursor:not-allowed;">
         </div>
       </div>
 
@@ -533,7 +532,7 @@
   </div>
 
   <script>
-    const QUIZ_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwo2D_69qnYwG7rslhnSbd-Jn-3Nw9r3BABRoLBPRFAim6ck50J8lTjxN6bcIE7scI/exec";
+    const QUIZ_ENDPOINT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
     const TOTAL_QUESTIONS = 10;
     const TOTAL_REQUIRED_FIELDS = 3 + TOTAL_QUESTIONS; // email + name + surname + 10 questions = 13
 
