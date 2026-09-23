@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 05 Quiz: Technique Instruction — Core Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#1b2a3a;--teal:#3a8a8c;--teal-dk:#2e6e70;--terracotta:#d9764a;--terracotta-dk:#bd5f37;--cream:#f7f5f1;--cream-dk:#e9e4da;--ink:#2a2c2b;--ink-soft:#5a5f5c;}
+    *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+    body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    h1,h2{font-family:'Fraunces',serif;color:var(--navy);font-weight:600;line-height:1.25;}a{color:inherit;}
+    header{position:sticky;top:0;z-index:50;background:var(--navy);}
+    nav.wrap{max-width:820px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .logo-word{font-family:'Fraunces',serif;font-weight:700;font-size:1.1rem;}.logo-word .core{color:#fff;}.logo-word .learning{color:var(--terracotta);}
+    .nav-back{color:var(--cream);opacity:.85;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:8px;transition:background .2s ease;text-decoration:none;}
+    .nav-back:hover{background:rgba(247,245,241,.1);opacity:1;}
+    .page{max-width:820px;margin:0 auto;padding:0 28px;}
+    .quiz-head{padding:44px 0 8px;}.kicker{color:var(--terracotta);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:14px;}
+    .quiz-head h1{font-size:clamp(1.6rem,3.2vw,2.15rem);margin-bottom:10px;}.quiz-sub{color:var(--ink-soft);font-size:.95rem;max-width:60ch;}
+    .progress-wrap{position:sticky;top:64px;z-index:40;background:var(--cream);padding:14px 0;border-bottom:1px solid var(--cream-dk);margin-bottom:8px;}
+    .progress-track{width:100%;height:6px;background:var(--cream-dk);border-radius:3px;overflow:hidden;}
+    .progress-fill{height:100%;width:0%;background:var(--terracotta);transition:width .2s ease;}
+    .progress-label{font-size:.78rem;color:var(--ink-soft);margin-top:8px;}
+    form{padding-bottom:80px;}
+    .section-card{background:#fff;border:1px solid var(--cream-dk);border-radius:14px;padding:26px 26px 28px;margin:24px 0;}
+    .section-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-dk);margin-bottom:6px;}
+    .section-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;color:var(--navy);margin-bottom:18px;}
+    .field{margin-bottom:16px;}.field:last-child{margin-bottom:0;}
+    .field label{display:block;font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:6px;}
+    .field input[type="email"],.field input[type="text"]{width:100%;padding:12px 14px;border:1.5px solid var(--cream-dk);border-radius:9px;font-family:'Inter',sans-serif;font-size:.95rem;color:var(--ink);background:var(--cream);transition:border-color .15s ease;}
+    .field input:focus{outline:none;border-color:var(--teal);background:#fff;}
+    .q-card{background:#fff;border:1px solid var(--cream-dk);border-radius:14px;padding:24px 26px 26px;margin:16px 0;scroll-margin-top:150px;}
+    .q-num{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--terracotta);margin-bottom:10px;}
+    .q-text{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--navy);margin-bottom:16px;line-height:1.4;}
+    .opts{display:flex;flex-direction:column;gap:10px;}
+    .opt{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1.5px solid var(--cream-dk);border-radius:10px;cursor:pointer;transition:border-color .15s ease,background .15s ease;}
+    .opt:hover{border-color:var(--teal);background:var(--cream);}
+    .opt input[type="radio"]{margin-top:3px;width:17px;height:17px;accent-color:var(--terracotta);flex-shrink:0;cursor:pointer;}
+    .opt span{font-size:.92rem;color:var(--ink);}.opt:has(input:checked){border-color:var(--terracotta);background:#fdf3ee;}
+    .submit-bar{position:sticky;bottom:0;background:var(--cream);border-top:1px solid var(--cream-dk);padding:16px 0;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .submit-status{font-size:.85rem;color:var(--ink-soft);}.submit-status.error{color:var(--terracotta-dk);font-weight:600;}
+    .btn-primary{background:var(--terracotta);color:#fff;padding:13px 26px;border:none;border-radius:9px;font-weight:600;font-size:.95rem;font-family:'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:background .2s ease,transform .2s ease;white-space:nowrap;}
+    .btn-primary:hover:not(:disabled){background:var(--terracotta-dk);transform:translateY(-1px);}.btn-primary:disabled{opacity:.6;cursor:not-allowed;}
+    .result-screen{display:none;text-align:center;padding:60px 20px 100px;}.result-screen.show{display:block;}
+    .result-icon{font-size:3rem;margin-bottom:16px;}.result-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.6rem;color:var(--navy);margin-bottom:10px;}
+    .result-score{font-size:1.1rem;color:var(--ink-soft);margin-bottom:24px;}.result-note{font-size:.9rem;color:var(--ink-soft);max-width:50ch;margin:0 auto;}
+    @media(max-width:600px){nav.wrap{padding:0 16px;}.page{padding:0 16px;}.section-card,.q-card{padding:18px 18px 20px;}}
+  </style>
+</head>
+<body>
+  <div id="authGateOverlay" style="position:fixed;inset:0;z-index:99999;background:#f7f5f1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Inter',sans-serif;">
+    <svg width="28" height="28" viewBox="0 0 16 16" fill="none" style="animation:authGateSpin .8s linear infinite;"><circle cx="8" cy="8" r="6" stroke="#e9e4da" stroke-width="2"/><path d="M14 8a6 6 0 0 0-6-6" stroke="#d9764a" stroke-width="2" stroke-linecap="round"/></svg>
+    <span style="color:#5a5f5c;font-size:.9rem;">Checking your access…</span>
+  </div>
+  <style>@keyframes authGateSpin{to{transform:rotate(360deg);}}</style>
+  <script type="module">
+    const FC={apiKey:"AIzaSyAN9BVXDo15Mav2zketm5jhKRoBjs2yYX8",authDomain:"core-coaching-login.firebaseapp.com",projectId:"core-coaching-login",storageBucket:"core-coaching-login.firebasestorage.app",messagingSenderId:"184932860937",appId:"1:184932860937:web:83da63f1453eff8ca824d8",measurementId:"G-N7WNPL47WQ"};
+    const LOGIN_URL="../index.html";function denyAccess(){window.location.replace(LOGIN_URL);}
+    try{
+      const{initializeApp}=await import("https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js");
+      const{getAuth,onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js");
+      const app=initializeApp(FC);const auth=getAuth(app);
+      onAuthStateChanged(auth,async(user)=>{
+        if(!user){denyAccess();return;}
+        const ei=document.getElementById('email');if(user.email&&ei)ei.value=user.email;
+        document.getElementById('authGateOverlay').remove();
+      });
+    }catch(err){console.error('Auth gate failed:',err);denyAccess();}
+  </script>
+
+  <header><nav class="wrap">
+    <span class="logo-word"><span class="core">Core</span> <span class="learning">Learning</span></span>
+    <a href="../lessons/module-05-lesson-01.html" class="nav-back">← Back to Module 05</a>
+  </nav></header>
+
+  <div class="progress-wrap"><div class="page" style="padding:0 28px;">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 of 53 required fields completed</div>
+  </div></div>
+
+  <div class="page">
+    <div class="quiz-head">
+      <span class="kicker">Module 05 Quiz</span>
+      <h1>Technique Instruction</h1>
+      <p class="quiz-sub">50 questions, 1 mark each (50 marks total). Pass mark is 80%. Covers Module 5: Technique Instruction.</p>
+    </div>
+
+    <form id="quizForm" novalidate>
+      <div class="section-card"><div class="section-label">Section 1</div><div class="section-title">Email</div>
+        <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" required readonly style="background:#f0f0ee;color:#888;cursor:not-allowed;"></div>
+      </div>
+      <div class="section-card"><div class="section-label">Section 2</div><div class="section-title">Personal details</div>
+        <div class="field"><label for="name">Name *</label><input type="text" id="name" name="name" required></div>
+        <div class="field"><label for="surname">Surname *</label><input type="text" id="surname" name="surname" required></div>
+      </div>
+      <div class="section-card" style="padding-bottom:10px;"><div class="section-label">Section 3</div><div class="section-title">Quiz</div></div>
+
+      <!-- Q1 -->
+      <div class="q-card"><div class="q-num">Question 1 of 50</div><div class="q-text">"Push the floor away through your feet" is an example of which type of cue?</div><div class="opts">
+        <label class="opt" for="q1_0"><input type="radio" id="q1_0" name="q1" value="Internal focus cue" required><span>Internal focus cue</span></label>
+        <label class="opt" for="q1_1"><input type="radio" id="q1_1" name="q1" value="External focus cue"><!-- CORRECT --><span>External focus cue</span></label>
+        <label class="opt" for="q1_2"><input type="radio" id="q1_2" name="q1" value="Tactile cue"><span>Tactile cue</span></label>
+        <label class="opt" for="q1_3"><input type="radio" id="q1_3" name="q1" value="Visual cue"><span>Visual cue</span></label>
+      </div></div>
+
+      <!-- Q2 -->
+      <div class="q-card"><div class="q-num">Question 2 of 50</div><div class="q-text">For effective verbal cueing, cues should generally be kept to how many words?</div><div class="opts">
+        <label class="opt" for="q2_0"><input type="radio" id="q2_0" name="q2" value="1–2 words" required><span>1–2 words</span></label>
+        <label class="opt" for="q2_1"><input type="radio" id="q2_1" name="q2" value="3–5 words"><!-- CORRECT --><span>3–5 words</span></label>
+        <label class="opt" for="q2_2"><input type="radio" id="q2_2" name="q2" value="6–10 words"><span>6–10 words</span></label>
+        <label class="opt" for="q2_3"><input type="radio" id="q2_3" name="q2" value="As many as needed to be clear"><span>As many as needed to be clear</span></label>
+      </div></div>
+
+      <!-- Q3 -->
+      <div class="q-card"><div class="q-num">Question 3 of 50</div><div class="q-text">Which cueing modality requires explicit consent before use?</div><div class="opts">
+        <label class="opt" for="q3_0"><input type="radio" id="q3_0" name="q3" value="Verbal cueing" required><span>Verbal cueing</span></label>
+        <label class="opt" for="q3_1"><input type="radio" id="q3_1" name="q3" value="Visual cueing"><span>Visual cueing</span></label>
+        <label class="opt" for="q3_2"><input type="radio" id="q3_2" name="q3" value="Tactile cueing"><!-- CORRECT --><span>Tactile cueing</span></label>
+        <label class="opt" for="q3_3"><input type="radio" id="q3_3" name="q3" value="Environmental cueing"><span>Environmental cueing</span></label>
+      </div></div>
+
+      <!-- Q4 -->
+      <div class="q-card"><div class="q-num">Question 4 of 50</div><div class="q-text">The effectiveness of demonstration (visual cueing) is explained by which mechanism?</div><div class="opts">
+        <label class="opt" for="q4_0"><input type="radio" id="q4_0" name="q4" value="The proprioceptive feedback loop" required><span>The proprioceptive feedback loop</span></label>
+        <label class="opt" for="q4_1"><input type="radio" id="q4_1" name="q4" value="The mirror neuron system"><!-- CORRECT --><span>The mirror neuron system</span></label>
+        <label class="opt" for="q4_2"><input type="radio" id="q4_2" name="q4" value="The cerebellar adaptation pathway"><span>The cerebellar adaptation pathway</span></label>
+        <label class="opt" for="q4_3"><input type="radio" id="q4_3" name="q4" value="The reticular activating system"><span>The reticular activating system</span></label>
+      </div></div>
+
+      <!-- Q5 -->
+      <div class="q-card"><div class="q-num">Question 5 of 50</div><div class="q-text">When demonstrating a new skill, what should a coach show first?</div><div class="opts">
+        <label class="opt" for="q5_0"><input type="radio" id="q5_0" name="q5" value="The correct movement" required><!-- CORRECT --><span>The correct movement</span></label>
+        <label class="opt" for="q5_1"><input type="radio" id="q5_1" name="q5" value="The most common error"><span>The most common error</span></label>
+        <label class="opt" for="q5_2"><input type="radio" id="q5_2" name="q5" value="A slow-motion version of the skill"><span>A slow-motion version of the skill</span></label>
+        <label class="opt" for="q5_3"><input type="radio" id="q5_3" name="q5" value="The regression of the skill"><span>The regression of the skill</span></label>
+      </div></div>
+
+      <!-- Q6 -->
+      <div class="q-card"><div class="q-num">Question 6 of 50</div><div class="q-text">How many points of contact should a climber maintain with the wall to stay stable?</div><div class="opts">
+        <label class="opt" for="q6_0"><input type="radio" id="q6_0" name="q6" value="Two" required><span>Two</span></label>
+        <label class="opt" for="q6_1"><input type="radio" id="q6_1" name="q6" value="Three"><!-- CORRECT --><span>Three</span></label>
+        <label class="opt" for="q6_2"><input type="radio" id="q6_2" name="q6" value="Four"><span>Four</span></label>
+        <label class="opt" for="q6_3"><input type="radio" id="q6_3" name="q6" value="As many as possible"><span>As many as possible</span></label>
+      </div></div>
+
+      <!-- Q7 -->
+      <div class="q-card"><div class="q-num">Question 7 of 50</div><div class="q-text">Medial (in-and-out) weight shift — moving the hips away from the wall — primarily helps a climber to:</div><div class="opts">
+        <label class="opt" for="q7_0"><input type="radio" id="q7_0" name="q7" value="Generate more pulling power from the arms" required><span>Generate more pulling power from the arms</span></label>
+        <label class="opt" for="q7_1"><input type="radio" id="q7_1" name="q7" value="See footholds more clearly and place feet more fluidly"><!-- CORRECT --><span>See footholds more clearly and place feet more fluidly</span></label>
+        <label class="opt" for="q7_2"><input type="radio" id="q7_2" name="q7" value="Reduce forearm pump by shifting load to the legs"><span>Reduce forearm pump by shifting load to the legs</span></label>
+        <label class="opt" for="q7_3"><input type="radio" id="q7_3" name="q7" value="Increase friction on slopers by pressing the body into the wall"><span>Increase friction on slopers by pressing the body into the wall</span></label>
+      </div></div>
+
+      <!-- Q8 -->
+      <div class="q-card"><div class="q-num">Question 8 of 50</div><div class="q-text">According to the module, most beginner climbers fall off the wall because:</div><div class="opts">
+        <label class="opt" for="q8_0"><input type="radio" id="q8_0" name="q8" value="They don't have enough finger strength" required><span>They don't have enough finger strength</span></label>
+        <label class="opt" for="q8_1"><input type="radio" id="q8_1" name="q8" value="Their body is floppy — they lack body tension"><!-- CORRECT --><span>Their body is floppy — they lack body tension</span></label>
+        <label class="opt" for="q8_2"><input type="radio" id="q8_2" name="q8" value="They choose routes that are too hard"><span>They choose routes that are too hard</span></label>
+        <label class="opt" for="q8_3"><input type="radio" id="q8_3" name="q8" value="They over-grip and waste energy on easy terrain"><span>They over-grip and waste energy on easy terrain</span></label>
+      </div></div>
+
+      <!-- Q9 -->
+      <div class="q-card"><div class="q-num">Question 9 of 50</div><div class="q-text">Roughly what percentage of climbing power is generated from the belly button down (hips and legs)?</div><div class="opts">
+        <label class="opt" for="q9_0"><input type="radio" id="q9_0" name="q9" value="40%" required><span>40%</span></label>
+        <label class="opt" for="q9_1"><input type="radio" id="q9_1" name="q9" value="60%"><span>60%</span></label>
+        <label class="opt" for="q9_2"><input type="radio" id="q9_2" name="q9" value="80%"><!-- CORRECT --><span>80%</span></label>
+        <label class="opt" for="q9_3"><input type="radio" id="q9_3" name="q9" value="95%"><span>95%</span></label>
+      </div></div>
+
+      <!-- Q10 -->
+      <div class="q-card"><div class="q-num">Question 10 of 50</div><div class="q-text">On forward-slanting (leaning) walls, a climber should:</div><div class="opts">
+        <label class="opt" for="q10_0"><input type="radio" id="q10_0" name="q10" value="Press the hips into the wall" required><span>Press the hips into the wall</span></label>
+        <label class="opt" for="q10_1"><input type="radio" id="q10_1" name="q10" value="Push the hips away from the wall"><!-- CORRECT --><span>Push the hips away from the wall</span></label>
+        <label class="opt" for="q10_2"><input type="radio" id="q10_2" name="q10" value="Keep the hips square and facing the wall at all times"><span>Keep the hips square and facing the wall at all times</span></label>
+        <label class="opt" for="q10_3"><input type="radio" id="q10_3" name="q10" value="Lower the centre of mass by bending the knees deeply"><span>Lower the centre of mass by bending the knees deeply</span></label>
+      </div></div>
+
+      <!-- Q11 -->
+      <div class="q-card"><div class="q-num">Question 11 of 50</div><div class="q-text">In a dyno, which hand is the one that reaches?</div><div class="opts">
+        <label class="opt" for="q11_0"><input type="radio" id="q11_0" name="q11" value="The hand on the opposite side to the higher foot" required><span>The hand on the opposite side to the higher foot</span></label>
+        <label class="opt" for="q11_1"><input type="radio" id="q11_1" name="q11" value="The hand on the same side as the higher foot"><!-- CORRECT --><span>The hand on the same side as the higher foot</span></label>
+        <label class="opt" for="q11_2"><input type="radio" id="q11_2" name="q11" value="Whichever hand is stronger"><span>Whichever hand is stronger</span></label>
+        <label class="opt" for="q11_3"><input type="radio" id="q11_3" name="q11" value="The lower hand, to generate upward momentum"><span>The lower hand, to generate upward momentum</span></label>
+      </div></div>
+
+      <!-- Q12 -->
+      <div class="q-card"><div class="q-num">Question 12 of 50</div><div class="q-text">Climbing footwork should primarily be placed on:</div><div class="opts">
+        <label class="opt" for="q12_0"><input type="radio" id="q12_0" name="q12" value="The heel of the shoe" required><span>The heel of the shoe</span></label>
+        <label class="opt" for="q12_1"><input type="radio" id="q12_1" name="q12" value="The ball of the foot or the big toe"><!-- CORRECT --><span>The ball of the foot or the big toe</span></label>
+        <label class="opt" for="q12_2"><input type="radio" id="q12_2" name="q12" value="The outside edge exclusively"><span>The outside edge exclusively</span></label>
+        <label class="opt" for="q12_3"><input type="radio" id="q12_3" name="q12" value="The full sole of the shoe for maximum contact"><span>The full sole of the shoe for maximum contact</span></label>
+      </div></div>
+
+      <!-- Q13 -->
+      <div class="q-card"><div class="q-num">Question 13 of 50</div><div class="q-text">The outside edge of the shoe is primarily used for:</div><div class="opts">
+        <label class="opt" for="q13_0"><input type="radio" id="q13_0" name="q13" value="Heel hooking on overhangs" required><span>Heel hooking on overhangs</span></label>
+        <label class="opt" for="q13_1"><input type="radio" id="q13_1" name="q13" value="Traversing and drop-knee movements"><!-- CORRECT --><span>Traversing and drop-knee movements</span></label>
+        <label class="opt" for="q13_2"><input type="radio" id="q13_2" name="q13" value="Smearing on slab walls"><span>Smearing on slab walls</span></label>
+        <label class="opt" for="q13_3"><input type="radio" id="q13_3" name="q13" value="Toeing into pockets on vertical walls"><span>Toeing into pockets on vertical walls</span></label>
+      </div></div>
+
+      <!-- Q14 -->
+      <div class="q-card"><div class="q-num">Question 14 of 50</div><div class="q-text">When performing a heel hook, what should the coach prioritise before locating the next handhold?</div><div class="opts">
+        <label class="opt" for="q14_0"><input type="radio" id="q14_0" name="q14" value="The climber should fully extend the hooked leg" required><span>The climber should fully extend the hooked leg</span></label>
+        <label class="opt" for="q14_1"><input type="radio" id="q14_1" name="q14" value="Getting the knee directly above the heel"><!-- CORRECT --><span>Getting the knee directly above the heel</span></label>
+        <label class="opt" for="q14_2"><input type="radio" id="q14_2" name="q14" value="Ensuring the hip is fully externally rotated before moving"><span>Ensuring the hip is fully externally rotated before moving</span></label>
+        <label class="opt" for="q14_3"><input type="radio" id="q14_3" name="q14" value="Locking off with the opposite arm to stabilise"><span>Locking off with the opposite arm to stabilise</span></label>
+      </div></div>
+
+      <!-- Q15 -->
+      <div class="q-card"><div class="q-num">Question 15 of 50</div><div class="q-text">On a sloping hold, as the hand begins to slide, the climber should:</div><div class="opts">
+        <label class="opt" for="q15_0"><input type="radio" id="q15_0" name="q15" value="Relax the fingers to reduce friction" required><span>Relax the fingers to reduce friction</span></label>
+        <label class="opt" for="q15_1"><input type="radio" id="q15_1" name="q15" value="Push harder into the grip"><!-- CORRECT --><span>Push harder into the grip</span></label>
+        <label class="opt" for="q15_2"><input type="radio" id="q15_2" name="q15" value="Move the hips closer to the wall to increase body tension"><span>Move the hips closer to the wall to increase body tension</span></label>
+        <label class="opt" for="q15_3"><input type="radio" id="q15_3" name="q15" value="Immediately switch to the next hold before losing contact"><span>Immediately switch to the next hold before losing contact</span></label>
+      </div></div>
+
+      <!-- Q16 -->
+      <div class="q-card"><div class="q-num">Question 16 of 50</div><div class="q-text">When palming above shoulder height, the fingers should point:</div><div class="opts">
+        <label class="opt" for="q16_0"><input type="radio" id="q16_0" name="q16" value="Upward" required><span>Upward</span></label>
+        <label class="opt" for="q16_1"><input type="radio" id="q16_1" name="q16" value="Downward or sideways"><!-- CORRECT --><span>Downward or sideways</span></label>
+        <label class="opt" for="q16_2"><input type="radio" id="q16_2" name="q16" value="In the direction of movement"><span>In the direction of movement</span></label>
+        <label class="opt" for="q16_3"><input type="radio" id="q16_3" name="q16" value="Outward to maximise palm contact"><span>Outward to maximise palm contact</span></label>
+      </div></div>
+
+      <!-- Q17 -->
+      <div class="q-card"><div class="q-num">Question 17 of 50</div><div class="q-text">A falling climber accelerates toward the ground at approximately:</div><div class="opts">
+        <label class="opt" for="q17_0"><input type="radio" id="q17_0" name="q17" value="5.0 m/s²" required><span>5.0 m/s²</span></label>
+        <label class="opt" for="q17_1"><input type="radio" id="q17_1" name="q17" value="9.8 m/s²"><!-- CORRECT --><span>9.8 m/s²</span></label>
+        <label class="opt" for="q17_2"><input type="radio" id="q17_2" name="q17" value="12.5 m/s²"><span>12.5 m/s²</span></label>
+        <label class="opt" for="q17_3"><input type="radio" id="q17_3" name="q17" value="15.0 m/s²"><span>15.0 m/s²</span></label>
+      </div></div>
+
+      <!-- Q18 -->
+      <div class="q-card"><div class="q-num">Question 18 of 50</div><div class="q-text">A fall from just one metre can produce a landing force of roughly how many times the climber's body weight?</div><div class="opts">
+        <label class="opt" for="q18_0"><input type="radio" id="q18_0" name="q18" value="3 times" required><span>3 times</span></label>
+        <label class="opt" for="q18_1"><input type="radio" id="q18_1" name="q18" value="5 times"><span>5 times</span></label>
+        <label class="opt" for="q18_2"><input type="radio" id="q18_2" name="q18" value="9 times"><!-- CORRECT --><span>9 times</span></label>
+        <label class="opt" for="q18_3"><input type="radio" id="q18_3" name="q18" value="15 times"><span>15 times</span></label>
+      </div></div>
+
+      <!-- Q19 -->
+      <div class="q-card"><div class="q-num">Question 19 of 50</div><div class="q-text">When falling, climbers should point their fingers:</div><div class="opts">
+        <label class="opt" for="q19_0"><input type="radio" id="q19_0" name="q19" value="Away from the body in a spread position" required><span>Away from the body in a spread position</span></label>
+        <label class="opt" for="q19_1"><input type="radio" id="q19_1" name="q19" value="Toward the body, 'thumbs to the bum' ('open system')"><!-- CORRECT --><span>Toward the body, "thumbs to the bum" ("open system")</span></label>
+        <label class="opt" for="q19_2"><input type="radio" id="q19_2" name="q19" value="Downward to protect the wrists"><span>Downward to protect the wrists</span></label>
+        <label class="opt" for="q19_3"><input type="radio" id="q19_3" name="q19" value="Upward to signal the spotter"><span>Upward to signal the spotter</span></label>
+      </div></div>
+
+      <!-- Q20 -->
+      <div class="q-card"><div class="q-num">Question 20 of 50</div><div class="q-text">During bouldering spotting, where should the spotter direct their primary attention?</div><div class="opts">
+        <label class="opt" for="q20_0"><input type="radio" id="q20_0" name="q20" value="The climber's hands" required><span>The climber's hands</span></label>
+        <label class="opt" for="q20_1"><input type="radio" id="q20_1" name="q20" value="The climber's hips"><!-- CORRECT --><span>The climber's hips</span></label>
+        <label class="opt" for="q20_2"><input type="radio" id="q20_2" name="q20" value="The crash pad position"><span>The crash pad position</span></label>
+        <label class="opt" for="q20_3"><input type="radio" id="q20_3" name="q20" value="The climber's feet"><span>The climber's feet</span></label>
+      </div></div>
+
+      <!-- Q21 -->
+      <div class="q-card"><div class="q-num">Question 21 of 50</div><div class="q-text">On an overhang or roof, where should a spotter aim their hands?</div><div class="opts">
+        <label class="opt" for="q21_0"><input type="radio" id="q21_0" name="q21" value="The climber's head and neck" required><span>The climber's head and neck</span></label>
+        <label class="opt" for="q21_1"><input type="radio" id="q21_1" name="q21" value="The climber's shoulders"><!-- CORRECT --><span>The climber's shoulders</span></label>
+        <label class="opt" for="q21_2"><input type="radio" id="q21_2" name="q21" value="The climber's waist"><span>The climber's waist</span></label>
+        <label class="opt" for="q21_3"><input type="radio" id="q21_3" name="q21" value="The climber's feet to prevent swinging"><span>The climber's feet to prevent swinging</span></label>
+      </div></div>
+
+      <!-- Q22 -->
+      <div class="q-card"><div class="q-num">Question 22 of 50</div><div class="q-text">A correctly fitted harness should be:</div><div class="opts">
+        <label class="opt" for="q22_0"><input type="radio" id="q22_0" name="q22" value="Loose enough to fit a fist inside the waist belt" required><span>Loose enough to fit a fist inside the waist belt</span></label>
+        <label class="opt" for="q22_1"><input type="radio" id="q22_1" name="q22" value="Tight, at the belly button, right-side up"><!-- CORRECT --><span>Tight, at the belly button, right-side up</span></label>
+        <label class="opt" for="q22_2"><input type="radio" id="q22_2" name="q22" value="Worn low on the hips for comfort"><span>Worn low on the hips for comfort</span></label>
+        <label class="opt" for="q22_3"><input type="radio" id="q22_3" name="q22" value="Adjusted so the leg loops can rotate freely"><span>Adjusted so the leg loops can rotate freely</span></label>
+      </div></div>
+
+      <!-- Q23 -->
+      <div class="q-card"><div class="q-num">Question 23 of 50</div><div class="q-text">When checking a Figure-8 knot, the strands should be counted as:</div><div class="opts">
+        <label class="opt" for="q23_0"><input type="radio" id="q23_0" name="q23" value="1, 2, 3, 4, 5" required><span>1, 2, 3, 4, 5</span></label>
+        <label class="opt" for="q23_1"><input type="radio" id="q23_1" name="q23" value="2, 4, 6, 8, 10"><!-- CORRECT --><span>2, 4, 6, 8, 10</span></label>
+        <label class="opt" for="q23_2"><input type="radio" id="q23_2" name="q23" value="Just confirm the figure-8 shape is visible"><span>Just confirm the figure-8 shape is visible</span></label>
+        <label class="opt" for="q23_3"><input type="radio" id="q23_3" name="q23" value="Count the number of loops, not strands"><span>Count the number of loops, not strands</span></label>
+      </div></div>
+
+      <!-- Q24 -->
+      <div class="q-card"><div class="q-num">Question 24 of 50</div><div class="q-text">In the PBUS belay sequence, where does the bottom hand return to during "Knee"?</div><div class="opts">
+        <label class="opt" for="q24_0"><input type="radio" id="q24_0" name="q24" value="Above the belay device" required><span>Above the belay device</span></label>
+        <label class="opt" for="q24_1"><input type="radio" id="q24_1" name="q24" value="Knee level"><!-- CORRECT --><span>Knee level</span></label>
+        <label class="opt" for="q24_2"><input type="radio" id="q24_2" name="q24" value="Back to the starting position below the device"><span>Back to the starting position below the device</span></label>
+        <label class="opt" for="q24_3"><input type="radio" id="q24_3" name="q24" value="Wherever is most comfortable for the belayer"><span>Wherever is most comfortable for the belayer</span></label>
+      </div></div>
+
+      <!-- Q25 -->
+      <div class="q-card"><div class="q-num">Question 25 of 50</div><div class="q-text">Why must the hand swap ("One") in the VKNOT sequence happen below the Grigri, not above it?</div><div class="opts">
+        <label class="opt" for="q25_0"><input type="radio" id="q25_0" name="q25" value="It keeps the rope cleaner and less tangled" required><span>It keeps the rope cleaner and less tangled</span></label>
+        <label class="opt" for="q25_1"><input type="radio" id="q25_1" name="q25" value="A brake hand must remain in position in case of a fall"><!-- CORRECT --><span>A brake hand must remain in position in case of a fall</span></label>
+        <label class="opt" for="q25_2"><input type="radio" id="q25_2" name="q25" value="Swapping above the device can jam the camming mechanism"><span>Swapping above the device can jam the camming mechanism</span></label>
+        <label class="opt" for="q25_3"><input type="radio" id="q25_3" name="q25" value="It allows the belayer to maintain better eye contact with the climber"><span>It allows the belayer to maintain better eye contact with the climber</span></label>
+      </div></div>
+
+      <!-- Q26 -->
+      <div class="q-card"><div class="q-num">Question 26 of 50</div><div class="q-text">During top rope belaying, the thumbs should always point:</div><div class="opts">
+        <label class="opt" for="q26_0"><input type="radio" id="q26_0" name="q26" value="Downward" required><span>Downward</span></label>
+        <label class="opt" for="q26_1"><input type="radio" id="q26_1" name="q26" value="Upward"><!-- CORRECT --><span>Upward</span></label>
+        <label class="opt" for="q26_2"><input type="radio" id="q26_2" name="q26" value="In the direction of rope travel"><span>In the direction of rope travel</span></label>
+        <label class="opt" for="q26_3"><input type="radio" id="q26_3" name="q26" value="Toward the anchor"><span>Toward the anchor</span></label>
+      </div></div>
+
+      <!-- Q27 -->
+      <div class="q-card"><div class="q-num">Question 27 of 50</div><div class="q-text">In the climbing call-sign exchange, who is always considered "in charge"?</div><div class="opts">
+        <label class="opt" for="q27_0"><input type="radio" id="q27_0" name="q27" value="The coach or instructor" required><span>The coach or instructor</span></label>
+        <label class="opt" for="q27_1"><input type="radio" id="q27_1" name="q27" value="The belayer"><!-- CORRECT --><span>The belayer</span></label>
+        <label class="opt" for="q27_2"><input type="radio" id="q27_2" name="q27" value="The climber"><span>The climber</span></label>
+        <label class="opt" for="q27_3"><input type="radio" id="q27_3" name="q27" value="The most experienced person present"><span>The most experienced person present</span></label>
+      </div></div>
+
+      <!-- Q28 -->
+      <div class="q-card"><div class="q-num">Question 28 of 50</div><div class="q-text">When clipping quickdraws while leading, climbers should always clip:</div><div class="opts">
+        <label class="opt" for="q28_0"><input type="radio" id="q28_0" name="q28" value="As high above the bolt as possible to reduce fall distance" required><span>As high above the bolt as possible to reduce fall distance</span></label>
+        <label class="opt" for="q28_1"><input type="radio" id="q28_1" name="q28" value="In sequence from the knot upward"><!-- CORRECT --><span>In sequence from the knot upward</span></label>
+        <label class="opt" for="q28_2"><input type="radio" id="q28_2" name="q28" value="Only with the dominant hand to ensure security"><span>Only with the dominant hand to ensure security</span></label>
+        <label class="opt" for="q28_3"><input type="radio" id="q28_3" name="q28" value="At waist height only to prevent Z-clipping"><span>At waist height only to prevent Z-clipping</span></label>
+      </div></div>
+
+      <!-- Q29 -->
+      <div class="q-card"><div class="q-num">Question 29 of 50</div><div class="q-text">What is the primary danger of a back-clipped quickdraw?</div><div class="opts">
+        <label class="opt" for="q29_0"><input type="radio" id="q29_0" name="q29" value="It increases rope drag significantly" required><span>It increases rope drag significantly</span></label>
+        <label class="opt" for="q29_1"><input type="radio" id="q29_1" name="q29" value="The rope can unclip itself if the climber falls"><!-- CORRECT --><span>The rope can unclip itself if the climber falls</span></label>
+        <label class="opt" for="q29_2"><input type="radio" id="q29_2" name="q29" value="It places excessive load on the quickdraw spine"><span>It places excessive load on the quickdraw spine</span></label>
+        <label class="opt" for="q29_3"><input type="radio" id="q29_3" name="q29" value="It makes it harder to clip the next bolt"><span>It makes it harder to clip the next bolt</span></label>
+      </div></div>
+
+      <!-- Q30 -->
+      <div class="q-card"><div class="q-num">Question 30 of 50</div><div class="q-text">In the "Okay Method" of clipping, where is the thumb positioned?</div><div class="opts">
+        <label class="opt" for="q30_0"><input type="radio" id="q30_0" name="q30" value="On the spine of the carabiner" required><span>On the spine of the carabiner</span></label>
+        <label class="opt" for="q30_1"><input type="radio" id="q30_1" name="q30" value="On the gate side of the carabiner"><!-- CORRECT --><span>On the gate side of the carabiner</span></label>
+        <label class="opt" for="q30_2"><input type="radio" id="q30_2" name="q30" value="Underneath the carabiner to stabilise it"><span>Underneath the carabiner to stabilise it</span></label>
+        <label class="opt" for="q30_3"><input type="radio" id="q30_3" name="q30" value="On top of the rope to push it through the gate"><span>On top of the rope to push it through the gate</span></label>
+      </div></div>
+
+      <!-- Q31 -->
+      <div class="q-card"><div class="q-num">Question 31 of 50</div><div class="q-text">During lead belaying, where must the bottom (brake) hand always remain?</div><div class="opts">
+        <label class="opt" for="q31_0"><input type="radio" id="q31_0" name="q31" value="Above the belay device" required><span>Above the belay device</span></label>
+        <label class="opt" for="q31_1"><input type="radio" id="q31_1" name="q31" value="Below the belay device"><!-- CORRECT --><span>Below the belay device</span></label>
+        <label class="opt" for="q31_2"><input type="radio" id="q31_2" name="q31" value="On the rope between the device and the first bolt"><span>On the rope between the device and the first bolt</span></label>
+        <label class="opt" for="q31_3"><input type="radio" id="q31_3" name="q31" value="Wherever gives the most comfortable feeding position"><span>Wherever gives the most comfortable feeding position</span></label>
+      </div></div>
+
+      <!-- Q32 -->
+      <div class="q-card"><div class="q-num">Question 32 of 50</div><div class="q-text">If a climber falls while lead climbing, what is the belayer's immediate required action?</div><div class="opts">
+        <label class="opt" for="q32_0"><input type="radio" id="q32_0" name="q32" value="Jump toward the wall to reduce the fall distance" required><span>Jump toward the wall to reduce the fall distance</span></label>
+        <label class="opt" for="q32_1"><input type="radio" id="q32_1" name="q32" value="Bring the top hand down to the bottom hand and hold both firmly"><!-- CORRECT --><span>Bring the top hand down to the bottom hand and hold both firmly</span></label>
+        <label class="opt" for="q32_2"><input type="radio" id="q32_2" name="q32" value="Release slack quickly to allow a soft catch"><span>Release slack quickly to allow a soft catch</span></label>
+        <label class="opt" for="q32_3"><input type="radio" id="q32_3" name="q32" value="Lock off with the top hand only"><span>Lock off with the top hand only</span></label>
+      </div></div>
+
+      <!-- Q33 -->
+      <div class="q-card"><div class="q-num">Question 33 of 50</div><div class="q-text">What is the key principle when applying a progression to an exercise?</div><div class="opts">
+        <label class="opt" for="q33_0"><input type="radio" id="q33_0" name="q33" value="Always progress all variables simultaneously" required><span>Always progress all variables simultaneously</span></label>
+        <label class="opt" for="q33_1"><input type="radio" id="q33_1" name="q33" value="Change one variable at a time"><!-- CORRECT --><span>Change one variable at a time</span></label>
+        <label class="opt" for="q33_2"><input type="radio" id="q33_2" name="q33" value="Only progress after a full deload week"><span>Only progress after a full deload week</span></label>
+        <label class="opt" for="q33_3"><input type="radio" id="q33_3" name="q33" value="Progress only when the athlete requests it"><span>Progress only when the athlete requests it</span></label>
+      </div></div>
+
+      <!-- Q34 -->
+      <div class="q-card"><div class="q-num">Question 34 of 50</div><div class="q-text">Which of the following is an appropriate regression for the pull-up?</div><div class="opts">
+        <label class="opt" for="q34_0"><input type="radio" id="q34_0" name="q34" value="Weighted pull-up" required><span>Weighted pull-up</span></label>
+        <label class="opt" for="q34_1"><input type="radio" id="q34_1" name="q34" value="Assisted pull-up (band/machine) or TRX row"><!-- CORRECT --><span>Assisted pull-up (band/machine) or TRX row</span></label>
+        <label class="opt" for="q34_2"><input type="radio" id="q34_2" name="q34" value="One-arm pull-up"><span>One-arm pull-up</span></label>
+        <label class="opt" for="q34_3"><input type="radio" id="q34_3" name="q34" value="Muscle-up"><span>Muscle-up</span></label>
+      </div></div>
+
+      <!-- Q35 -->
+      <div class="q-card"><div class="q-num">Question 35 of 50</div><div class="q-text">A coach notices a client deadlifting with a rounded lower back. What is the correct verbal cue to use?</div><div class="opts">
+        <label class="opt" for="q35_0"><input type="radio" id="q35_0" name="q35" value="'Arch your back'" required><span>"Arch your back"</span></label>
+        <label class="opt" for="q35_1"><input type="radio" id="q35_1" name="q35" value="'Proud chest, long spine'"><!-- CORRECT --><span>"Proud chest, long spine"</span></label>
+        <label class="opt" for="q35_2"><input type="radio" id="q35_2" name="q35" value="'Squeeze your glutes harder'"><span>"Squeeze your glutes harder"</span></label>
+        <label class="opt" for="q35_3"><input type="radio" id="q35_3" name="q35" value="'Push your knees out'"><span>"Push your knees out"</span></label>
+      </div></div>
+
+      <!-- Q36 -->
+      <div class="q-card"><div class="q-num">Question 36 of 50</div><div class="q-text">When coaching children and youth, coaches should:</div><div class="opts">
+        <label class="opt" for="q36_0"><input type="radio" id="q36_0" name="q36" value="Use adult coaching methods scaled down" required><span>Use adult coaching methods scaled down</span></label>
+        <label class="opt" for="q36_1"><input type="radio" id="q36_1" name="q36" value="Vary activities every 5–10 minutes and avoid comparative feedback"><!-- CORRECT --><span>Vary activities every 5–10 minutes and avoid comparative feedback</span></label>
+        <label class="opt" for="q36_2"><input type="radio" id="q36_2" name="q36" value="Focus primarily on strength and conditioning before technique"><span>Focus primarily on strength and conditioning before technique</span></label>
+        <label class="opt" for="q36_3"><input type="radio" id="q36_3" name="q36" value="Give detailed technical instruction at the start of each session"><span>Give detailed technical instruction at the start of each session</span></label>
+      </div></div>
+
+      <!-- Q37 -->
+      <div class="q-card"><div class="q-num">Question 37 of 50</div><div class="q-text">For a client returning from injury, load should be increased conservatively using approximately what guideline?</div><div class="opts">
+        <label class="opt" for="q37_0"><input type="radio" id="q37_0" name="q37" value="5% rule" required><span>5% rule</span></label>
+        <label class="opt" for="q37_1"><input type="radio" id="q37_1" name="q37" value="10% rule"><!-- CORRECT --><span>10% rule</span></label>
+        <label class="opt" for="q37_2"><input type="radio" id="q37_2" name="q37" value="20% rule"><span>20% rule</span></label>
+        <label class="opt" for="q37_3"><input type="radio" id="q37_3" name="q37" value="Only increase load when the client is pain-free for 2 consecutive weeks"><span>Only increase load when the client is pain-free for 2 consecutive weeks</span></label>
+      </div></div>
+
+      <!-- Q38 -->
+      <div class="q-card"><div class="q-num">Question 38 of 50</div><div class="q-text">Which resistance band exercise most directly targets the external rotators and rear deltoids to address common climber shoulder imbalances?</div><div class="opts">
+        <label class="opt" for="q38_0"><input type="radio" id="q38_0" name="q38" value="Band pull-down" required><span>Band pull-down</span></label>
+        <label class="opt" for="q38_1"><input type="radio" id="q38_1" name="q38" value="Face pull"><!-- CORRECT --><span>Face pull</span></label>
+        <label class="opt" for="q38_2"><input type="radio" id="q38_2" name="q38" value="Band bicep curl"><span>Band bicep curl</span></label>
+        <label class="opt" for="q38_3"><input type="radio" id="q38_3" name="q38" value="Band chest press"><span>Band chest press</span></label>
+      </div></div>
+
+      <!-- Q39 -->
+      <div class="q-card"><div class="q-num">Question 39 of 50</div><div class="q-text">Kettlebells are particularly effective for developing which combination of qualities?</div><div class="opts">
+        <label class="opt" for="q39_0"><input type="radio" id="q39_0" name="q39" value="Isolated finger strength and forearm endurance" required><span>Isolated finger strength and forearm endurance</span></label>
+        <label class="opt" for="q39_1"><input type="radio" id="q39_1" name="q39" value="Posterior chain strength, grip endurance, and core stability"><!-- CORRECT --><span>Posterior chain strength, grip endurance, and core stability</span></label>
+        <label class="opt" for="q39_2"><input type="radio" id="q39_2" name="q39" value="Upper body hypertrophy and cardiovascular endurance"><span>Upper body hypertrophy and cardiovascular endurance</span></label>
+        <label class="opt" for="q39_3"><input type="radio" id="q39_3" name="q39" value="Ankle mobility and balance"><span>Ankle mobility and balance</span></label>
+      </div></div>
+
+      <!-- Q40 -->
+      <div class="q-card"><div class="q-num">Question 40 of 50</div><div class="q-text">What does the acronym ARC stand for in climbing training?</div><div class="opts">
+        <label class="opt" for="q40_0"><input type="radio" id="q40_0" name="q40" value="Active Recovery Climbing" required><span>Active Recovery Climbing</span></label>
+        <label class="opt" for="q40_1"><input type="radio" id="q40_1" name="q40" value="Aerobic Restoration and Capillarisation"><!-- CORRECT --><span>Aerobic Restoration and Capillarisation</span></label>
+        <label class="opt" for="q40_2"><input type="radio" id="q40_2" name="q40" value="Adaptive Resistance Conditioning"><span>Adaptive Resistance Conditioning</span></label>
+        <label class="opt" for="q40_3"><input type="radio" id="q40_3" name="q40" value="Anaerobic Resistance Circuit"><span>Anaerobic Resistance Circuit</span></label>
+      </div></div>
+
+      <!-- Q41 -->
+      <div class="q-card"><div class="q-num">Question 41 of 50</div><div class="q-text">External focus cues generally produce better motor learning outcomes than internal focus cues.</div><div class="opts">
+        <label class="opt" for="q41_0"><input type="radio" id="q41_0" name="q41" value="TRUE" required><!-- CORRECT --><span>TRUE</span></label>
+        <label class="opt" for="q41_1"><input type="radio" id="q41_1" name="q41" value="FALSE"><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q42 -->
+      <div class="q-card"><div class="q-num">Question 42 of 50</div><div class="q-text">A coach should always obtain explicit consent before using tactile cueing.</div><div class="opts">
+        <label class="opt" for="q42_0"><input type="radio" id="q42_0" name="q42" value="TRUE" required><!-- CORRECT --><span>TRUE</span></label>
+        <label class="opt" for="q42_1"><input type="radio" id="q42_1" name="q42" value="FALSE"><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q43 -->
+      <div class="q-card"><div class="q-num">Question 43 of 50</div><div class="q-text">Static balance refers to keeping balance fluid while moving between positions.</div><div class="opts">
+        <label class="opt" for="q43_0"><input type="radio" id="q43_0" name="q43" value="TRUE" required><span>TRUE</span></label>
+        <label class="opt" for="q43_1"><input type="radio" id="q43_1" name="q43" value="FALSE"><!-- CORRECT --><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q44 -->
+      <div class="q-card"><div class="q-num">Question 44 of 50</div><div class="q-text">A spotter's job in bouldering is to catch and hold the falling climber like a football.</div><div class="opts">
+        <label class="opt" for="q44_0"><input type="radio" id="q44_0" name="q44" value="TRUE" required><span>TRUE</span></label>
+        <label class="opt" for="q44_1"><input type="radio" id="q44_1" name="q44" value="FALSE"><!-- CORRECT --><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q45 -->
+      <div class="q-card"><div class="q-num">Question 45 of 50</div><div class="q-text">The Figure-8 knot should sit as close to the harness as possible.</div><div class="opts">
+        <label class="opt" for="q45_0"><input type="radio" id="q45_0" name="q45" value="TRUE" required><!-- CORRECT --><span>TRUE</span></label>
+        <label class="opt" for="q45_1"><input type="radio" id="q45_1" name="q45" value="FALSE"><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q46 -->
+      <div class="q-card"><div class="q-num">Question 46 of 50</div><div class="q-text">In the PBUS belay sequence, the top hand and bottom hand should move separately to avoid jamming the device.</div><div class="opts">
+        <label class="opt" for="q46_0"><input type="radio" id="q46_0" name="q46" value="TRUE" required><span>TRUE</span></label>
+        <label class="opt" for="q46_1"><input type="radio" id="q46_1" name="q46" value="FALSE"><!-- CORRECT --><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q47 -->
+      <div class="q-card"><div class="q-num">Question 47 of 50</div><div class="q-text">A back-clipped quickdraw is more secure than a correctly clipped one.</div><div class="opts">
+        <label class="opt" for="q47_0"><input type="radio" id="q47_0" name="q47" value="TRUE" required><span>TRUE</span></label>
+        <label class="opt" for="q47_1"><input type="radio" id="q47_1" name="q47" value="FALSE"><!-- CORRECT --><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q48 -->
+      <div class="q-card"><div class="q-num">Question 48 of 50</div><div class="q-text">A progression should be attempted before an athlete has mastered the fundamentals of the current level.</div><div class="opts">
+        <label class="opt" for="q48_0"><input type="radio" id="q48_0" name="q48" value="TRUE" required><span>TRUE</span></label>
+        <label class="opt" for="q48_1"><input type="radio" id="q48_1" name="q48" value="FALSE"><!-- CORRECT --><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q49 -->
+      <div class="q-card"><div class="q-num">Question 49 of 50</div><div class="q-text">Face pull and band pull-apart exercises help counteract the internal rotation and protraction pattern common in climbers.</div><div class="opts">
+        <label class="opt" for="q49_0"><input type="radio" id="q49_0" name="q49" value="TRUE" required><!-- CORRECT --><span>TRUE</span></label>
+        <label class="opt" for="q49_1"><input type="radio" id="q49_1" name="q49" value="FALSE"><span>FALSE</span></label>
+      </div></div>
+
+      <!-- Q50 -->
+      <div class="q-card"><div class="q-num">Question 50 of 50</div><div class="q-text">When falling, a climber should brace with arms and hands pointing away from the body to create a "closed system."</div><div class="opts">
+        <label class="opt" for="q50_0"><input type="radio" id="q50_0" name="q50" value="TRUE" required><span>TRUE</span></label>
+        <label class="opt" for="q50_1"><input type="radio" id="q50_1" name="q50" value="FALSE"><!-- CORRECT --><span>FALSE</span></label>
+      </div></div>
+
+      <div class="submit-bar">
+        <span class="submit-status" id="submitStatus"></span>
+        <button type="submit" class="btn-primary" id="submitBtn">Submit Quiz</button>
+      </div>
+    </form>
+
+    <div class="result-screen" id="resultScreen">
+      <div class="result-icon" id="resultIcon">🎉</div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-score" id="resultScore"></div>
+      <div class="result-note" id="resultNote"></div>
+    </div>
+  </div>
+
+  <script>
+    const QUIZ_ENDPOINT_URL = "PASTE_YOUR_MODULE_5_WEB_APP_URL_HERE";
+    const TOTAL_QUESTIONS = 50;
+    const TOTAL_REQUIRED_FIELDS = 3 + TOTAL_QUESTIONS;
+    const form = document.getElementById('quizForm');
+    const progressFill = document.getElementById('progressFill');
+    const progressLabel = document.getElementById('progressLabel');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitStatus = document.getElementById('submitStatus');
+    const resultScreen = document.getElementById('resultScreen');
+
+    function countFilled() {
+      let filled = 0;
+      if (document.getElementById('email').value.trim()) filled++;
+      if (document.getElementById('name').value.trim()) filled++;
+      if (document.getElementById('surname').value.trim()) filled++;
+      for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+        if (form.querySelector(`input[name="q${i}"]:checked`)) filled++;
+      }
+      return filled;
+    }
+    function updateProgress() {
+      const filled = countFilled();
+      const pct = Math.round((filled / TOTAL_REQUIRED_FIELDS) * 100);
+      progressFill.style.width = pct + '%';
+      progressLabel.textContent = filled + ' of ' + TOTAL_REQUIRED_FIELDS + ' required fields completed';
+    }
+    form.addEventListener('input', updateProgress);
+    form.addEventListener('change', updateProgress);
+    updateProgress();
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      submitStatus.textContent = '';
+      submitStatus.classList.remove('error');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const answers = [];
+      for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+        const checked = form.querySelector(`input[name="q${i}"]:checked`);
+        answers.push(checked ? checked.value : '');
+      }
+      const payload = {
+        tabName: "Module 5 Quiz",
+        email: document.getElementById('email').value.trim(),
+        name: document.getElementById('name').value.trim(),
+        surname: document.getElementById('surname').value.trim(),
+        answers: answers
+      };
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+      try {
+        const res = await fetch(QUIZ_ENDPOINT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+        const result = await res.json();
+        if (!result.success) throw new Error(result.error || 'Something went wrong.');
+        form.style.display = 'none';
+        document.querySelector('.progress-wrap').style.display = 'none';
+        resultScreen.classList.add('show');
+        const passed = result.passed;
+        document.getElementById('resultIcon').textContent = passed ? '🎉' : '📋';
+        document.getElementById('resultTitle').textContent = passed ? 'Nice work — you passed!' : 'Not quite there yet';
+        document.getElementById('resultScore').textContent = `You scored ${result.score}/${result.total} (${result.percentage}%). Pass mark is 80%.`;
+        document.getElementById('resultNote').innerHTML = passed
+          ? 'A confirmation email is on its way, and your next module has been unlocked — log back in to continue whenever you\'re ready.'
+          : 'Review the module content and give it another go when you\'re ready — you\'ve got this. A summary email is on its way to you too.';
+      } catch (err) {
+        submitStatus.textContent = 'Submission failed: ' + err.message;
+        submitStatus.classList.add('error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Quiz';
+      }
+    });
+  </script>
+</body>
+</html>
