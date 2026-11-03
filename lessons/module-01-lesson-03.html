@@ -84,6 +84,8 @@
     text-decoration: none; margin-bottom: 24px;
   }
   .back-link:hover { color: var(--navy); }
+  .back-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 24px; }
+  .back-links .back-link { margin-bottom: 0; }
 
   /* ---------- Lesson header ---------- */
   .lesson-head { margin-bottom: 8px; }
@@ -234,7 +236,7 @@
 <div id="page-content">
 <div class="shell">
 
-  <a class="back-link" href="../module-01.html">← Back to Module 01</a>
+  <div class="back-links"><a class="back-link" href="../module-01.html">← Back to Module 01</a><a class="back-link" href="../dashboard.html">← Back to Dashboard</a></div>
 
   <div class="lesson-head">
     <p class="lesson-eyebrow">Module 01 · Lesson 03</p>
