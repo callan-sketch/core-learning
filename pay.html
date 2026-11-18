@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Yoco only accepts checkouts reached from websites registered on the account
+     (max 3). Every Core Learning course sends students through this page so Yoco
+     always sees corelearning.co.za as the referring site. -->
+<meta name="referrer" content="origin">
+<meta name="robots" content="noindex">
+<title>Redirecting to secure payment… | Core Learning</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#f6f4ef;color:#1b2a3a}
+  .box{text-align:center;padding:24px}
+  .spin{width:34px;height:34px;border:3px solid #d8d3c8;border-top-color:#3a8a8c;border-radius:50%;
+        margin:0 auto 16px;animation:s .8s linear infinite}
+  @keyframes s{to{transform:rotate(360deg)}}
+  a{color:#3a8a8c}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="spin" id="spin"></div>
+  <p id="msg">Taking you to Yoco's secure payment page…</p>
+</div>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get('c') || '';
+  // Only ever forward to a Yoco checkout id — never an arbitrary URL.
+  if (/^ch_[A-Za-z0-9]{8,64}$/.test(id)) {
+    location.replace('https://c.yoco.com/checkout/' + id);
+  } else {
+    document.getElementById('spin').style.display = 'none';
+    document.getElementById('msg').innerHTML =
+      'This payment link isn’t valid. Please go back to your course page and try again, ' +
+      'or email <a href="mailto:info@corelearning.co.za">info@corelearning.co.za</a>.';
+  }
+})();
+</script>
+</body>
+</html>
